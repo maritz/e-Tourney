@@ -1,0 +1,9 @@
+[submodule "lib/express"]
+	path = lib/express
+	url = git://github.com/visionmedia/express.git
+[submodule "lib/longpollbuffer"]
+	path = lib/longpollbuffer
+	url = git://github.com/robrighter/Long-Polling-Buffer.git
+[submodule "lib/redis-client"]
+	path = lib/redis-client
+	url = git://github.com/fictorial/redis-node-client.git
