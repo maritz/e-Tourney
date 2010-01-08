@@ -1,5 +1,5 @@
-[submodule "lib/express"]
-	path = lib/express
+[submodule "lib-files/express"]
+	path = lib-files/express
 	url = git://github.com/visionmedia/express.git
 [submodule "lib/longpollbuffer"]
 	path = lib/longpollbuffer
