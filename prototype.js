@@ -24,14 +24,29 @@ configure(function(){
   use(Static);
 });
 
-get(/^\/?([^\.]*$)/, function(file){
+get(/^\/?([^\.]*)$/, function(file){
   file = ( file && file !== 'layout' ) ? file : 'index';
-  this.render(file + '.haml.html');
+  if(haml_check_file(file))
+    this.render(file + '.haml.html');
+  else
+    this.pass('error/404');
 });
 
 get('/favicon.ico', function(){
-  this.halt()
+  this.halt();
 });
+
+get('/error/404', function () {
+  this.halt('404', 'Not found');
+});
+
+
+// haml file check
+var haml_check_file = function (name) {
+  var file = name + '.haml.html';
+  var files = fs.readdirSync(set('views'));
+  return files.indexOf(file) === -1 ? false : true;
+}
 
 // sass conversion
 var sass_files = fs.readdirSync(sass_dir),
@@ -59,7 +74,7 @@ sass_files.forEach(function (i) {
   } else {
     processed_files++;
   }
-})
+});
 
 process.chdir(old_cwd);
 

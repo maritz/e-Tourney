@@ -7,8 +7,33 @@
   %body
     #main_container
       #header
+        #top_bar
+          %span#top_bar_lang
+            Ger Eng
+          %span#top_bar_time
+            2010-03-20 13:45:10 UTC
+          %span#top_bar_logged
+            Suche Logout
+        #main_header
+          #header_loading
+            Loading & Logo
+          #header_userbox
+            #userbox_avatar
+            #userbox_top
+              euml
+            #userbox_bottom
+              #userbox_user
+                Benutzer
+              #userbox_team
+                Teams
       #navi
+        %a{ href: "/" }
+          News
+        %a{ href: "/tourn" }
+          Turniere
       #body
-        #content
+        #content= body
         #sponsors
+          Sponsors
       #footer
+        Footer
