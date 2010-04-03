@@ -2,7 +2,30 @@
 
 div
   display: block
-  +dev_border("blue")
 
-.div_2
-  +dev_border()
+
+ul
+  list-style-type: none
+
+*
+  margin: 0
+  padding: 0
+  font:
+    size: 11pt
+    family: Tahoma, Arial, sans-serif
+
+body
+  background:
+    color: #2f2f2f
+  padding: 0 5% 0 1%
+
+#main_container
+  background:
+    color: #fff
+  +border-radius(5px)
+  border: 1px solid #333
+  min-width: 700px
+
+@import _header.sass
+@import _navi.sass
+@import _content.sass

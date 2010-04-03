@@ -1,0 +1,76 @@
+!userbox_width = 250
+!avatar_width = 50
+!rest = !userbox_width - !avatar_width - 2
+!half_rest = ( !rest / 2 ) - 1
+
+#header
+  position: relative
+
+#top_bar
+  height: 20px
+  position: relative
+
+#top_bar_logged
+  +absolute("right")
+
+#main_header
+  background:
+    color: #444
+  height: 100px
+  position: relative
+
+#header_loading
+  background:
+    color: #333
+  height: 100px
+  float: left
+  width: 400px
+
+#header_userbox
+  +absolute("right","top",40px,15px)
+  border: 1px solid #000
+  color: #fff
+  height: 70px
+  float: left
+  width: #{!userbox_width}px
+  z-index: 2
+
+  a
+    border:
+      color: #919191
+      style: solid
+      width: 0px
+      left:
+        width: 1px
+      top:
+        width: 1px
+    display: block
+    float: left
+    height: 49%
+    line-height: 35px
+    text-align: center
+    width: #{!half_rest}px
+
+    &:hover
+      color: #ae5317
+
+    span
+      margin: auto
+
+#userbox_avatar
+  border:
+    right:
+      color: #000
+      width: 1px
+      style: solid
+  background:
+    color: #333
+  float: left
+  font:
+    size: 18pt
+    weight: bold
+  height: 100%
+  width: #{!avatar_width}px
+
+#userbox_profile
+  width: #{!rest}px !important

@@ -27,7 +27,10 @@ configure(function(){
 get(/^\/?([^\.]*)$/, function(file){
   file = ( file && file !== 'layout' ) ? file : 'index';
   if(haml_check_file(file))
-    this.render(file + '.haml.html');
+    this.render(file + '.haml.html', null, function (what, view) {
+      this.response.headers['Content-Type'] = 'text/html; charset=utf-8';
+      this.halt(200, view);
+    });
   else
     this.pass('error/404');
 });
@@ -43,13 +46,14 @@ get('/error/404', function () {
 
 // haml file check
 var haml_check_file = function (name) {
-  var file = name + '.haml.html';
+  var file = name + '.html.haml';
   var files = fs.readdirSync(set('views'));
-  return files.indexOf(file) === -1 ? false : true;
+  return files.indexOf(file) !== -1;
 }
 
 // sass conversion
-var sass_files = fs.readdirSync(sass_dir),
+var childProcess = require('child_process').exec,
+    sass_files = fs.readdirSync(sass_dir),
     found_files = sass_files.length,
     processed_files = 0,
     old_cwd = process.cwd();
@@ -61,12 +65,12 @@ sass_files.forEach(function (i) {
   if(i.lastIndexOf('.sass') !== -1 && i !== '.sass-cache') { // not a css file
     var name = i.substring(i.lastIndexOf('/'), i.lastIndexOf('.sass'));
     if (name.substr(0,1) !== '_') { // sass file meant only for importing
-      var sass = process.createChildProcess("sass", [name + '.sass', name + '.css']);
-      sass.addListener("exit", function (exitcode) {
+      childProcess("sass " + name + '.sass ' + name + '.css', function(err, stdout, stderr) {
+        if (stdout)
+          debug(stdout);
+        if (err)
+          debug(inspect('PROBLEM calling "sass ' + name + '.sass ' + name + '.css" with file "' + i + '" ' + err));
         processed_files++;
-      }).addListener('error', function (e) {
-        if (e)
-          debug(inspect('PROBLEM calling "sass ' + name + '.sass ' + name + '.css" with file "' + i + '" ' + e));
       });
     } else {
       processed_files++;

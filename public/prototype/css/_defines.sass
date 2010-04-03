@@ -4,10 +4,16 @@
     width: 1px
     style: #{!style}
 
-=float(!side)
-  display: inline
-  float: #{!side}
-
 =clear(!side)
   zoom: 1
   clear: #{!side}
+
+=absolute(!x = "left", !y = "top", !xpx = 0px, !ypx = 0px)
+  position: absolute
+  #{!x}: #{!xpx}
+  #{!y}: #{!ypx}
+
+=border-radius(!radius)
+  border-radius = !radius
+  -moz-border-radius = !radius
+  -webkit-border-radius = !radius
