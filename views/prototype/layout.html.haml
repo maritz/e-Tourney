@@ -15,24 +15,42 @@
           %span#top_bar_time
             2010-03-20 13:45:10 UTC
           %span#top_bar_logged
-            Suche Logout
+            Suche
+            %a{ href: '?' }
+              Logout
         #main_header
-          #header_loading
-            Loading & Logo
-          #header_userbox
-            #userbox_avatar
-              ?
-            %a#userbox_profile
-              %span
-                euml
-            %a#userbox_user
-              %img{ src: 'arrow', alt: '>' }
-              %span
-                Benutzer
-            %a#userbox_team
-              %img{ src: 'arrow', alt: '>' }
-              %span
-                Teams
+          #header_logo
+            %h1
+              e
+              %span.tourney
+                tourney
+          :if this.params.get.login === undefined
+            #header_login
+              %form{ method: 'GET', action: '/' }
+                %input{ type: 'hidden', name: 'login', value: 1 }
+                %label{ for: 'login_name' }
+                  Name
+                %input#login_name{ type: 'text' }
+                %label{ for: 'login_pwd' }
+                  Password
+                %input#login_pwd{ type: 'password' }
+                %input{ type: 'submit', value: 'Login' }
+                %input{ type: 'button', value: 'Register' }
+          :if this.params.get.login !== undefined
+            #header_userbox
+              #userbox_avatar
+                ?
+              %a#userbox_profile
+                %span
+                  euml
+              %a#userbox_user
+                %img{ src: 'arrow.png', alt: '>' }
+                %span
+                  Benutzer
+              %a#userbox_team
+                %img{ src: 'arrow.png', alt: '>' }
+                %span
+                  Teams
       #navi
         %a.first{ href: "/" }
           News
