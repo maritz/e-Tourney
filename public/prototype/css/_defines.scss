@@ -1,0 +1,19 @@
+@mixin dev_border($color: lime, $style: solid) {
+  border: {
+    color: #{$color};
+    width: 1px;
+    style: #{$style}; }; }
+
+@mixin clear($side) {
+  zoom: 1;
+  clear: #{$side}; }
+
+@mixin absolute($x: left, $y: top, $xpx: 0px, $ypx: 0px) {
+  position: absolute;
+  #{$x}: #{$xpx};
+  #{$y}: #{$ypx}; }
+
+@mixin border-radius($radius) {
+  border-radius: $radius;
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius; }

@@ -24,7 +24,7 @@
               e
               %span.tourney
                 tourney
-          :if this.params.get.login === undefined
+          - if (this.params.get.login === undefined)
             #header_login
               %form{ method: 'GET', action: '/' }
                 %input{ type: 'hidden', name: 'login', value: 1 }
@@ -36,7 +36,7 @@
                 %input#login_pwd{ type: 'password' }
                 %input{ type: 'submit', value: 'Login' }
                 %input{ type: 'button', value: 'Register' }
-          :if this.params.get.login !== undefined
+          - if (this.params.get.login !== undefined)
             #header_userbox
               #userbox_avatar
                 ?
@@ -58,7 +58,24 @@
           Turniere
         #last_navi
           &nbsp;
-      #body
+      - if (show_quicklist)
+        %ul#quicklist
+          - each table in quicklist
+            %li{ id: 'quicklist_' + table.id }
+              %table
+                %thead
+                  %tr
+                    %th{ colspan:"5" }= table.name + " Turniere"
+                %tbody
+                  - each tourn in table.tourns
+                    %tr
+                      %td
+                        %img{ src: "icon.png" }
+                      %td= "0000.00.00 00:00"
+                      %td= tourn
+                      %td= "Teilnehmer: 5/16"
+                      %td= "Status: kackdreck"
+      #body.clear
         #content= body
         #sponsors
           %span

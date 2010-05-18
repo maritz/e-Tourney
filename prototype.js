@@ -1,11 +1,9 @@
-process.mixin(GLOBAL, require('sys'));
-
 require.paths.unshift('lib')
 require.paths.unshift('lib/express')
 require('express')
 require('express/plugins')
 
-var messages = [],
+var sys = require('sys'),
     utils = require('express/utils'),
     fs = require('fs'),
     sass_dir = './public/prototype/css/';
@@ -24,15 +22,41 @@ configure(function(){
   use(Static);
 });
 
+
+var quicklist = [
+  {
+    id: 'official',
+    name: 'Offizielle',
+    tourns: [
+      'turnier 1',
+      'haha'
+    ]  
+  },
+  {
+    id: 'inofficial',
+    name: 'Inoffizielle',
+    tourns: [
+      'turnier 16'
+    ]  
+  }
+];
+
 get(/^\/?([^\.]*)$/, function(file){
   file = ( file && file !== 'layout' ) ? file : 'index';
-  if(haml_check_file(file))
-    this.render(file + '.haml.html', null, function (what, view) {
+  if (haml_check_file(file)) {
+    this.render(file + '.html.haml', 
+      {
+        locals: {
+          quicklist: quicklist,
+          show_quicklist: (file !== 'tourn')
+        }
+      }, function (what, view) {
       this.response.headers['Content-Type'] = 'text/html; charset=utf-8';
-      this.halt(200, view);
+      this.respond(200, view);
     });
-  else
+  } else {
     this.pass('error/404');
+  }
 });
 
 get('/favicon.ico', function(){
@@ -52,39 +76,17 @@ var haml_check_file = function (name) {
 }
 
 // sass conversion
-var childProcess = require('child_process').exec,
-    sass_files = fs.readdirSync(sass_dir),
-    found_files = sass_files.length,
-    processed_files = 0,
-    old_cwd = process.cwd();
-
-process.chdir(sass_dir);
+var childProcess = require('child_process').exec;
 process.env.PATH += ':/home/maritz/.gem/ruby/1.8/bin'; // wtf man?!
-
-sass_files.forEach(function (i) {
-  if(i.lastIndexOf('.sass') !== -1 && i !== '.sass-cache') { // not a css file
-    var name = i.substring(i.lastIndexOf('/'), i.lastIndexOf('.sass'));
-    if (name.substr(0,1) !== '_') { // sass file meant only for importing
-      childProcess("sass " + name + '.sass ' + name + '.css', function(err, stdout, stderr) {
-        if (stdout)
-          debug(stdout);
-        if (err)
-          debug(inspect('PROBLEM calling "sass ' + name + '.sass ' + name + '.css" with file "' + i + '" ' + err));
-        processed_files++;
-      });
-    } else {
-      processed_files++;
-    }
-  } else {
-    processed_files++;
-  }
+process.env.PATH += ':/var/lib/gems/1.9.0/bin'; /* ok, this is getting ridiculous. i need a solution to this... :/
+The problem here is, that installing sass either requires sudo rights and installs it to /var/lib/gems/blablabla and doesn't add the binaries to your path, or you install without sudo and it installs in ~/.gem/ruby/1.8/bin ...
+It all sucks... :D */
+childProcess("sass --debug-info --watch " + sass_dir + '', function(err, stdout, stderr) {
+  if (stdout)
+    sys.debug(stdout);
+  if (err)
+    sys.debug(sys.inspect('PROBLEM compiling scss file: ' + err));
 });
 
-process.chdir(old_cwd);
+run(undefined, null);
 
-var startExpressInterval = setInterval(function () {
-  if (processed_files === found_files) {
-    clearInterval(startExpressInterval);
-    run(undefined, null);
-  }
-}, 100);
