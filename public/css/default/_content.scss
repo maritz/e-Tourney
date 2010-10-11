@@ -1,0 +1,32 @@
+#body {
+  border-top: 1px solid grey;
+  display: table;
+  margin: 0.25%;
+  padding: 0.25%;
+  width: 99%;
+}
+
+#content {
+  display: table-cell;
+  margin: 0;
+  padding: 0;
+}
+
+aside.sponsors {
+  background-color: #eeeeee;
+  border: 1px solid #aaaaaa;
+  display: table-cell;
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  > span {
+    background-color: #555555;
+    color: white;
+    display: block;
+    font-weight: bold;
+    line-height: 18px;
+    padding-left: 10px; }
+  ul {
+    li {
+      margin: 8px;
+      text-align: center; } } }

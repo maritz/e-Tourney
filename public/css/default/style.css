@@ -1,0 +1,249 @@
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\000033}}
+header, footer, aside, nav, article, div {
+  display: block; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\000037}}
+ul {
+  list-style-type: none; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000310}}
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 9pt;
+  font-family: Tahoma, Arial, sans-serif; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000317}}
+body {
+  background-color: #2f2f2f;
+  padding: 0 2% 0 1%; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000322}}
+#main_container {
+  background-color: white;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border: 1px solid #333333;
+  min-width: 700px; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000329}}
+form label:after {
+  content: ": "; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000332}}
+.clear {
+  clear: both;
+  zoom: 1; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\000036}}
+header {
+  background-color: #444444;
+  font-size: 10pt;
+  font-weight: 500;
+  height: 120px;
+  position: relative; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000315}}
+#top_bar {
+  height: 20px;
+  position: relative; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000319}}
+#top_bar_logged {
+  position: absolute;
+  right: 0px;
+  top: 0px; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000322}}
+#header_logo {
+  background-color: #333333;
+  height: 100px;
+  float: left;
+  width: 400px; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000328}}
+  #header_logo h1 {
+    color: #ec853a;
+    font-size: 35pt;
+    font-weight: 700;
+    line-height: 100px;
+    margin-left: 50px; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000335}}
+  #header_logo .tourney {
+    color: #dadada;
+    font-size: 22pt;
+    font-weight: 500; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000341}}
+#header_login {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  color: white;
+  text-align: right;
+  width: 250px; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000346}}
+  #header_login input {
+    background-color: #353535;
+    color: white;
+    margin: 5px 30px 0 4px;
+    padding: 2px;
+    width: 120px; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000353}}
+  #header_login input[type="submit"],
+  #header_login input[type="button"] {
+    background-color: #686868;
+    width: auto; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000357}}
+#header_userbox {
+  position: absolute;
+  right: 40px;
+  top: 15px;
+  border: 1px solid black;
+  color: white;
+  height: 70px;
+  float: left;
+  width: 250px;
+  z-index: 2; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000365}}
+  #header_userbox a {
+    border-color: #919191;
+    border-style: solid;
+    border-width: 0px;
+    border-left-width: 1px;
+    border-top-width: 1px;
+    display: block;
+    float: left;
+    height: 49%;
+    line-height: 35px;
+    text-align: center;
+    width: 98px; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000380}}
+    #header_userbox a:hover {
+      color: #ae5317; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000382}}
+    #header_userbox a span {
+      margin: auto; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000385}}
+#userbox_avatar {
+  border-right-color: black;
+  border-right-width: 1px;
+  border-right-style: solid;
+  background-color: #333333;
+  float: left;
+  font-size: 18pt;
+  font-weight: bold;
+  height: 100%;
+  width: 50px; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\00003100}}
+#userbox_profile {
+  width: 198px !important; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_navi\.scss}line{font-family:\000031}}
+nav {
+  background-color: #d84d0a;
+  border-color: #8b170f;
+  border-style: solid;
+  border-width: 1px;
+  border-top-color: #fbc16d;
+  border-top-style: solid;
+  border-top-width: 1px;
+  height: 30px;
+  margin-bottom: 10px;
+  position: relative; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_navi\.scss}line{font-family:\0000316}}
+  nav ul li {
+    border-style: solid;
+    border-width: 0px;
+    border-left-color: #fbc16d;
+    border-left-width: 1px;
+    border-right-color: #333333;
+    border-right-width: 1px;
+    display: block;
+    float: left; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_navi\.scss}line{font-family:\0000328}}
+    nav ul li:hover {
+      background-color: #c44b0f;
+      border-left-color: #d48e2e; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_navi\.scss}line{font-family:\0000331}}
+    nav ul li a {
+      color: white;
+      display: block;
+      font-weight: bold;
+      height: 30px;
+      line-height: 30px;
+      padding: 0;
+      text-align: center;
+      text-decoration: none;
+      width: 100px; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_navi\.scss}line{font-family:\0000342}}
+      nav ul li a:active {
+        height: 29px;
+        padding: 1px 0 0 2px;
+        width: 98px; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_content\.scss}line{font-family:\000031}}
+#body {
+  border-top: 1px solid grey;
+  display: table;
+  margin: 0.25%;
+  padding: 0.25%;
+  width: 99%; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_content\.scss}line{font-family:\000039}}
+#content {
+  display: table-cell;
+  margin: 0;
+  padding: 0; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_content\.scss}line{font-family:\0000315}}
+aside.sponsors {
+  background-color: #eeeeee;
+  border: 1px solid #aaaaaa;
+  display: table-cell;
+  margin: 0;
+  padding: 0;
+  width: 200px; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_content\.scss}line{font-family:\0000322}}
+  aside.sponsors > span {
+    background-color: #555555;
+    color: white;
+    display: block;
+    font-weight: bold;
+    line-height: 18px;
+    padding-left: 10px; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_content\.scss}line{font-family:\0000330}}
+  aside.sponsors ul li {
+    margin: 8px;
+    text-align: center; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_quicklist\.scss}line{font-family:\000031}}
+#quicklist {
+  margin: 3px auto;
+  width: 100%; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_quicklist\.scss}line{font-family:\000034}}
+  #quicklist li {
+    border: 1px solid #333;
+    background-color: #dde;
+    display: block;
+    float: left;
+    margin: 0 4px 10px 4px;
+    width: 49%; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_quicklist\.scss}line{font-family:\0000311}}
+    #quicklist li table {
+      border-collapse: collapse;
+      width: 100%; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_quicklist\.scss}line{font-family:\0000314}}
+      #quicklist li table thead tr th {
+        background-color: #555;
+        border-left: 4px solid #c84b1d;
+        color: white;
+        font-size: 11pt;
+        padding-left: 2px;
+        text-align: left; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_quicklist\.scss}line{font-family:\0000322}}
+      #quicklist li table tbody tr:nth-child(even) {
+        background-color: #c1c1cd; }

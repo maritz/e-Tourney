@@ -1,0 +1,40 @@
+@import "_defines.scss";
+
+header, footer, aside, nav, article, div {
+  display: block; }  
+
+
+ul {
+  list-style-type: none; }
+
+* {
+  margin: 0;
+  padding: 0;
+  font: {
+    size: 9pt;
+    family: Tahoma, Arial, sans-serif; }; }
+
+body {
+  background: {
+    color: #2f2f2f; };
+  padding: 0 2% 0 1%; }
+
+#main_container {
+  background: {
+    color: white; };
+  @include border-radius(5px);
+  border: 1px solid #333333;
+  min-width: 700px; }
+
+form label:after {
+  content: ": "; }
+  
+.clear {
+  clear: both;
+  zoom: 1; // stupid IE hacks :x
+}
+
+@import "_header.scss";
+@import "_navi.scss";
+@import "_content.scss";
+@import "_quicklist.scss";

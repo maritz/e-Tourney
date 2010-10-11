@@ -1,0 +1,101 @@
+$userbox_width: 250;
+$avatar_width: 50;
+$rest: $userbox_width - $avatar_width - 2;
+$half_rest: $rest / 2 - 1;
+
+header {
+  background: {
+    color: #444444; };
+  font: {
+    size: 10pt;
+    weight: 500; };
+  height: 120px;
+  position: relative; }
+
+#top_bar {
+  height: 20px;
+  position: relative; }
+
+#top_bar_logged {
+  @include absolute(right); }
+
+#header_logo {
+  background: {
+    color: #333333; };
+  height: 100px;
+  float: left;
+  width: 400px;
+  h1 {
+    color: #ec853a;
+    font: {
+      size: 35pt;
+      weight: 700; };
+    line-height: 100px;
+    margin-left: 50px; }
+  .tourney {
+    color: #dadada;
+    font: {
+      size: 22pt;
+      weight: 500; }; } }
+
+#header_login {
+  @include absolute(right, top, 10px, 8px);
+  color: white;
+  text-align: right;
+  width: #{$userbox_width}px;
+  input {
+    background-color: #353535;
+    color: white;
+    margin: 5px 30px 0 4px;
+    padding: 2px;
+    width: 120px; }
+  input[type="submit"],
+  input[type="button"] {
+    background-color: #686868;
+    width: auto; } }
+
+#header_userbox {
+  @include absolute(right, top, 40px, 15px);
+  border: 1px solid black;
+  color: white;
+  height: 70px;
+  float: left;
+  width: #{$userbox_width}px;
+  z-index: 2;
+  a {
+    border: {
+      color: #919191;
+      style: solid;
+      width: 0px;
+      left: {
+        width: 1px; };
+      top: {
+        width: 1px; }; };
+    display: block;
+    float: left;
+    height: 49%;
+    line-height: 35px;
+    text-align: center;
+    width: #{$half_rest}px;
+    &:hover {
+      color: #ae5317; }
+    span {
+      margin: auto; } } }
+
+#userbox_avatar {
+  border: {
+    right: {
+      color: black;
+      width: 1px;
+      style: solid; }; };
+  background: {
+    color: #333333; };
+  float: left;
+  font: {
+    size: 18pt;
+    weight: bold; };
+  height: 100%;
+  width: #{$avatar_width}px; }
+
+#userbox_profile {
+  width: #{$rest}px !important; }

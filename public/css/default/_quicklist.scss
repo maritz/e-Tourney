@@ -1,0 +1,27 @@
+#quicklist {
+  margin: 3px auto;
+  width: 100%;
+  li {
+    border: 1px solid #333;
+    background-color: #dde;
+    display: block;
+    float: left;
+    margin: 0 4px 10px 4px;
+    width: 49%;
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      thead tr th {
+        background-color: #555;
+        border-left: 4px solid #c84b1d;
+        color: white;
+        font-size: 11pt;
+        padding-left: 2px;
+        text-align: left;
+      }
+      tbody tr:nth-child(even) {
+        background-color: #c1c1cd;
+      }
+    }
+  }
+}
