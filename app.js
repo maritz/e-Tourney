@@ -27,6 +27,17 @@ for (var i = 0, len = controllers.length; i < len; i = i + 1) {
   }
 }
 
+// sass watch hack :(
+var sassfiles = fs.readdirSync('public/css/default');
+for (var i = 0, len = sassfiles.length; i < len; i = i + 1) {
+  if (sassfiles[i].match(/\.scss$/i)) {
+    fs.watchFile('./public/css/default/' + sassfiles[i], function () {
+      console.log('file changed');
+      require('child_process').spawn('touch', ['public/css/default/style.scss'])
+    });
+  }
+}
+
 
 // real application starts now!
 
@@ -58,6 +69,7 @@ Ni.boot(function() {
     res.rlocals = {};
     res.render = function (file, options) {
       res.rlocals.session = req.session;
+      res.rlocals.currentUrl = req.url;
       if (typeof(options) === 'undefined') {
         options = {};
       }
