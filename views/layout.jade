@@ -1,43 +1,52 @@
 !!! 5
-html
+!= '<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->'
+!= '<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->'
+!= '<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->'
+!= '<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->'
+!= '<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->'
   head
     meta( charset: 'utf-8' )
+    meta( name: 'author', content: 'Moritz Peters & Heiko Veigl')
+    meta( name: 'description', content: 'A tournement website for online gaming.')
     title e-Tourney
-    script( src: '/js/jquery-1.4.2.js' )
-    script( src: '/js/app.js' )
     link( rel: 'stylesheet', href: '/css/default/style.css' )
+    script( src: 'js/modernizr-1.5.min.js' )
   body
     #main_container
       header
         #top_bar
           span#top_bar_lang Ger Eng
           span#top_bar_time 2010-03-20 13:45:10 UTC
+          | worker:
+          = workerId
+          | worker started at:
+          = workerStart
           span#top_bar_logged Suche
             a( href: '?' ) Logout
-        #header_logo
+        #header_main
           h1 e
             span.tourney tourney
-        - if (session.logged_in === undefined)
-          #header_login
-            form( method: 'GET', action: currentUrl )
-              input( type: 'hidden', name: 'login', value: 1 )
-              label( for: 'login_name' ) Name
-              input#login_name( type: 'text' )
-              label( for: 'login_pwd' ) Password
-              input#login_pwd( type: 'password' )
-              input( type: 'submit', value: 'Login' )
-              input( type: 'button', value: 'Register' )
-        - if (session.logged_in !== undefined)
-          #header_userbox
-            #userbox_avatar ?
-            a#userbox_profile
-              span euml
-            a#userbox_user
-              img( src: 'arrow.png', alt: '>' )
-              span Benutzer
-            a#userbox_team
-              img( src: 'arrow.png', alt: '>' )
-              span Teams
+          - if (session.logged_in === undefined)
+            #header_login
+              form( method: 'GET', action: currentUrl )
+                input( type: 'hidden', name: 'login', value: 1 )
+                label( for: 'login_name' ) Name
+                input#login_name( type: 'text' )
+                label( for: 'login_pwd' ) Password
+                input#login_pwd( type: 'password' )
+                input( type: 'submit', value: 'Login' )
+                input( type: 'button', value: 'Register' )
+          - if (session.logged_in !== undefined)
+            #header_userbox
+              #userbox_avatar ?
+              a#userbox_profile
+                span euml
+              a#userbox_user
+                img( src: 'arrow.png', alt: '>' )
+                span Benutzer
+              a#userbox_team
+                img( src: 'arrow.png', alt: '>' )
+                span Teams
       nav
         ul
           li
@@ -67,3 +76,15 @@ html
             li Intel
             li NASA
       footer Footer
+
+    script( src: '//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' )
+    :javascript
+      !window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.4.2.min.js"%3E%3C/script%3E'))
+
+    !='<!--[if lt IE 7 ]>'
+      script( src: 'js/dd_belatedpng.js' )
+      script
+        !="DD_belatedPNG.fix('img, .png_bg');"
+    !='<![endif]-->'
+
+!='</html>'

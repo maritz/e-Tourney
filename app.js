@@ -1,31 +1,10 @@
 "use strict";
 
 var express = require('express'),
-conductor = require('conductor'),
-nohm = require('nohm'),
 fs = require('fs'),
 RedisStore = require('connect-redis'),
-Ni = require('ni');
-
-fs.writeFileSync('/tmp/etourney.pid', process.pid.toString());
-
-
-//node-daemon hack
-var controllers = fs.readdirSync('controllers'),
-models = fs.readdirSync('models'),
-node_daemon_reload_hack = function () {
-  require('child_process').spawn('touch', ['app.js']);
-};
-for (var i = 0, len = models.length; i < len; i = i + 1) {
-  if (models[i].match(/Model\.js$/i)) {
-    fs.watchFile('./models/' + models[i], node_daemon_reload_hack);
-  }
-}
-for (var i = 0, len = controllers.length; i < len; i = i + 1) {
-  if (controllers[i].match(/\.js$/i)) {
-    fs.watchFile('./controllers/' + controllers[i], node_daemon_reload_hack);
-  }
-}
+Ni = require('ni'),
+fugue = require('fugue');
 
 // sass watch hack :(
 var sassfiles = fs.readdirSync('public/css/default');
@@ -38,12 +17,38 @@ for (var i = 0, len = sassfiles.length; i < len; i = i + 1) {
   }
 }
 
+process.on('uncaughtException', function(excp) {
+  if (excp.message || excp.name) {
+    if (excp.name) process.stdout.write(excp.name);
+    if (excp.message) process.stdout.write(excp.message);
+    if (excp.backtrace) process.stdout.write(excp.backtrace);
+    if (excp.stack) process.stdout.write(excp.stack);
+  } else {
+    sys = require('sys');
+    process.stdout.write(sys.inspect(excp));    
+  }
+});
+
+var merge = function () {
+  var result = {};
+  for (var i = arguments.length - 1; i >= 0; i--) {
+    if (typeof(arguments[i]) === 'object') {
+      var obj = arguments[i];
+      Object.keys(obj).forEach(function () {
+        result[arguments[0]] = obj[arguments[0]];
+      });
+    }
+  }
+  return result;
+}
 
 // real application starts now!
 
 Ni.setRoot(__dirname);
 
 Ni.boot(function() {
+  
+  var workerstart = new Date().toLocaleTimeString();
   
   Ni.controllers.home = Ni.controllers.News;
   
@@ -56,24 +61,29 @@ Ni.boot(function() {
   }
 
   // static stuff
+  app.use(express.conditionalGet());
   app.use(express.favicon(__dirname + '/public/images/icons/favicon.png'));
+  app.use(express.gzip());
   app.use(express.staticProvider(__dirname + '/public'));
 
   // start main app pre-routing stuff
   app.use(express.bodyDecoder());
   app.use(express.cookieDecoder());
-  app.use(express.session({ store: new RedisStore({ magAge: 60000 * 60 * 24 }) })); // one day
+  app.use(express.session({store: new RedisStore({magAge: 60000 * 60 * 24})})); // one day
   
   app.use(function (req, res, next) {
     res.original_render = res.render;
     res.rlocals = {};
     res.render = function (file, options) {
-      res.rlocals.session = req.session;
-      res.rlocals.currentUrl = req.url;
+      var rlocals = res.rlocals;
+      rlocals.session = req.session;
+      rlocals.currentUrl = req.url;
+      rlocals.workerId = fugue.workerId();
+      rlocals.workerStart = workerstart;
       if (typeof(options) === 'undefined') {
         options = {};
       }
-      options.locals = res.rlocals;
+      options.locals = merge(options.locals, rlocals);
       res.original_render(file, options);
     };
     next();
@@ -81,14 +91,25 @@ Ni.boot(function() {
   
   app.use(Ni.router);
   
+  app.use(Ni.view(function(req, res, next, filename) {
+    res.render(filename);
+  }));
+  
   app.use(function (req, res, next) {
     res.send('404 - Not found.');
   });
   
   if (app.set('env') !== 'production') {
-    app.use(express.errorHandler({ showStack: true }));
+    app.use(express.errorHandler({showStack: true}));
   }
 
-  app.listen(3000);
-  console.log('listening on 3000');
+  fugue.start(app, 3000, null, 2, {
+    started: function () {
+      console.log('listening on 3000');
+    },
+    log_file: __dirname + '/log/workers.log',
+    //master_log_file: __dirname + '/log/master.log',
+    master_pid_path: '/tmp/fugue-master-etourney.pid',
+    verbose: true
+  });
 });

@@ -4,31 +4,29 @@ $rest: $userbox_width - $avatar_width - 2;
 $half_rest: $rest / 2 - 1;
 
 header {
-  background: {
-    color: #444444; };
   font: {
     size: 10pt;
     weight: 500; };
-  height: 120px;
-  position: relative; }
+  height: 120px; }
 
 #top_bar {
   height: 20px;
-  position: relative; }
+  line-height: 20px; }
 
 #top_bar_logged {
   @include absolute(right); }
 
-#header_logo {
+#header_main {
   background: {
     color: #333333; };
   height: 100px;
   float: left;
-  width: 400px;
+  position: relative;
+  width: 100%;
   h1 {
     color: #ec853a;
     font: {
-      size: 35pt;
+      size: 38pt;
       weight: 700; };
     line-height: 100px;
     margin-left: 50px; }
