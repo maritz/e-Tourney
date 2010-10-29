@@ -4,7 +4,8 @@ var express = require('express'),
 fs = require('fs'),
 RedisStore = require('connect-redis'),
 Ni = require('ni'),
-fugue = require('fugue');
+fugue = require('fugue'),
+helpers = require('./helpers/general');
 
 // sass watch hack :(
 var sassfiles = fs.readdirSync('public/css/default');
@@ -28,19 +29,6 @@ process.on('uncaughtException', function(excp) {
     process.stdout.write(sys.inspect(excp));    
   }
 });
-
-var merge = function () {
-  var result = {};
-  for (var i = arguments.length - 1; i >= 0; i--) {
-    if (typeof(arguments[i]) === 'object') {
-      var obj = arguments[i];
-      Object.keys(obj).forEach(function () {
-        result[arguments[0]] = obj[arguments[0]];
-      });
-    }
-  }
-  return result;
-}
 
 // real application starts now!
 
@@ -69,7 +57,9 @@ Ni.boot(function() {
   // start main app pre-routing stuff
   app.use(express.bodyDecoder());
   app.use(express.cookieDecoder());
-  app.use(express.session({store: new RedisStore({magAge: 60000 * 60 * 24})})); // one day
+  var redisSessionStore = new RedisStore({magAge: 60000 * 60 * 24});
+  redisSessionStore.client.select(2);
+  app.use(express.session({store: redisSessionStore})); // one day
   
   app.use(function (req, res, next) {
     res.original_render = res.render;
@@ -83,7 +73,7 @@ Ni.boot(function() {
       if (typeof(options) === 'undefined') {
         options = {};
       }
-      options.locals = merge(options.locals, rlocals);
+      options.locals = helpers.merge(options.locals, rlocals);
       res.original_render(file, options);
     };
     next();
@@ -96,7 +86,7 @@ Ni.boot(function() {
   }));
   
   app.use(function (req, res, next) {
-    res.send('404 - Not found.');
+    res.render('404');
   });
   
   if (app.set('env') !== 'production') {

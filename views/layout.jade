@@ -68,7 +68,7 @@
                 td= "Teilnehmer: 5/16"
                 td= "Status: kackdreck"
       #body.clear
-        #content= body
+        #content!= body
         aside.sponsors
           span Sponsors
           ul
@@ -80,6 +80,7 @@
     script( src: '//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' )
     :javascript
       !window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.4.2.min.js"%3E%3C/script%3E'))
+    script( src: '/js/main.js' )
 
     !='<!--[if lt IE 7 ]>'
       script( src: 'js/dd_belatedpng.js' )

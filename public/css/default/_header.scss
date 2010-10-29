@@ -11,10 +11,11 @@ header {
 
 #top_bar {
   height: 20px;
-  line-height: 20px; }
+  line-height: 20px;
+  position: relative; }
 
 #top_bar_logged {
-  @include absolute(right); }
+  @include absolute(right, top, 3px, 1px); }
 
 #header_main {
   background: {
