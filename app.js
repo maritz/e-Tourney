@@ -5,7 +5,9 @@ fs = require('fs'),
 RedisStore = require('connect-redis'),
 Ni = require('ni'),
 fugue = require('fugue'),
-helpers = require('./helpers/general');
+helpers = require('./helpers/general'),
+assetManager = require('connect-assetmanager'),
+assetHandlers = require('connect-assetmanager-handlers');
 
 // sass watch hack :(
 var sassfiles = fs.readdirSync('public/css/default');
@@ -46,12 +48,35 @@ Ni.boot(function() {
 
   if (app.set('env') !== 'production') {
     app.use(express.lint(app));
+  } else {
+    app.use(express.logger());
   }
 
   // static stuff
   app.use(express.conditionalGet());
   app.use(express.favicon(__dirname + '/public/images/icons/favicon.png'));
   app.use(express.gzip());
+  
+  // connect assetmanager to pack js. (css already handled by sass)
+  var files = require('./helpers/collect-client-js');
+  var assetsManagerMiddleware = assetManager({
+      'js': {
+          'route': /\/js\/[0-9]+\/merged\.js/
+          , 'path': './public/js/merged/'
+          , 'dataType': 'javascript'
+          , 'files': files
+          , 'preManipulate': {
+              'MSIE': []
+              , '^': app.set('env') === 'production' ? [
+                  assetHandlers.uglifyJsOptimize
+              ] : [] // only minify if in production mode
+          }
+          , 'debug': app.set('env') !== 'production' // minification only in production mode
+      }
+  });
+  app.use(assetsManagerMiddleware);
+  
+  
   app.use(express.staticProvider(__dirname + '/public'));
 
   // start main app pre-routing stuff
@@ -64,12 +89,16 @@ Ni.boot(function() {
   app.use(function (req, res, next) {
     res.original_render = res.render;
     res.rlocals = {};
+    if (req.url.indexOf('User/login') < 0 && req.session.lastPage !== req.url) {
+      req.session.lastPage = req.url;
+    }
     res.render = function (file, options) {
       var rlocals = res.rlocals;
       rlocals.session = req.session;
       rlocals.currentUrl = req.url;
       rlocals.workerId = fugue.workerId();
       rlocals.workerStart = workerstart;
+      rlocals.staticVersions = assetsManagerMiddleware.cacheTimestamps;
       if (typeof(options) === 'undefined') {
         options = {};
       }

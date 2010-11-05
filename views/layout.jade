@@ -10,7 +10,7 @@
     meta( name: 'description', content: 'A tournement website for online gaming.')
     title e-Tourney
     link( rel: 'stylesheet', href: '/css/default/style.css' )
-    script( src: 'js/modernizr-1.5.min.js' )
+    script( src: '/js/modernizr-1.5.min.js' )
   body
     #main_container
       header
@@ -28,12 +28,11 @@
             span.tourney tourney
           - if (session.logged_in === undefined)
             #header_login
-              form( method: 'GET', action: currentUrl )
-                input( type: 'hidden', name: 'login', value: 1 )
+              form( method: 'POST', action: 'User/login/' )
                 label( for: 'login_name' ) Name
-                input#login_name( type: 'text' )
+                input#login_name( name: 'name', type: 'text' )
                 label( for: 'login_pwd' ) Password
-                input#login_pwd( type: 'password' )
+                input#login_pwd( name: 'password', type: 'password' )
                 input( type: 'submit', value: 'Login' )
                 input( type: 'button', value: 'Register' )
           - if (session.logged_in !== undefined)
@@ -80,7 +79,7 @@
     script( src: '//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' )
     :javascript
       !window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.4.2.min.js"%3E%3C/script%3E'))
-    script( src: '/js/main.js' )
+    script( src: '/js/' + staticVersions.js + '/merged.js' )
 
     !='<!--[if lt IE 7 ]>'
       script( src: 'js/dd_belatedpng.js' )
