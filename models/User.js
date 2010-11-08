@@ -34,6 +34,7 @@ var userModel = module.exports = nohm.Model.extend({
         ]
       },
       password: {
+        load_pure: true, // this ensures that there is no typecasting when loading from the db.
         type: function (value, key, old) {
           var pwd, salt;
           if (value) {
@@ -42,7 +43,7 @@ var userModel = module.exports = nohm.Model.extend({
               // if the password was changed, we change the salt as well, just to be sure.
               salt = uid();
               this.p('salt', salt);
-              pwd = hasher(value, salt)
+              pwd = hasher(value, salt);
             }
             return pwd;
           } else {
@@ -78,5 +79,27 @@ var userModel = module.exports = nohm.Model.extend({
         });
       }
     });
+  },
+  
+  getBoxInfo: function (id, callback) {
+    var info = {},
+    self = this,
+    userLoaded =  function (err) {
+      if (err) {
+        callback(false);
+      } else {
+        info.id = self.id;
+        info.name = self.p('name');
+        // and then we also get the privilege level and teamlist.
+        callback(info);
+      }
+    };
+    if (!this.__loaded && id) {
+      this.load(id, userLoaded)
+    } else if (this.id && this.__loaded) {
+      userLoaded();
+    } else {
+      callback(false);
+    }
   }
 });

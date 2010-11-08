@@ -79,6 +79,28 @@ module.exports = {
       });
     });
   },
+  'test getting basic userbox infos': function (t, done) {
+    // TODO: complete this once teams/privileges are implemented (by adding seperate tests)
+    var user = new User(),
+    control = new User();
+    user.p({
+      name: 'userbox',
+      email: 'userbox@mail.de',
+      password: 'asd'
+    });
+    user.save(function (err) {
+      var id = user.id;
+      control.getBoxInfo(id, function (data) {
+        var should = {
+          id: id,
+          name: user.p('name')
+        };
+        t.notEqual(data, false);
+        t.deepEqual(should, data);
+        done();
+      })
+    });
+  },
   'end db connection': function (t) {
     //nohm.client.flushdb();
     nohm.client.quit();

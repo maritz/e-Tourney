@@ -7,7 +7,9 @@ Ni = require('ni'),
 fugue = require('fugue'),
 helpers = require('./helpers/general'),
 assetManager = require('connect-assetmanager'),
-assetHandlers = require('connect-assetmanager-handlers');
+assetHandlers = require('connect-assetmanager-handlers'),
+i18n = require('./helpers/translations.js'),
+vsprintf = require('sprintf').vsprintf;
 
 // sass watch hack :(
 var sassfiles = fs.readdirSync('public/css/default');
@@ -80,55 +82,93 @@ Ni.boot(function() {
   app.use(express.staticProvider(__dirname + '/public'));
 
   // start main app pre-routing stuff
+  
+  app.dynamicHelpers({
+    tr: function (req, res) {
+      var lang = req.session.lang;
+      return function tr (key) {
+        var args = Array.prototype.slice.call(arguments);
+        args.shift();
+        var str = i18n.getTranslation(lang, key);
+        return vsprintf(str, args);
+      }
+    }
+  });
+  
   app.use(express.bodyDecoder());
   app.use(express.cookieDecoder());
+  
   var redisSessionStore = new RedisStore({magAge: 60000 * 60 * 24});
-  redisSessionStore.client.select(2);
-  app.use(express.session({store: redisSessionStore})); // one day
-  
-  app.use(function (req, res, next) {
-    res.original_render = res.render;
-    res.rlocals = {};
-    if (req.url.indexOf('User/login') < 0 && req.session.lastPage !== req.url) {
-      req.session.lastPage = req.url;
-    }
-    res.render = function (file, options) {
-      var rlocals = res.rlocals;
-      rlocals.session = req.session;
-      rlocals.currentUrl = req.url;
-      rlocals.workerId = fugue.workerId();
-      rlocals.workerStart = workerstart;
-      rlocals.staticVersions = assetsManagerMiddleware.cacheTimestamps;
-      if (typeof(options) === 'undefined') {
-        options = {};
+  redisSessionStore.client.select(2, function () {
+    
+    app.use(express.session({store: redisSessionStore})); // one day
+    
+    // some session stuff
+    app.use(function (req, res, next) {
+      if (req.url.indexOf('User/login') < 0 
+        && req.url.indexOf('User/register') < 0 
+        && req.session.lastPage !== req.url) {
+        req.session.lastPage = req.url;
       }
-      options.locals = helpers.merge(options.locals, rlocals);
-      res.original_render(file, options);
-    };
-    next();
-  });
-  
-  app.use(Ni.router);
-  
-  app.use(Ni.view(function(req, res, next, filename) {
-    res.render(filename);
-  }));
-  
-  app.use(function (req, res, next) {
-    res.render('404');
-  });
-  
-  if (app.set('env') !== 'production') {
-    app.use(express.errorHandler({showStack: true}));
-  }
+      
+      if (typeof(req.session.lang) === 'undefined') {
+        req.session.lang = 'en_US';
+      }
+      next();
+    });
+    
+    // set language.
+    app.get('*', function (req, res, next) {
+      var lang = req.param('lang');
+      if (typeof(lang) !== 'undefined' && i18n.langs.indexOf(lang) >= 0) {
+        req.session.lang = req.param('lang');
+      }
+      next();
+    })
 
-  fugue.start(app, 3000, null, 2, {
-    started: function () {
-      console.log('listening on 3000');
-    },
-    log_file: __dirname + '/log/workers.log',
-    //master_log_file: __dirname + '/log/master.log',
-    master_pid_path: '/tmp/fugue-master-etourney.pid',
-    verbose: true
+    // render stuff
+    app.use(function (req, res, next) {
+      res.original_render = res.render;
+      res.rlocals = {};
+      res.render = function (file, options) {
+        var rlocals = res.rlocals;
+        rlocals.session = req.session;
+        rlocals.loggedClass = req.session.logged_in ? 'logged_in' : '';
+        rlocals.currentUrl = req.url;
+        rlocals.workerId = fugue.workerId();
+        rlocals.workerStart = workerstart;
+        rlocals.staticVersions = assetsManagerMiddleware.cacheTimestamps;
+        if (typeof(options) === 'undefined') {
+          options = {};
+        }
+        options.locals = helpers.merge(options.locals, rlocals);
+        res.original_render(file, options);
+      };
+      next();
+    });
+
+    app.use(Ni.router);
+
+    app.use(Ni.view(function(req, res, next, filename) {
+      res.render(filename);
+    }));
+
+    app.use(function (req, res, next) {
+      res.render('404');
+    });
+
+    if (app.set('env') !== 'production') {
+      app.use(express.errorHandler({showStack: true}));
+    }
+
+    fugue.start(app, 3000, null, 2, {
+      started: function () {
+        console.log('listening on 3000');
+      },
+      log_file: __dirname + '/log/workers.log',
+      //master_log_file: __dirname + '/log/master.log',
+      master_pid_path: '/tmp/fugue-master-etourney.pid',
+      verbose: true
+    });
   });
 });

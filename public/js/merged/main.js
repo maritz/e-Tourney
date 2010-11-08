@@ -1,17 +1,12 @@
+var app = new PageController();
+
 $(document).ready(function () {
-  $('#header_login input[type="button"]').click(function () {
-    window.location = '/user/register';
+  $('#header_userbox input[type="button"]').click(function () {
+    window.location = '/User/register';
   });
   
-  $('#header_login form').submit(function (e) {
-    e.preventDefault();
-    var data = $(this).serializeArray();
-    $.post('User/loginJson', data, function (response, success) {
-      if (response.success) {
-        console.log('login successfull');
-      } else {
-        console.log('login FAILED!');
-      }
-    });
-  });
+  app.userSelf = new app.models.user({self: true});
+  
+  var userBoxView = new app.views.userBox({ model: app.userSelf});
+  
 });

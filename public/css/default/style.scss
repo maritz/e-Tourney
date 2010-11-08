@@ -29,10 +29,14 @@ body {
 
 form label:after {
   content: ": "; }
-  
-.clear {
-  clear: both;
-  zoom: 1; // stupid IE hacks :x
+
+input, submit {
+  padding: 0 2px;
+}
+
+span.error {
+  color: #d52f18;
+  font-weight: bold;
 }
 
 @import "_header.scss";

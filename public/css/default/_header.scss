@@ -15,7 +15,14 @@ header {
   position: relative; }
 
 #top_bar_logged {
-  @include absolute(right, top, 3px, 1px); }
+  @include absolute(right, top, 3px, 1px);
+  a {
+    display: none;
+    &.logged_in {
+      display: inline;
+    }
+  }
+}
 
 #header_main {
   background: {
@@ -37,30 +44,44 @@ header {
       size: 22pt;
       weight: 500; }; } }
 
-#header_login {
-  @include absolute(right, top, 10px, 8px);
-  color: white;
-  text-align: right;
-  width: #{$userbox_width}px;
-  input {
-    background-color: #353535;
-    color: white;
-    margin: 5px 30px 0 4px;
-    padding: 2px;
-    width: 120px; }
-  input[type="submit"],
-  input[type="button"] {
-    background-color: #686868;
-    width: auto; } }
+#header_login { }
 
 #header_userbox {
   @include absolute(right, top, 40px, 15px);
-  border: 1px solid black;
   color: white;
-  height: 70px;
-  float: left;
   width: #{$userbox_width}px;
   z-index: 2;
+  span.error {
+    @include absolute(right, top, 30px, -12px);
+    display: none;
+  }
+  form {
+    color: white;
+    text-align: right;
+    width: #{$userbox_width}px;
+    input {
+      background-color: #353535;
+      color: white;
+      margin: 5px 30px 0 4px;
+      width: 120px; }
+    input[type="submit"],
+    input[type="button"] {
+      background-color: #686868;
+      width: auto; }
+  }
+  &.logged_in {
+    border: 1px solid black;
+  }
+  &.logged_in form {
+    display: none;
+  }
+  .content {
+    display: none;
+    height: 70px;
+  }
+  &.logged_in .content {
+    display: block;
+  }
   a {
     border: {
       color: #919191;
@@ -77,7 +98,8 @@ header {
     text-align: center;
     width: #{$half_rest}px;
     &:hover {
-      color: #ae5317; }
+      color: #ae5317;
+      cursor: pointer; }
     span {
       margin: auto; } } }
 
