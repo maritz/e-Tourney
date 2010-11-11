@@ -435,6 +435,10 @@ input, submit {
   padding: 0 2px; }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000337}}
+input.error {
+  box-shadow: 0 0 5px #F00; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000341}}
 span.error {
   color: #d52f18;
   font-weight: bold; }
@@ -489,7 +493,7 @@ header {
   right: 40px;
   top: 15px;
   color: white;
-  width: 250px;
+  width: 260px;
   z-index: 2; }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000354}}
   #header_userbox span.error {
@@ -501,7 +505,7 @@ header {
   #header_userbox form {
     color: white;
     text-align: right;
-    width: 250px; }
+    width: 260px; }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000362}}
     #header_userbox form input {
       background-color: #353535;
@@ -538,7 +542,7 @@ header {
     height: 49%;
     line-height: 35px;
     text-align: center;
-    width: 98px; }
+    width: 103px; }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\00003100}}
     #header_userbox a:hover {
       color: #ae5317;
@@ -561,7 +565,7 @@ header {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\00003121}}
 #userbox_profile {
-  width: 198px !important; }
+  width: 208px !important; }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_navi\.scss}line{font-family:\000031}}
 nav {
@@ -637,8 +641,9 @@ aside.sponsors {
     display: block;
     font-weight: bold;
     line-height: 18px;
-    padding-left: 10px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_content\.scss}line{font-family:\0000330}}
+    padding-left: 10px;
+    position: relative; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/maritz\/repos\/e-Tourney\/public\/css\/default\/_content\.scss}line{font-family:\0000331}}
   aside.sponsors ul li {
     margin: 8px;
     text-align: center; }

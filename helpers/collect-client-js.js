@@ -24,4 +24,5 @@ getFiles('models/');
 getFiles('controllers/');
 getFiles('libs/');
 
+console.dir(files);
 module.exports = files;

@@ -22,7 +22,8 @@ var userModel = module.exports = nohm.Model.extend({
         type: 'string',
         unique: true,
         validations: [
-          'notEmpty'
+          'notEmpty',
+          ['minLength', 4]
         ]
       },
       email: {
@@ -101,5 +102,18 @@ var userModel = module.exports = nohm.Model.extend({
     } else {
       callback(false);
     }
+  },
+  
+  fill: function (obj, validate) {
+    if (typeof(obj) !== 'object' || !obj) {
+      obj = {};
+    }
+    delete obj.salt;
+    for (field in obj) {
+      if (obj.hasOwnProperty(field) && !this.properties.hasOwnProperty(field)) {
+        delete obj.field;
+      }
+    }
+    return this.p(obj, validate);
   }
 });

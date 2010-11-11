@@ -34,6 +34,10 @@ input, submit {
   padding: 0 2px;
 }
 
+input.error {
+  box-shadow: 0 0 5px #F00;
+}
+
 span.error {
   color: #d52f18;
   font-weight: bold;

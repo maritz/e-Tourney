@@ -83,17 +83,15 @@ Ni.boot(function() {
 
   // start main app pre-routing stuff
   
-  app.dynamicHelpers({
-    tr: function (req, res) {
-      var lang = req.session.lang;
-      return function tr (key) {
-        var args = Array.prototype.slice.call(arguments);
-        args.shift();
-        var str = i18n.getTranslation(lang, key);
-        return vsprintf(str, args);
-      }
+  var translater = function (req, res) {
+    var lang = req.session.lang;
+    return function tr (key) {
+      var args = Array.prototype.slice.call(arguments);
+      args.shift();
+      var str = i18n.getTranslation(lang, key);
+      return vsprintf(str, args);
     }
-  });
+  };
   
   app.use(express.bodyDecoder());
   app.use(express.cookieDecoder());
@@ -117,11 +115,22 @@ Ni.boot(function() {
       next();
     });
     
-    // set language.
+    // set language stuff
     app.get('*', function (req, res, next) {
       var lang = req.param('lang');
       if (typeof(lang) !== 'undefined' && i18n.langs.indexOf(lang) >= 0) {
         req.session.lang = req.param('lang');
+      }
+      next();
+    });
+    
+    app.use(function (req, res, next) {
+      lang = req.session.lang;
+      req.tr = function tr (key) {
+        var args = Array.prototype.slice.call(arguments);
+        args.shift();
+        var str = i18n.getTranslation(lang, key);
+        return vsprintf(str, args);
       }
       next();
     })
@@ -132,6 +141,7 @@ Ni.boot(function() {
       res.rlocals = {};
       res.render = function (file, options) {
         var rlocals = res.rlocals;
+        rlocals.tr = req.tr;
         rlocals.session = req.session;
         rlocals.loggedClass = req.session.logged_in ? 'logged_in' : '';
         rlocals.currentUrl = req.url;

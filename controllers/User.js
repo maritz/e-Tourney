@@ -14,7 +14,7 @@ var userController = module.exports = {
   
   index: function (req, res, next) {
     next();
-	},
+  },
   
   login: function (req, res, next) {
     setTimeout(function () { // artificial delay to make bruteforcing less practical
@@ -37,7 +37,7 @@ var userController = module.exports = {
     }, 400);
   },
   
-  loginJson: function (req, res, next) {
+  loginJson: function (req, res) {
     var response = {
       result: null,
       user: null
@@ -68,7 +68,9 @@ var userController = module.exports = {
   },
   
   register: function (req, res, next) {
-    if (typeof(req.body) !== 'undefined') {
+    if (req.session.logged_in) {
+      res.redirect('/');
+    } else if (typeof(req.body) !== 'undefined') {
       var user = new Ni.models.User();
       res.rlocals.values = req.body;
       user.p({
@@ -79,7 +81,7 @@ var userController = module.exports = {
       var callback = function (valid) {
         if (user.__inDB) {
           user.getBoxInfo(user.id, function (info) {
-            var oldUrl = req.session.lastPage;
+            var oldUrl = req.session.lastPage || '/';
             req.session.regenerate(function () {
               req.session.user = info;
               req.session.logged_in = true;
@@ -91,14 +93,14 @@ var userController = module.exports = {
           next();
         }
       }
-      if (req.body.password != req.body.password_repeat) {
-        user.errors.password_repeat = 'passwords_dont_match';
-        user.valid(null, false, callback);
-      } else if (req.body.password.length < 6) {
+      if (req.body.password.length < 6) { // we do this here instead of in the model validations because the password is hashed ;)
         user.valid(null, false, function (valid) {
-          user.errors.password = 'passwords_length';
+          user.errors.password = 'minLength';
           callback(false);
         });
+      } else if (req.body.password != req.body.password_repeat) {
+        user.errors.password_repeat = 'passwords_dont_match';
+        user.valid(null, false, callback);
       } else {
         user.save(callback);
       }
@@ -110,5 +112,20 @@ var userController = module.exports = {
       res.rlocals.errors = 'none';
       next();
     }
+  },
+  
+  checkDataJson: function (req, res) {
+    var response = {
+      errors: []
+    };
+    var user = new Ni.models.User();
+    if ( ! user.fill(req.body, true) ) {
+      for (field in user.errors) {
+        if (user.errors.hasOwnProperty(field)) {
+          response.errors[field] = req.tr('user:errors:' + field + '_' + user.errors[field]);
+        }
+      }
+    }
+    res.send(response);
   }
 }

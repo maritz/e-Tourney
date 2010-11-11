@@ -1,24 +1,24 @@
-form( method: 'post' )
+form#register_form( method: 'post' )
   fieldset
-    legend Create your new account
+    legend= tr('user:register:legend')
     - if (errors !== 'none')
       ul
-        li But first you have to fix a few problems:
+        li= tr('user:errors:fix_these')
         - each error, field in errors
           - if (error.length > 0)
-            li= field + ' ' + error
+            li= tr('user:labels:' + field) + ': ' + tr('user:errors:' + field + '_' + error)
     ul
       li
-        label( for: 'reg_name' ) Name
+        label( for: 'reg_name' )= tr('user:labels:name')
         input#reg_name( type: 'text', name: 'name', value: values.name, class: errors.name && errors.name.length > 0 ? 'error' : '' )
       li
-        label( for: 'reg_email' ) E-Mail
-        input#reg_email( type: 'text', name: 'email', value: values.email )
+        label( for: 'reg_email' )= tr('user:labels:email')
+        input#reg_email( type: 'text', name: 'email', value: values.email, class: errors.email && errors.email.length > 0 ? 'error' : '' )
       li
-        label( for: 'reg_pwd' ) Password
-        input#reg_pwd( type: 'password', name: 'password', value: '' )
+        label( for: 'reg_pwd' )= tr('user:labels:password')
+        input#reg_pwd( type: 'password', name: 'password', value: '', class: errors.password && errors.password.length > 0 ? 'error' : '' )
       li
-        label( for: 'reg_pwd2' ) Repeat password
-        input#reg_pwd( type: 'password', name: 'password_repeat', value: '' )
+        label( for: 'reg_pwd2' )= tr('user:labels:password_repeat')
+        input#reg_pwd( type: 'password', name: 'password_repeat', value: '', class: errors.password_repeat && errors.password_repeat.length > 0 ? 'error' : '' )
       li
-        input( type: 'submit', name: 'register', value: 'Register')
+        input( type: 'submit', name: 'register', value: tr('user:labels:register'))

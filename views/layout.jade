@@ -15,30 +15,33 @@
     #main_container
       header
         #top_bar
-          span#top_bar_lang!= tr('header:german', 'test', 4) + ' ' + tr('header:english')
+          span#top_bar_lang
+            a( href: '?lang=de_DE' )= tr('header:german')
+            a( href: '?lang=en_US' )= tr('header:english')
           span#top_bar_time 2010-03-20 13:45:10 UTC
           | worker:
           = workerId
           | worker started at:
           = workerStart
-          span#top_bar_logged Suche
-            a( href: '/User/logout', class: loggedClass ) Logout
+          span#top_bar_logged= tr('header:search')
+            a( href: '/User/logout', class: loggedClass )= tr('header:logout')
         #header_main
           h1 e
             span.tourney tourney
           #header_userbox( class: loggedClass )
             span.error Login failed!
             form( method: 'POST', action: '/User/login/' )
-              label( for: 'login_name' ) Name
+              label( for: 'login_name' )= tr('user:labels:name')
               input#login_name( name: 'name', type: 'text' )
-              label( for: 'login_pwd' ) Password
+              label( for: 'login_pwd' )= tr('user:labels:password')
               input#login_pwd( name: 'password', type: 'password' )
-              input( type: 'submit', value: 'Login' )
-              input( type: 'button', value: 'Register' )
+              input( type: 'submit', value: tr('userbox:login' ) )
+              input( type: 'button', value: tr('user:labels:register') )
             .content
               #userbox_avatar ?
               a#userbox_profile
                 span
+                  - if (session.hasOwnProperty('user')) session.user.name
               a#userbox_user
                 img( src: 'arrow.png', alt: '>' )
                 span User actions
@@ -48,9 +51,9 @@
       nav
         ul
           li
-            a.first( href: "/" ) News
+            a.first( href: "/" )= tr('navi:news')
           li
-            a.second( href: "/tourn" ) Turniere
+            a.second( href: "/tourn" )= tr('navi:tourneys')
       - if (typeof(show_quicklist) !== 'undefined')
         table#quicklist
           thead

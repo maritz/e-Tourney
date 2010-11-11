@@ -37,5 +37,9 @@ $(document).ready(function () {
   });
   
   app.views.userBox = userBoxView;
+  
+  app.userSelf = new app.models.user({self: true});
+  
+  var userBoxView = new userBoxView({ model: app.userSelf});
 
 });
