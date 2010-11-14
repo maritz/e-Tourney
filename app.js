@@ -81,18 +81,7 @@ Ni.boot(function() {
   
   app.use(express.staticProvider(__dirname + '/public'));
 
-  // start main app pre-routing stuff
-  
-  var translater = function (req, res) {
-    var lang = req.session.lang;
-    return function tr (key) {
-      var args = Array.prototype.slice.call(arguments);
-      args.shift();
-      var str = i18n.getTranslation(lang, key);
-      return vsprintf(str, args);
-    }
-  };
-  
+  // start main app pre-routing stuff  
   app.use(express.bodyDecoder());
   app.use(express.cookieDecoder());
   
@@ -124,6 +113,7 @@ Ni.boot(function() {
       next();
     });
     
+    // set the translation view helper
     app.use(function (req, res, next) {
       lang = req.session.lang;
       req.tr = function tr (key) {
@@ -178,7 +168,7 @@ Ni.boot(function() {
       log_file: __dirname + '/log/workers.log',
       //master_log_file: __dirname + '/log/master.log',
       master_pid_path: '/tmp/fugue-master-etourney.pid',
-      verbose: true
+      verbose: app.set('env') === 'development'
     });
   });
 });

@@ -38,6 +38,9 @@
               input( type: 'submit', value: tr('userbox:login' ) )
               input( type: 'button', value: tr('user:labels:register') )
             .content
+              - if (session.hasOwnProperty('user')) 
+                script( type: 'text/javascript')
+                  | var userSelf = {name:"#{session.user.name}",id:#{session.user.id}};
               #userbox_avatar ?
               a#userbox_profile
                 span

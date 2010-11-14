@@ -1,16 +1,12 @@
 $(document).ready(function () {
   var form = $('#register_form');
   if (form.length === 1) {
-    var userRegisterView = Backbone.View.extend({
+    var userRegisterView = window.app.views.Form.extend({
 
       el: $('#register_form'),
 
-      events: {
-        'blur input[type="text"]': 'checkField',
-        'submit form': 'checkForm'
-      },
-
       initialize: function() {
+        this.constructor.__super__.initialize();
         var test = this.el.serializeObject();
         _.bindAll(this, 'check', 'render');
         this.model.bind('login_fail', this.showFail);

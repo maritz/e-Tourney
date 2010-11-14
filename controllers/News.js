@@ -11,7 +11,7 @@ module.exports = {
       var user = new Ni.models.User();
       user.p({
         name: 'maritz',
-        email: 'maritz@juststars.de',
+        email: 'maritz@asdasd.de',
         password: 'asdasd'
       });
       user.save(function (err) {
