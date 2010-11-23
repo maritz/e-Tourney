@@ -1,0 +1,32 @@
+{
+    "name": "e-Tourney",
+    "version": "0.0.1",
+    "directories": {
+        "lib": "./lib"
+    },
+    "main": "./lib/ni",
+    "engines": {
+        "node" : ">=0.3.0"
+    },
+    "dependencies": {
+      "step": ">=0.0.3",
+      "express": ">=1.0.0",
+      "connect-assetmanager": ">=0.0.17",
+      "connect-assetmanager-handlers": ">=0.0.13",
+      "connect-redis": ">=0.2.0",
+      "redis": ">=0.3.7",
+      "fugue": ">=0.0.37",
+      "iniparser": ">=1.0.0",
+      "nohm": ">=0.1.10admin",
+      "sprintf": ">=0.1.0",
+      "jade": ">=0.5.5"
+    },
+    "description": "A tournement platform",
+    "author": "Moritz Peters <maritz.peters@gmail.com>",
+    "homepage": "http://github.com/mAritz/e-Tourney",
+    "repository" :
+    {
+        "type" : "git",
+        "url" : "git@github.com:mAritz/e-Tourney.git"
+    }
+}

@@ -11,7 +11,7 @@ var hasher = function hasher (password, salt) {
 
 // thanks to senchalabs for this uid snippet
 var uid = function uid () {
-  return ((Date.now() & 0x7fff).toString(32) + (0x100000000 * Math.random()).toString(32))
+  return ((Date.now() & 0x7fff).toString(32) + (0x100000000 * Math.random()).toString(32));
 }
 
 var userModel = module.exports = nohm.Model.extend({
@@ -66,6 +66,10 @@ var userModel = module.exports = nohm.Model.extend({
   
   login: function (name, password, callback) {
     var self = this;
+    if (!name || name === '' || !password || password === '') {
+      callback(false);
+      return;
+    }
     this.find({name: name}, function (err, ids) {
       if (ids.length === 0) {
         callback(false);

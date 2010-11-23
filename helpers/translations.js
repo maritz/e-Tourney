@@ -1,7 +1,7 @@
 var fs = require('fs'),
 iniparser = require('iniparser');
 
-var basedir = 'i18n/',
+var basedir = __dirname + '/../i18n/',
 translations = {};
 
 var loadTranslations = function (lang, file) {
