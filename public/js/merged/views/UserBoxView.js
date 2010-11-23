@@ -12,7 +12,8 @@ $(document).ready(function () {
       this.model.bind('login_fail', this.showFail);
       this.model.bind('change', this.render);
       this.model.view = this; // stick this view to that model!
-      this.model.getLocal();
+      
+      this.model.getSelf(); // get login data
     },
 
     render: function () {
@@ -40,6 +41,6 @@ $(document).ready(function () {
   
   app.userSelf = new app.models.user({self: true});
   
-  var userBoxView = new userBoxView({ model: app.userSelf});
+  var userBoxView = new userBoxView({ model: app.userSelf });
 
 });

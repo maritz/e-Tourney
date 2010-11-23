@@ -10,22 +10,12 @@ $(document).ready(function () {
         self: false
       }
       _.extend(this.conf, options);
+      
     },
     
-    getLocal: function () {
-      if (this.conf.self) {
-        try {
-          var data = JSON.parse($('#user_data_self').html());
-          if (!data) {
-            throw new Error('No data for user-self');
-          }
-          this.set(data);
-        } catch(e) {
-          if ($(this.view.el).hasClass('logged_in')) {
-            window.location = '/User/logout'; // sorry, something went horribly wrong and we have to spent some time apart.
-          }
-        }
-        
+    getSelf: function () {
+      if (this.conf.self && $(this.view.el).hasClass('logged_in') && userSelf) {
+        this.set(userSelf);
       }
     },
 
@@ -39,7 +29,6 @@ $(document).ready(function () {
             logged_in: true
           });
           self.set(response.user);
-          localStorage['user:self'] = JSON.stringify(response.user);
         } else {
           self.trigger('login_fail');
         }
