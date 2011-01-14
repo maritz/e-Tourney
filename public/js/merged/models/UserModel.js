@@ -1,9 +1,10 @@
 $(document).ready(function () {
-  var userModel = Backbone.Model.extend({
+  var userModel = window.app.models.base.extend({
 
     logged_in: false,
     login_failed: false,
     id: 0,
+    fieldCheckUrl: '/User/checkFieldJson',
 
     initialize: function (options) {
       this.conf = {

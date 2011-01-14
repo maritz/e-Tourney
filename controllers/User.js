@@ -12,6 +12,13 @@ var userController = module.exports = {
     }
   },
   
+  __methods: {
+    'login': ['POST'],
+    'loginJson': ['POST'],
+    'register': ['GET', 'POST', 'PUT'],
+    'checkFieldJson': ['POST']
+  },
+  
   index: function (req, res, next) {
     next();
   },
@@ -114,17 +121,34 @@ var userController = module.exports = {
     }
   },
   
-  checkDataJson: function (req, res) {
+  checkFieldJson: function (req, res) {
     var response = {
       errors: []
     };
-    var user = new Ni.models.User();
-    if ( ! user.fill(req.body, true) ) {
-      for (field in user.errors) {
-        if (user.errors.hasOwnProperty(field)) {
-          response.errors[field] = req.tr('user:errors:' + field + '_' + user.errors[field]);
+    if (typeof(req.body) !== 'undefined' && Array.isArray(req.body)) {
+	    console.log('checking');
+	    var user = new Ni.models.User()
+	    , len = req.body.length
+	    , done = function () {
+	      len--;
+	      if (len === 0) {
+	        console.log('done');
+	        console.dir(user.errors);
+	        response.errors = user.errors;
+	        delete response.errors.salt; // whatever...
+	        res.send(response);
         }
-      }
+      };
+      req.body.forEach(function (field) {
+        if (user.p(field.key, field.val, true)) {
+          user.valid(field, false, done);
+         } else {
+          done();
+        }
+      });
+    } else {
+      response.errors.push('Request did not contain proper fields to check');
+      res.send(response);
     }
     res.send(response);
   },
