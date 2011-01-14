@@ -9,7 +9,6 @@ $(document).ready(function () {
         this.constructor.__super__.initialize();
         var test = this.el.serializeObject();
         _.bindAll(this, 'check', 'render');
-        this.model.bind('login_fail', this.showFail);
         this.model.bind('change', this.render);
         this.model.view = this; // stick this view to that model!
       },

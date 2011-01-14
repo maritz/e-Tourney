@@ -127,5 +127,14 @@ var userController = module.exports = {
       }
     }
     res.send(response);
+  },
+  
+  test: function (req, res) {
+      console.log('test got the following args:');
+      console.dir(arguments[3]);
+      console.dir(arguments[4]);
+      console.dir(arguments[5]);
+      console.dir(arguments[6]);
+      res.send('yop');
   }
 }

@@ -20,7 +20,10 @@ var start = exports.start = function () {
 		
 		var workerstart = new Date().toLocaleTimeString();
 		
-		Ni.controllers.home = Ni.controllers.News;
+		Ni.addRoute('/', '/News/index');
+		Ni.addRoute(/^\/register/i, '/User/register');
+		Ni.addRoute(/^\/logout/i, '/User/logout');
+		Ni.addRoute(/^\/login/i, '/User/login');
 		
 		// initialize the main app
 		var app = express.createServer();

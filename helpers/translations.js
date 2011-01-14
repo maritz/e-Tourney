@@ -6,7 +6,7 @@ translations = {};
 
 var loadTranslations = function (lang, file) {
   try {
-    iniparser.parse(basedir + lang + '/' + file, function (data) {
+    iniparser.parse(basedir + lang + '/' + file, function (err, data) {
       translations[lang][file.replace(/\.ini$/, '')] = data;
     });
   } catch (e) {
@@ -33,7 +33,10 @@ try {
     });
   }
 } catch (e) {
+  console.log('Translation file loading error:');
+  console.dir(e);
 }
+
 
 module.exports = {
   translations: translations,
