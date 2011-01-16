@@ -38,13 +38,13 @@
               input( type: 'submit', value: tr('userbox:login' ) )
               input( type: 'button', value: tr('user:labels:register') )
             .content
-              - if (session.hasOwnProperty('user')) 
+              - if (this.session.hasOwnProperty('user'))
                 script( type: 'text/javascript')
-                  | var userSelf = {name:"#{session.user.name}",id:#{session.user.id}};
+                  | var userSelf = {name:"#{this.session.user.name}",id:#{this.session.user.id}};
               #userbox_avatar ?
               a#userbox_profile
                 span
-                  - if (session.hasOwnProperty('user')) session.user.name
+                  - if (this.session.hasOwnProperty('user')) this.session.user.name
               a#userbox_user
                 img( src: '', alt: '>' )
                 span User actions
@@ -81,11 +81,11 @@
             li NASA
       footer Footer
     script( id: 'user_data_self', type: 'application/json')
-      != JSON.stringify(session.user)
+      != JSON.stringify(this.session.user)
 
-    script( src: '//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' )
+    script( src: '//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js' )
     :javascript
-      !window.jQuery && document.write(unescape('%3Cscript src="/js/jquery-1.4.2.min.js"%3E%3C/script%3E'))
+      !window.jQuery && document.write(unescape('%3Cscript src="/js/jquery-1.4.4.min.js"%3E%3C/script%3E'))
     script( src: '/js/' + staticVersions.js + '/merged.js' )
 
     !='<!--[if lt IE 7 ]>'

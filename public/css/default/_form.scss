@@ -1,0 +1,39 @@
+form label {
+  line-height: 20px;
+  margin-right: 4px;
+  &:after {
+    content: ": "; } }
+
+input, submit {
+  padding: 0 2px; }
+
+input.error {
+  box-shadow: 0 0 5px #F00; }
+
+span.error {
+  color: #d52f18;
+  font-weight: bold; }
+
+input.error select.error checkbox.error textfield.error {
+  outline: 1px solid red; }
+
+form.default  {
+  li {
+    clear: both;
+    span {
+      display: block; }
+    label,
+    input,
+    div {
+      float: left; } } }
+
+label.required {
+  font-weight: 600;}
+
+div.input_loading {
+  border: 1px solid green;
+  display: none;
+  float: right;
+  height: 10px;
+  width: 10px; }
+

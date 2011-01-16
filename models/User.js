@@ -28,7 +28,7 @@ var userModel = module.exports = nohm.Model.extend({
       },
       email: {
         type: 'string',
-        unique:true,
+        unique: true,
         validations: [
           'notEmpty',
           'email'

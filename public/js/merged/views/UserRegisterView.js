@@ -5,7 +5,7 @@ $(document).ready(function () {
 
       el: $('#register_form'),
 
-      initialize: function() {
+      subInitialize: function() {
         this.model = new app.models.user();
         _.bindAll(this, 'check', 'render');
         this.model.bind('change', this.render);
@@ -13,11 +13,7 @@ $(document).ready(function () {
       },
 
       render: function () {
-        $(this.el).addClass('logged_in');
-        $('#top_bar_logged a').last().addClass('logged_in');
-        this.$('#userbox_profile').attr('href', '/User/details/' + this.model.get('id'));
-        this.$('#userbox_profile span').text(this.model.get('name'));
-        return this;
+        debugger;
       }
     });
   

@@ -1,24 +1,29 @@
-form#register_form( method: 'post' )
+- var reg = new form(locals, 'user', 'reg')
+form#register_form.default( method: 'post' )
   fieldset
     legend= tr('user:register:legend')
-    - if (errors !== 'none')
-      ul
-        li= tr('user:errors:fix_these')
-        - each error, field in errors
-          - if (error.length > 0)
-            li= tr('user:labels:' + field) + ': ' + tr('user:errors:' + field + '_' + error)
     ul
       li
-        label( for: 'reg_name' )= tr('user:labels:name')
-        input#reg_name( type: 'text', name: 'name', value: values.name, class: errors.name && errors.name.length > 0 ? 'error' : '' )
+        - var regname = reg.input('text', 'name', {validate: true, required: true})
+        span.error= regname.error.text
+        != regname.label
+        != regname.input
+        .input_loading
       li
-        label( for: 'reg_email' )= tr('user:labels:email')
-        input#reg_email( type: 'text', name: 'email', value: values.email, class: errors.email && errors.email.length > 0 ? 'error' : '' )
+        - var regmail = reg.input('email', 'email', {validate: true, required: true})
+        span.error!= regmail.error.text
+        != regmail.label
+        != regmail.input
+        .input_loading
       li
-        label( for: 'reg_pwd' )= tr('user:labels:password')
-        input#reg_pwd( type: 'password', name: 'password', value: '', class: errors.password && errors.password.length > 0 ? 'error' : '' )
+        - var regpwd = reg.input('password', 'password')
+        span.error= regpwd.error.text
+				!= regpwd.label
+				!= regpwd.input
       li
-        label( for: 'reg_pwd2' )= tr('user:labels:password_repeat')
-        input#reg_pwd( type: 'password', name: 'password_repeat', value: '', class: errors.password_repeat && errors.password_repeat.length > 0 ? 'error' : '' )
+				- regpwd2 = reg.input('password', 'password_repeat')
+				span.error= regpwd2.error.text
+				!= regpwd2.label
+				!= regpwd2.input
       li
         input( type: 'submit', name: 'register', value: tr('user:labels:register'))

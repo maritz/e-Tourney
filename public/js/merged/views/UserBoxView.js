@@ -17,6 +17,11 @@ $(document).ready(function () {
     },
 
     render: function () {
+      // this is called when the self usermodel changes. this means on login and on profile changes.
+      
+      if (window.location.pathname.indexOf('/register') > -1)
+        window.location.href = '/'; // if we're on the registration page and the change event comes we've logged in and need to go somewhere else.
+        
       $(this.el).addClass('logged_in');
       $('#top_bar_logged a').last().addClass('logged_in');
       this.$('#userbox_profile').attr('href', '/User/details/' + this.model.get('id'));

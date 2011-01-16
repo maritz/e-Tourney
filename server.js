@@ -2,17 +2,18 @@ var express = require('express'),
 RedisStore = require('connect-redis'),
 Ni = require('ni'),
 fugue = require('fugue'),
-helpers = require('./helpers/general'),
+helpers = require(__dirname + '/helpers/general'),
 assetManager = require('connect-assetmanager'),
 assetHandlers = require('connect-assetmanager-handlers'),
-i18n = require('./helpers/translations.js'),
-vsprintf = require('sprintf').vsprintf
-nohm = require('nohm');
+i18n = require(__dirname + '/helpers/translations.js'),
+vsprintf = require('sprintf').vsprintf,
+nohm = require('nohm'),
+viewHelpers = require(__dirname + '/helpers/view');
 
 var start = exports.start = function () {
   Ni.boot(function() {
-		nohm.setPort(Ni.config('redis_port'));
-		nohm.client.select(Ni.config('redis_nohm_db'), function (err) {
+		var nohmclient = nohm.setPort(Ni.config('redis_port'));
+		nohmclient.select(Ni.config('redis_nohm_db'), function (err) {
 		  if (err) {
 		    console.dir(err);
 		  }
@@ -38,7 +39,7 @@ var start = exports.start = function () {
 		// static stuff
 		app.use(express.conditionalGet());
 		app.use(express.favicon(__dirname + '/public/images/icons/favicon.png'));
-		app.use(express.gzip());
+		//app.use(express.gzip());
 		
 		// connect assetmanager to pack js. (css already handled by sass)
 		var files = require(__dirname + '/helpers/collect-client-js');
@@ -64,20 +65,10 @@ var start = exports.start = function () {
 		
 		// start main app pre-routing stuff
 		
-		var translater = function (req, res) {
-		  var lang = req.session.lang;
-		  return function tr (key) {
-		    var args = Array.prototype.slice.call(arguments);
-		    args.shift();
-		    var str = i18n.getTranslation(lang, key);
-		    return vsprintf(str, args);
-		  }
-		};
-		
 		app.use(express.bodyDecoder());
 		app.use(express.cookieDecoder());
 		
-		var redisSessionStore = new RedisStore({magAge: 60000 * 60 * 24, port: 6380});
+		var redisSessionStore = new RedisStore({magAge: 60000 * 60 * 24, port: Ni.config('redis_port')});
 		redisSessionStore.client.select(Ni.config('redis_session_db'), function () {
 		  
 		  app.use(express.session({key: Ni.config('cookie_key'),
@@ -109,7 +100,7 @@ var start = exports.start = function () {
 		  
 		  app.use(function (req, res, next) {
 		    lang = req.session.lang;
-		    req.tr = function tr (key) {
+		    req.tr = function tr (key) { // TODO: maybe cache this on a per-language base
 		      var args = Array.prototype.slice.call(arguments);
 		      args.shift();
 		      var str = i18n.getTranslation(lang, key);
@@ -125,7 +116,6 @@ var start = exports.start = function () {
 		    res.render = function (file, options) {
 		      var rlocals = res.rlocals;
 		      rlocals.tr = req.tr;
-		      rlocals.session = req.session;
 		      rlocals.loggedClass = req.session.logged_in ? 'logged_in' : '';
 		      rlocals.currentUrl = req.url;
 		      rlocals.workerId = fugue.workerId();
@@ -134,8 +124,12 @@ var start = exports.start = function () {
 		      if (typeof(options) === 'undefined') {
 		        options = {};
 		      }
-		      options.locals = helpers.merge(options.locals, rlocals);
-		      res.original_render(file, options);
+		      options.locals = helpers.merge(options.locals, rlocals, viewHelpers);
+		      try {
+		        res.original_render(file, options);
+		      } catch (e) {
+		        console.dir(e);
+		      }
 		    };
 		    next();
 		  });

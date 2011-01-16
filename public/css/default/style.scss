@@ -27,23 +27,9 @@ body {
   border: 1px solid #333333;
   min-width: 700px; }
 
-form label:after {
-  content: ": "; }
-
-input, submit {
-  padding: 0 2px;
-}
-
-input.error {
-  box-shadow: 0 0 5px #F00;
-}
-
-span.error {
-  color: #d52f18;
-  font-weight: bold;
-}
 
 @import "_header.scss";
 @import "_navi.scss";
 @import "_content.scss";
 @import "_quicklist.scss";
+@import "_form.scss";

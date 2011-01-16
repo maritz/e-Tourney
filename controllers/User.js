@@ -1,5 +1,7 @@
 var Ni = require('ni');
 
+Ni.addRoute(/^\/User\/(login|login|checkFieldJson).*$/i, '/error/method_not_allowed', 'GET');
+
 var userController = module.exports = {
   __init: function (cb, req, res, next) {
     if (!req.session.logged_in 
@@ -10,13 +12,6 @@ var userController = module.exports = {
     } else {
       cb();
     }
-  },
-  
-  __methods: {
-    'login': ['POST'],
-    'loginJson': ['POST'],
-    'register': ['GET', 'POST', 'PUT'],
-    'checkFieldJson': ['POST']
   },
   
   index: function (req, res, next) {
@@ -123,42 +118,39 @@ var userController = module.exports = {
   
   checkFieldJson: function (req, res) {
     var response = {
-      errors: []
+      errors: {},
+      request: req.body
     };
     if (typeof(req.body) !== 'undefined' && Array.isArray(req.body)) {
-	    console.log('checking');
 	    var user = new Ni.models.User()
 	    , len = req.body.length
 	    , done = function () {
 	      len--;
 	      if (len === 0) {
-	        console.log('done');
-	        console.dir(user.errors);
-	        response.errors = user.errors;
-	        delete response.errors.salt; // whatever...
-	        res.send(response);
+	        user.valid(false, false, function (valid) {
+	          if ( ! valid) {
+	            user.errors.forEach(function (error, field) {
+	              if (error.length > 0 && field !== 'salt')
+	                response.errors[field] = req.tr('user:errors:'+field+'_'+
+	                                                     error[0]);
+	            });
+  	          res.send(response);
+	          } else {
+  	          res.send(response);
+	          }                                    
+	        });
         }
       };
       req.body.forEach(function (field) {
-        if (user.p(field.key, field.val, true)) {
-          user.valid(field, false, done);
-         } else {
-          done();
-        }
+        user.p(field.key, field.val);
+        done();
       });
     } else {
-      response.errors.push('Request did not contain proper fields to check');
+      response.errors.push('Request did not contain proper fields to check.');
       res.send(response);
     }
-    res.send(response);
   },
-  
-  test: function (req, res) {
-      console.log('test got the following args:');
-      console.dir(arguments[3]);
-      console.dir(arguments[4]);
-      console.dir(arguments[5]);
-      console.dir(arguments[6]);
-      res.send('yop');
-  }
 }
+
+
+

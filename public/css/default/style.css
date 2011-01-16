@@ -426,23 +426,6 @@ body {
   border: 1px solid #333333;
   min-width: 700px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000330}}
-form label:after {
-  content: ": "; }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000333}}
-input, submit {
-  padding: 0 2px; }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000337}}
-input.error {
-  box-shadow: 0 0 5px #F00; }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000341}}
-span.error {
-  color: #d52f18;
-  font-weight: bold; }
-
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\000036}}
 header {
   font-size: 10pt;
@@ -675,3 +658,52 @@ aside.sponsors {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_quicklist\.scss}line{font-family:\0000322}}
       #quicklist li table tbody tr:nth-child(even) {
         background-color: #c1c1cd; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\000031}}
+form label {
+  line-height: 20px;
+  margin-right: 4px; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\000034}}
+  form label:after {
+    content: ": "; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\000037}}
+input, submit {
+  padding: 0 2px; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000310}}
+input.error {
+  box-shadow: 0 0 5px #F00; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000313}}
+span.error {
+  color: #d52f18;
+  font-weight: bold; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000317}}
+input.error select.error checkbox.error textfield.error {
+  outline: 1px solid red; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000321}}
+form.default li {
+  clear: both; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000323}}
+  form.default li span {
+    display: block; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000327}}
+  form.default li label,
+  form.default li input,
+  form.default li div {
+    float: left; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000330}}
+label.required {
+  font-weight: 600; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000333}}
+div.input_loading {
+  border: 1px solid green;
+  display: none;
+  float: right;
+  height: 10px;
+  width: 10px; }
