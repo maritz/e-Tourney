@@ -6,7 +6,7 @@ module.exports = {
     next();
   },
   restore: function (req, res, next) {
-    var redis = require('redis').createClient();
+    var redis = Ni.config('nohmclient');
     redis.flushdb(function () {
       var user = new Ni.models.User();
       user.p({
@@ -16,6 +16,11 @@ module.exports = {
       });
       user.save(function (err) {
         res.send(err ? 'FEHLER' : 'ERFOLGREICH');
+        if (err) {
+          console.dir(err);
+          if (err === 'invalid')
+            console.dir(user.errors);
+        }
       });
     });
   }

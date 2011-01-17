@@ -1,0 +1,11 @@
+- if( user_not_found )
+  span.general_error= tr('user:general:not_found', user_not_found)
+- else
+  - console.dir(profile_edited);
+  ul
+    li
+      | Name:
+      = user.name
+    li
+      | Email:
+      = user.email

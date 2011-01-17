@@ -108,16 +108,38 @@ var userModel = module.exports = nohm.Model.extend({
     }
   },
   
-  fill: function (obj, validate) {
-    if (typeof(obj) !== 'object' || !obj) {
-      obj = {};
-    }
-    delete obj.salt;
-    for (field in obj) {
-      if (obj.hasOwnProperty(field) && !this.properties.hasOwnProperty(field)) {
-        delete obj.field;
+  fill: function (data, fields, callback) {
+    var props = {}
+    , passwordInField
+    , passwordChanged = false
+    , self = this;
+    callback = typeof(fields) === 'function' ? fields : callback;
+    fields = Array.isArray(fields) ? fields : Object.keys(data);
+    passwordInField = fields.indexOf('password') !== -1;
+    
+    fields.forEach(function (i) {
+      if (i === 'salt' ||// make sure the salt isn't overriden
+          ! self.properties.hasOwnProperty(i))
+        return;
+        
+      if (i === 'password' && 
+            (data[i] !== '' || self.p('password') === ''))
+        passwordChanged = true;
+      else if (i === 'password')
+        return;
+      
+      props[i] = data[i];
+    });
+    
+    if (passwordChanged) {
+      if (props.password.length < 6) {
+        this.errors.password = ['minLength'];
+      } else if (props.password != data.password_repeat) {
+        this.errors.password_repeat = ['passwords_dont_match'];
       }
     }
-    return this.p(obj, validate);
+    
+    this.p(props);
+    this.valid(false, false, callback);
   }
 });

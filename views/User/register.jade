@@ -8,7 +8,7 @@ form#register_form.default( method: 'post' )
         span.error= regname.error.text
         != regname.label
         != regname.input
-        .input_loading
+        .input_loading Checking
       li
         - var regmail = reg.input('email', 'email', {validate: true, required: true})
         span.error!= regmail.error.text

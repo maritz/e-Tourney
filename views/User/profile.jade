@@ -1,0 +1,32 @@
+- if( user_not_found )
+  span.general_error= tr('user:general:not_found', user_not_found)
+- else
+  - var reg = new form(locals, 'user', 'profile')
+  form#register_form.default( method: 'post' )
+    fieldset
+      legend= tr('user:profile:legend')
+      ul
+        li
+          - var regname = reg.input('text', 'name', {validate: true, required: true})
+          span.error= regname.error.text
+          != regname.label
+          != regname.input
+          .input_loading Checking
+        li
+          - var regmail = reg.input('email', 'email', {validate: true, required: true})
+          span.error!= regmail.error.text
+          != regmail.label
+          != regmail.input
+          .input_loading
+        li
+          - var regpwd = reg.input('password', 'password', {value: ''})
+          span.error= regpwd.error.text
+    			!= regpwd.label
+  				!= regpwd.input
+        li
+  				- regpwd2 = reg.input('password', 'password_repeat')
+  				span.error= regpwd2.error.text
+  				!= regpwd2.label
+  				!= regpwd2.input
+        li
+          input( type: 'submit', name: 'register', value: tr('user:profile:submit'))

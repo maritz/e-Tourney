@@ -17,6 +17,7 @@ var start = exports.start = function () {
 		  if (err) {
 		    console.dir(err);
 		  }
+		  Ni.config('nohmclient', nohmclient);
 		});
 		
 		var workerstart = new Date().toLocaleTimeString();
@@ -77,7 +78,8 @@ var start = exports.start = function () {
 		  
 		  // some session stuff
 		  app.use(function (req, res, next) {
-		    if (req.url.indexOf('User/login') < 0 
+		    if ( ! req.xhr
+		      && req.url.indexOf('User/login') < 0
 		      && req.url.indexOf('User/register') < 0 
 		      && req.session.lastPage !== req.url) {
 		      req.session.lastPage = req.url;
@@ -145,7 +147,7 @@ var start = exports.start = function () {
 		  });
 		
 		  if (app.set('env') !== 'production') {
-		    app.use(express.errorHandler({showStack: true}));
+		    app.use(express.errorHandler({showStack: true, dumpExceptions: true}));
 		  }
 		
 		  if (app.set('env') === 'production') {

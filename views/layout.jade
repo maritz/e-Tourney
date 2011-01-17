@@ -38,16 +38,19 @@
               input( type: 'submit', value: tr('userbox:login' ) )
               input( type: 'button', value: tr('user:labels:register') )
             .content
+              - var userid = ''
               - if (this.session.hasOwnProperty('user'))
+                - userid = this.session.user.id
                 script( type: 'text/javascript')
-                  | var userSelf = {name:"#{this.session.user.name}",id:#{this.session.user.id}};
+                  | var userSelf = {name:"#{this.session.user.name}",id:#{userid}};
               #userbox_avatar ?
-              a#userbox_profile
+              a#userbox_profile( href: '/User/details/'+userid )
                 span
-                  - if (this.session.hasOwnProperty('user')) this.session.user.name
-              a#userbox_user
+                  - if (this.session.hasOwnProperty('user'))
+                    = this.session.user.name
+              a#userbox_user( href: '/User/profile' )
                 img( src: '', alt: '>' )
-                span User actions
+                span Edit profile
               a#userbox_team.clearfix
                 img( src: '', alt: '>' )
                 span Team actions
@@ -83,7 +86,7 @@
     script( id: 'user_data_self', type: 'application/json')
       != JSON.stringify(this.session.user)
 
-    script( src: '//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js' )
+    //- script( src: '//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js' )
     :javascript
       !window.jQuery && document.write(unescape('%3Cscript src="/js/jquery-1.4.4.min.js"%3E%3C/script%3E'))
     script( src: '/js/' + staticVersions.js + '/merged.js' )

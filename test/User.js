@@ -1,9 +1,19 @@
-var User = require('User'),
-nohm = require('nohm');
-nohm.client.select(3);
-nohm.client.flushdb();
+require.paths.unshift(__dirname + '/../ni/lib');
+var Ni = require('ni');
 
-module.exports = {
+
+// load config
+require('./config');
+
+var nohmclient = nohm.setPort(Ni.config('redis_port'));
+nohmclient.select(Ni.config('redis_nohm_db'), function (err) {
+  if (err) {
+    console.dir(err);
+    process.exit();
+  }
+});
+
+exports = {
   'salt properly written/read': function (t, done) {
     var user = new User(),
     control = new User(),

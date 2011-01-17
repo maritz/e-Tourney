@@ -31,7 +31,7 @@ for (var i = 0, len = sassfiles.length; i < len; i = i + 1) {
 
 // cloud9 sends SIGTERM but for some reason that doesn't propagate to the child processes.
 process.on('SIGTERM', function () {
-  console.log('Got SIGTERM, closing sass and redis');
+  console.log('Got SIGTERM, closing sass and redis.');
   sass.kill();
   redis_server.kill();
 });

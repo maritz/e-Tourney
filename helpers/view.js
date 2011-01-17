@@ -10,8 +10,8 @@ var form = exports.form = function (env, module, prefix) {
   
 form.prototype.getErrorClass = function (key) {
   if (this.errors !== 'none' && 
-      this.errors.hasOwnProperty(key) &&
-      this.errors[key] !== '') {
+      Array.isArray(this.errors[key]) &&
+      this.errors[key].length > 0) {
     return 'error';
   }
   return '';
@@ -19,9 +19,9 @@ form.prototype.getErrorClass = function (key) {
 
 form.prototype.getErrorText = function (key) {
   if (this.errors !== 'none' &&
-      this.errors.hasOwnProperty(key) &&
-      this.errors[key] !== '') {
-    return this.tr(this.module + ':errors:' + key + '_' + this.errors[key]);
+      Array.isArray(this.errors[key]) &&
+      this.errors[key].length > 0) {
+    return this.tr(this.module + ':errors:' + key + '_' + this.errors[key][0]);
   }
   return '';
 };
@@ -42,7 +42,7 @@ form.prototype.getLabel = function (key, options) {
 form.prototype.getInputHtml = function (type, name, options) {
   var html = '<input'
   , errorClass = this.getErrorClass(name)
-  , value = this.values[name] || null
+  , value = typeof(options.value) === 'undefined' ? (this.values[name] || null) : options.value
   , option
   , trueOption;
   options = options || {};
@@ -72,6 +72,7 @@ form.prototype.input = function (type, name, options) {
     text: this.getErrorText(name, true),
     class: this.getErrorClass(name)
   };
+  options = options || {};
   return this.fields[name] = {
     error: error,
     label: this.getLabel(name, options),

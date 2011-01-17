@@ -21,15 +21,14 @@ $(document).ready(function () {
 	      || !this.model.fieldCheckUrl) {
 	      return false;}
 	    this.previous[target[0].name] = value;
-	
+      
 	    if (typeof(this.fieldBuffer) === 'undefined') {
 	      this.fieldBuffer = [];
 	    }
 	    this.fieldBuffer.push({key: target[0].name, val: value});
-	    
+      
 	    target.siblings('div.input_loading').fadeIn(300);
-	    this.$('input[type="submit"]').attr('disabled', true);
-	     
+	   
 	    clearTimeout(this.fieldTimer);
 	    this.fieldTimer = setTimeout( function () {
 	      var data = JSON.stringify(self.fieldBuffer);
@@ -41,8 +40,7 @@ $(document).ready(function () {
 	        dataType: 'json',
 	        contentType: 'application/json',
 	        success: function (response) {
-	          self.$('input[type="submit"]').attr('disabled', true); // we disable it here again, in case it was enabled by another success response before
-						$.each(response.request, function (id, field) {
+	          $.each(response.request, function (id, field) {
 						  var error = response.errors[field.key]
 						  , input = self.$('input[name="'+field.key+'"]')
 						  , span = input.siblings('span.error');
@@ -58,10 +56,6 @@ $(document).ready(function () {
 						      span.text('')
 						    });
 						  }
-						  // we delay enabling the submit button here so that the chance of accidentally submitting is limited
-						  setTimeout(function () {
-						    self.$('input[type="submit"]').attr('disabled', false);
-						  }, 500);
 						});
 	        }, error: function (response) {
 	          alert('A server error occured, please contact an administrator.');
@@ -71,5 +65,5 @@ $(document).ready(function () {
 	    }, 1500);
     }
   });
-
+  
 });
