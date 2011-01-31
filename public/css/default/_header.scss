@@ -7,12 +7,45 @@ header {
   font: {
     size: 10pt;
     weight: 500; };
-  height: 120px; }
+  height: 130px;
+  position: relative;}
+
+#top_left_corner,
+#top_right_corner {
+  background: {
+    repeat: no-repeat; }
+  height: 9px;
+  position: absolute;
+  top: -5px;
+  width: 5px;
+  z-index: 2;}
+
+#top_left_corner {
+  background: {
+    image: url('../../images/default/top1.png'); }
+  left: 0;
+}
+
+#top_right_corner {
+  background: {
+    image: url('../../images/default/top3.png'); }
+  right: 0;
+}
 
 #top_bar {
+  background: {
+    image: url('../../images/default/top2.png');
+    repeat: repeat-x; }
   height: 20px;
   line-height: 20px;
-  position: relative; }
+  padding: 2px #{$main_side_margin};
+  position: relative;
+  top: -5px; }
+
+#top_bar_lang img {
+  cursor: pointer;
+  margin-right: 5px;
+}
 
 #top_bar_logged {
   @include absolute(right, top, 3px, 1px);
@@ -25,29 +58,42 @@ header {
 }
 
 #header_main {
-  background: {
-    color: #333333; };
   height: 100px;
+  margin: 2px #{$main_side_margin}; 
+  position: relative; }
+
+#head_logo,
+#head_bg_continuation,
+#head_bg_end {
+  height: 104px; }
+
+#head_logo {
+  background: {
+    image: url('../../images/default/logo.png');
+    repeat: no-repeat; }
   float: left;
-  position: relative;
-  width: 100%;
-  h1 {
-    color: #ec853a;
-    font: {
-      size: 38pt;
-      weight: 700; };
-    line-height: 100px;
-    margin-left: 50px; }
-  .tourney {
-    color: #dadada;
-    font: {
-      size: 22pt;
-      weight: 500; }; } }
+  width: 559px; }
+
+#head_bg_continuation {
+  background: {
+    image: url('../../images/default/head.png'); }
+  margin-right: 13px;
+}
+
+#head_bg_end {
+  background: {
+    image: url('../../images/default/headend.png');
+    repeat: no-repeat; }
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 13px;
+}
 
 #header_login { }
 
 #header_userbox {
-  @include absolute(right, top, 40px, 15px);
+  @include absolute(right, top, 20px, 15px);
   color: white;
   width: #{$userbox_width}px;
   z-index: 2;
@@ -60,14 +106,43 @@ header {
     text-align: right;
     width: #{$userbox_width}px;
     input {
-      background-color: #353535;
+      border: {
+        width: 1px;
+        style: solid;
+        color: #787878;
+        left: {
+          color: #070707; }
+        top: {
+          color: #070707; } }
+      @include gradient(#1c1c1c, #393939);
       color: white;
-      margin: 5px 30px 0 4px;
-      width: 120px; }
+      height: 18px;
+      margin: 5px 0 0;
+      width: 140px; }
     input[type="submit"],
     input[type="button"] {
       background-color: #686868;
-      width: auto; }
+      border: {
+        width: 0px;
+        style: solid;
+        color: #afafaf;
+        left: {
+          width: 1px; }
+        top: {
+          width: 1px; } }
+      font-weight: 600;
+      @include gradient(#7e7e7e, #545454);
+      height: 21px;
+      line-height: 21px;
+      margin-left: 10px;
+      min-width: 50px;
+      outline: 1px solid black;
+      padding: 0 10px 4px;
+      width: auto;
+      &:hover{
+        @include gradient(#545454, #7e7e7e); }
+      &:active {
+        color: #{$orange} } }
   }
   &.logged_in {
     border: 1px solid black;

@@ -1,4 +1,4 @@
-$(document).ready(function () {
+_r(function () {
   var userBoxView = Backbone.View.extend({
 
     el: $('#header_userbox'),

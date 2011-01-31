@@ -1,4 +1,4 @@
-$(document).ready(function () {
+_r(function () {
   window.app.models.base = Backbone.Model.extend({
     
     parse: function (res) {

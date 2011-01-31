@@ -1,0 +1,13 @@
+<script type="text/x-doT-tmpl" name="breadcrumb">
+  :if (controller !== 'news')
+    %a{href:"##{controller}"}= controller
+
+  :if (1===2)
+    // DO NOT CHANGE THE INDENTATION HERE! and don't remove the if, because it would show this comment... haml-js doesn't have comments?! oO
+  :if (action && action !== 'index')
+    &nbsp;&gt;&nbsp;
+    %a{href:"##{controller}/#{action}"}= action
+    :if parameters
+      &nbsp;&gt;&nbsp;
+      %a{href:"##{controller}/#{action}/#{parameters}"}= parameters
+</script>

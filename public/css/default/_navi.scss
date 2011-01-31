@@ -1,46 +1,52 @@
 nav {
   background: {
-    color: #d84d0a; };
-  border: {
-    color: #8b170f;
-    style: solid;
-    width: 1px;
-    top: {
-      color: #fbc16d;
-      style: solid;
-      width: 1px; }; };
+    image: url('../../images/default/navi1.png') };
   height: 30px;
+  margin: 0 #{$main_side_margin};
   position: relative;
+  ul {
+    background: {
+      image: url('../../images/default/navi-end.png');
+      position: right;
+      repeat: no-repeat; }
+    height: 30px;}
   li {
-    border: {
-      style: solid;
-      width: 0px;
-      left: {
-        color: #fbc16d;
-        width: 1px; }
-      right: {
-        color: #333333;
-        width: 1px; }; };
+    background: {
+      image: url('../../images/default/navi2.png');
+      repeat: no-repeat; }
     display: block;
     float: left;
-    &:hover {
-      background-color: #c44b0f;
-      border-left-color: #d48e2e }
+    height: 30px;
+    min-width: 40px;
     a {
       color: #fff;
       display: block;
       font-weight: bold;
-      height: 30px;
-      line-height: 30px;
-      padding: 0;
+      height: 28px;
+      line-height: 28px;
+      margin: 2px 0 0 2px;
+      min-width: 50px;
+      padding: 0 15px;
       text: {
         align: center;
         decoration: none; };
-      width: 100px;
-      &:visited {
+      &.current {
+        @include gradient(#e55c0a, #d0450a); }
+      &:visited, &:hover, &:active {
         color: #fff;
       }
+      &:hover {
+        @include gradient(#d0450a, #e55c0a); }
       &:active {
-        height: 29px;
-        padding: 1px 0 0 2px;
-        width: 98px; } } } }
+        height: 27px;
+        padding-top: 1px;
+        padding-left: 16px;
+        margin-right: -1px; } } } }
+
+#nav_shadow {
+  background: {
+    image: url('../../images/default/navishadow.png');
+    repeat: repeat-x; }
+  height: 5px;
+  margin: 0 #{$main_side_margin} 10px;
+}

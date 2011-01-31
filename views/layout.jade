@@ -10,14 +10,19 @@
     meta( name: 'description', content: 'A tournement website for online gaming.')
     title e-Tourney
     link( rel: 'stylesheet', href: '/css/default/style.css' )
-    script( src: '/js/modernizr-1.5.min.js' )
+    script( src: '/js/modernizr-1.6.min.js' )
   body
     #main_container
       header
+        #top_left_corner
         #top_bar
           span#top_bar_lang
-            a( href: '?lang=de_DE' )= tr('header:german')
-            a( href: '?lang=en_US' )= tr('header:english')
+            - if (this.session.lang !== 'en_US')
+              - var american = tr('header:american')
+              img( title: american, alt: american, src: '/images/icons/flags/us.png', data-lang: 'en_US')
+            - if (this.session.lang !== 'de_DE')
+              - var german = tr('header:german')
+              img( title: german, alt: german, src: '/images/icons/flags/de.png', data-lang: 'de_DE')
           span#top_bar_time 2010-03-20 13:45:10 UTC
           | worker:
           = workerId
@@ -25,10 +30,12 @@
           = workerStart
           span#top_bar_logged= tr('header:search')
             a( href: '/User/logout', class: loggedClass )= tr('header:logout')
+        #top_right_corner
         #header_main
-          h1 e
-            span.tourney tourney
-          #header_userbox( class: loggedClass )
+          a#head_logo
+          #head_bg_continuation
+          #head_bg_end
+          #header_userbox( class: loggedClass ).clearfix
             span.error Login failed!
             form( method: 'POST', action: '/User/login/' )
               label( for: 'login_name' )= tr('user:labels:name')
@@ -57,9 +64,13 @@
       nav
         ul
           li
-            a.first( href: "/" )= tr('navi:news')
+            a( href: "#news" )= tr('navi:news')
           li
-            a.second( href: "/tourn" )= tr('navi:tourneys')
+            a( href: "#tourn" )= tr('navi:tourneys')
+          li
+            a( href: "#faq" )= tr('navi:faq')
+          li
+      #nav_shadow
       - if (typeof(show_quicklist) !== 'undefined')
         table#quicklist
           thead
@@ -74,22 +85,30 @@
                 td= tourn
                 td= "Teilnehmer: 5/16"
                 td= "Status: kackdreck"
-      #body.clear
-        #content!= body
+      #body.clearfix
+        #content
+          #breadcrumb
+          #page_news_index( data-lastload: +new Date() )= body
         aside.sponsors
           span Sponsors
           ul
             li Ferrari
             li Intel
             li NASA
-      footer Footer
-    script( id: 'user_data_self', type: 'application/json')
-      != JSON.stringify(this.session.user)
+      #push_footer
+    footer
+      div Footer
+
+    script( type: 'text/javascript')
+      | var i18n_hash = '#{i18n_hash}';
+
+    #templates
 
     //- script( src: '//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js' )
     :javascript
       !window.jQuery && document.write(unescape('%3Cscript src="/js/jquery-1.4.4.min.js"%3E%3C/script%3E'))
     script( src: '/js/' + staticVersions.js + '/merged.js' )
+    
 
     !='<!--[if lt IE 7 ]>'
       script( src: 'js/dd_belatedpng.js' )

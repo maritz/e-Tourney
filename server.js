@@ -12,7 +12,8 @@ viewHelpers = require(__dirname + '/helpers/view');
 
 var start = exports.start = function () {
   Ni.boot(function() {
-		var nohmclient = nohm.setPort(Ni.config('redis_port'));
+    nohm.connect(Ni.config('redis_port'), Ni.config('redis_host'));
+		var nohmclient = nohm.getClient();
 		nohmclient.select(Ni.config('redis_nohm_db'), function (err) {
 		  if (err) {
 		    console.dir(err);
@@ -40,7 +41,8 @@ var start = exports.start = function () {
 		// static stuff
 		app.use(express.conditionalGet());
 		app.use(express.favicon(__dirname + '/public/images/icons/favicon.png'));
-		//app.use(express.gzip());
+		
+    //app.use(express.gzip());
 		
 		// connect assetmanager to pack js. (css already handled by sass)
 		var files = require(__dirname + '/helpers/collect-client-js');
@@ -69,12 +71,12 @@ var start = exports.start = function () {
 		app.use(express.bodyDecoder());
 		app.use(express.cookieDecoder());
 		
-		var redisSessionStore = new RedisStore({magAge: 60000 * 60 * 24, port: Ni.config('redis_port')});
+		var redisSessionStore = new RedisStore({magAge: 60000 * 60 * 24 /* one day */, port: Ni.config('redis_port')});
 		redisSessionStore.client.select(Ni.config('redis_session_db'), function () {
 		  
 		  app.use(express.session({key: Ni.config('cookie_key'),
 		    secret: Ni.config('cookie_secret'),
-		    store: redisSessionStore})); // one day
+		    store: redisSessionStore}));
 		  
 		  // some session stuff
 		  app.use(function (req, res, next) {
@@ -123,8 +125,12 @@ var start = exports.start = function () {
 		      rlocals.workerId = fugue.workerId();
 		      rlocals.workerStart = workerstart;
 		      rlocals.staticVersions = assetsManagerMiddleware.cacheTimestamps || 0;
+          rlocals.i18n_hash = i18n.getHash(req.session.lang);
 		      if (typeof(options) === 'undefined') {
-		        options = {};
+		        options = {
+              cache: true,
+              filename: file
+            };
 		      }
 		      options.locals = helpers.merge(options.locals, rlocals, viewHelpers);
 		      try {

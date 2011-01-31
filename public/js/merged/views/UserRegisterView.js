@@ -1,4 +1,4 @@
-$(document).ready(function () {
+_r(function () {
   var form = $('#register_form');
   if (form.length === 1) {
     var userRegisterView = window.app.views.Form.extend({
@@ -13,7 +13,7 @@ $(document).ready(function () {
       },
 
       render: function () {
-        debugger;
+        debugger; // we don't actually need this, do we?
       }
     });
   

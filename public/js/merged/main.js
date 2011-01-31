@@ -1,8 +1,11 @@
-var app = new PageController();
+_r(function () {
+  window.app = new PageController();
+}, true);
 
-$(document).ready(function () {
-  $('#header_userbox input[type="button"]').click(function () {
-    window.location = '/User/register';
-  });
+_r(function () {
+  Backbone.history.start();
   
+  $('#header_userbox input[type="button"]').click(function () {
+    window.location = '#User/register';
+  });
 });

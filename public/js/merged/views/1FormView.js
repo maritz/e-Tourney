@@ -1,4 +1,4 @@
-$(document).ready(function () {
+_r(function () {
   window.app.views.Form = Backbone.View.extend({
     
     initialize: function() {
@@ -18,8 +18,8 @@ $(document).ready(function () {
 	    , self = this;
 	    if ( (value === '' && target.attr('required') !== true)
 	      || value === this.previous[target[0].name]
-	      || !this.model.fieldCheckUrl) {
-	      return false;}
+	      || !this.model.fieldCheckUrl)
+	      return false;
 	    this.previous[target[0].name] = value;
       
 	    if (typeof(this.fieldBuffer) === 'undefined') {
@@ -31,6 +31,7 @@ $(document).ready(function () {
 	   
 	    clearTimeout(this.fieldTimer);
 	    this.fieldTimer = setTimeout( function () {
+        debugger;
 	      var data = JSON.stringify(self.fieldBuffer);
 	      self.fieldBuffer = [];
 	      $.ajax({

@@ -162,26 +162,20 @@ var userController = module.exports = {
     if (typeof(req.body) !== 'undefined' && Array.isArray(req.body)) {
 	    var user = new Ni.models.User()
 	    , len = req.body.length
-	    , done = function () {
-	      len--;
-	      if (len === 0) {
-	        user.valid(false, false, function (valid) {
-	          if ( ! valid) {
-	            user.errors.forEach(function (error, field) {
-	              if (error.length > 0 && field !== 'salt')
-	                response.errors[field] = req.tr('user:errors:'+field+'_'+
-	                                                     error[0]);
-	            });
-	          }
-            res.send(response);                                    
-	        });
-        }
-      }
       , propSetter = function () {
         req.body.forEach(function (field) {
           user.p(field.key, field.val);
         });
-        done();
+        user.valid(false, false, function (valid) {
+          if ( ! valid) {
+            user.errors.forEach(function (error, field) {
+              if (error.length > 0 && field !== 'salt')
+                response.errors[field] = req.tr('user:errors:'+field+'_'+
+                                                     error[0]);
+            });
+          }
+          res.send(response);                                    
+        });
       };
       if (req.session.logged_in) {
         user.load(req.session.user.id, function (err) {

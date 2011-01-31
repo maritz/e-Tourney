@@ -1,6 +1,9 @@
 @import "_defines.scss";
 @import "_boilerplate.scss";
 
+$main_side_margin: 6px;
+$orange: #e76510;
+
 header, footer, aside, nav, article, div {
   display: block; }  
 
@@ -8,24 +11,59 @@ header, footer, aside, nav, article, div {
 ul {
   list-style-type: none; }
 
-* {
+html * {
   margin: 0;
   padding: 0;
   font: {
     size: 9pt;
     family: Tahoma, Arial, sans-serif; }; }
 
+html, body {
+  padding: 0.2% 2% 0 2%;
+  height: 100%;}
+
 body {
   background: {
-    color: #2f2f2f; };
-  padding: 0 2% 0 1%; }
+    image: url('../../images/default/bg.png'); } }
 
 #main_container {
   background: {
     color: white; };
+  min-width: 936px;
+  min-height: 100%;
+  height: auto !important; /* min-height hack for ie6 */
+  height: 100%; /* min-height hack for ie6 */
+  margin-top: 5px; }
+
+.top-right {
+  min-width: 350px;
+  position: fixed;
+  right: 15px;
+  top: 15px;
+  width: 4%;
+  z-index: 100;
+}
+
+.jGrowl-notification, .jGrowl-closer {
+  background-color: #333;
+  border: 1px solid #888;
   @include border-radius(5px);
-  border: 1px solid #333333;
-  min-width: 700px; }
+  @include box-shadow(3px, 3px, 4px, #333);
+  color: #fff;
+  display: none;
+  @include opacity(0.9);
+  padding: 4px 8px;
+}
+
+.jGrowl-notification.warning {
+  color: #e8ac14;
+}
+
+.jGrowl-close, .jGrowl-closer {
+	float: right;
+  font-weight: bold;
+	cursor: pointer;
+}
 
 
 @import "_header.scss";
@@ -33,3 +71,4 @@ body {
 @import "_content.scss";
 @import "_quicklist.scss";
 @import "_form.scss";
+@import "_footer.scss";

@@ -1,23 +1,31 @@
 #body {
-  border-top: 1px solid grey;
-  display: table;
-  margin: 0.25%;
-  padding: 0.25%;
-  width: 99%;
+  border-top: 1px solid #c6c6c6;
+  height: auto !important; /* min-height hack for ie6 */
+  height: 100%; /* min-height hack for ie6 */
+  margin: #{$main_side_margin};
+  min-height: 100%;
+  padding: 10px 222px 0 10px; /* right padding = aside.sponsors(width+offsetRight+border+10px) */
+  position: relative;
 }
 
 #content {
-  display: table-cell;
-  margin: 0;
-  padding: 0;
+  min-height: 300px;
+  min-width: 700px;
+}
+
+#breadcrumb {
+  height: 14px;
+  margin-bottom: 4px;
+  text-transform: capitalize;
 }
 
 aside.sponsors {
   background-color: #eeeeee;
   border: 1px solid #aaaaaa;
-  display: table-cell;
-  margin: 0;
   padding: 0;
+  position: absolute;
+  right: 10px;
+  top: 10px;
   width: 200px;
   > span {
     background-color: #555555;

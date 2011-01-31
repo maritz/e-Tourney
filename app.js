@@ -23,7 +23,6 @@ var sassfiles = fs.readdirSync(__dirname + '/public/css/default');
 for (var i = 0, len = sassfiles.length; i < len; i = i + 1) {
   if (sassfiles[i].match(/\.scss$/i)) {
     fs.watchFile(__dirname + '/public/css/default/' + sassfiles[i], function () {
-      console.log('file changed');
       child_process.spawn('touch', [__dirname + '/public/css/default/style.scss']);
     });
   }
@@ -37,7 +36,7 @@ process.on('SIGTERM', function () {
 });
 
 // sass does not communicate well at all, so we just ignore sass output here -.-
-var sass = child_process.spawn('/var/lib/gems/1.8/bin/sass', ['--debug-info', '--watch', __dirname + '/public/css/default/style.scss']);
+var sass = child_process.spawn('/var/lib/gems/1.8/bin/sass', [/*'--debug-info',*/ '--watch', __dirname + '/public/css/default/style.scss']);
 
 
 // real application starts now!

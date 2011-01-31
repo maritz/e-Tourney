@@ -1,4 +1,4 @@
-$(document).ready(function () {
+_r(function () {
   var userModel = window.app.models.base.extend({
 
     logged_in: false,

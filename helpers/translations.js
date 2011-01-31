@@ -1,13 +1,25 @@
 var fs = require('fs'),
 iniparser = require('iniparser');
 
-var basedir = __dirname + '/../i18n/',
-translations = {};
+var basedir = __dirname + '/../i18n/'
+, translations = {}
+, current_hash = {};
+
+crypto = require('crypto');
+
+var checkHashChange = function checkHashChange (lang) {
+  var new_hash = crypto.createHash('md5');
+  new_hash.update(JSON.stringify(translations[lang]));
+  new_hash = new_hash.digest('base64');
+  current_hash[lang] = new_hash.substr(0, 10);
+  // TODO: maybe we need an event here to make others aware that the translation was changed?!
+}
 
 var loadTranslations = function (lang, file) {
   try {
     iniparser.parse(basedir + lang + '/' + file, function (err, data) {
       translations[lang][file.replace(/\.ini$/, '')] = data;
+      checkHashChange(lang);
     });
   } catch (e) {
     console.dir(e.stack);
@@ -39,7 +51,10 @@ try {
 
 
 module.exports = {
-  translations: translations,
+  getHash: function (lang) { 
+    return current_hash[lang]; },
+  getTranslations: function (lang) { 
+    return translations.hasOwnProperty(lang) ? translations[lang] : {} },
   langs: Object.keys(translations),
   getTranslation: function (lang, key) {
     var reg = /([^:]*):/g

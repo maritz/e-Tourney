@@ -1,4 +1,3 @@
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000312}}
 html, body, div, span, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 abbr, address, cite, code,
@@ -19,26 +18,21 @@ time, mark, audio, video {
   vertical-align: baseline;
   background: transparent; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000323}}
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000327}}
 nav ul {
   list-style: none; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000329}}
 blockquote, q {
   quotes: none; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000332}}
 blockquote:before, blockquote:after,
 q:before, q:after {
   content: '';
   content: none; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000334}}
 a {
   margin: 0;
   padding: 0;
@@ -46,35 +40,29 @@ a {
   vertical-align: baseline;
   background: transparent; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000336}}
 ins {
   background-color: #ff9;
   color: #000;
   text-decoration: none; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000338}}
 mark {
   background-color: #ff9;
   color: #000;
   font-style: italic;
   font-weight: bold; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000340}}
 del {
   text-decoration: line-through; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000342}}
 abbr[title], dfn[title] {
   border-bottom: 1px dotted;
   cursor: help; }
 
 /* tables still need cellspacing="0" in the markup */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000345}}
 table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000347}}
 hr {
   display: block;
   height: 1px;
@@ -83,7 +71,6 @@ hr {
   margin: 1em 0;
   padding: 0; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000349}}
 input, select {
   vertical-align: baseline; }
 
@@ -96,27 +83,23 @@ input, select {
    * we normalize monospace styles ourselves
    * table font-size is reset in the HTML5 reset above so there is no need to repeat
 */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000361}}
 body {
   font: 13px/1.231 sans-serif;
   *font-size: small; }
 
 /* hack retained to preserve specificity */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000363}}
 select, input, textarea, button {
   font: 99% sans-serif; }
 
 /* normalize monospace sizing 
  * en.wikipedia.org/wiki/MediaWiki_talk:Common.css/Archive_11#Teletype_style_fix_for_Chrome
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000368}}
 pre, code, kbd, samp {
   font-family: monospace, sans-serif; }
 
 /* 
  * minimal base styles 
  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000376}}
 body, select, input, textarea {
   /* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */
   color: #444;
@@ -125,59 +108,46 @@ body, select, input, textarea {
 
 /* Headers (h1,h2,etc) have no default font-size or margin,
    you'll want to define those yourself. */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000385}}
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold; }
 
 /* always force a scrollbar in non-IE */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000388}}
 html {
   overflow-y: scroll; }
 
 /* Accessible focus treatment: people.opera.com/patrickl/experiments/keyboard/test */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000392}}
 a:hover, a:active {
   outline: none; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000394}}
 a, a:active, a:visited {
   color: #607890; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000395}}
 a:hover {
   color: #036; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000398}}
 ul, ol {
   margin-left: 0em; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\0000399}}
 ol {
   list-style-type: decimal; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003101}}
 small {
   font-size: 85%; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003102}}
 strong, th {
   font-weight: bold; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003104}}
 td, td img {
   vertical-align: top; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003106}}
 sub {
   vertical-align: sub;
   font-size: smaller; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003107}}
 sup {
   vertical-align: super;
   font-size: smaller; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003109}}
 pre {
   padding: 15px;
   /* www.pathf.com/blogs/2008/05/formatting-quoted-code-in-blog-posts-css21-white-space-pre-wrap/ */
@@ -190,53 +160,43 @@ pre {
   word-wrap: break-word;
   /* IE */ }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003119}}
 textarea {
   overflow: auto; }
 
 /* thnx ivannikolic! www.sitepoint.com/blogs/2010/08/20/ie-remove-textarea-scrollbars/ */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003121}}
 .ie6 legend, .ie7 legend {
   margin-left: -7px; }
 
 /* thnx ivannikolic! */
 /* align checkboxes, radios, text inputs with their label
    by: Thierry Koblentz tjkdesign.com/ez-css/css/base.css  */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003125}}
 input[type="radio"] {
   vertical-align: text-bottom; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003126}}
 input[type="checkbox"] {
   vertical-align: bottom; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003127}}
 .ie7 input[type="checkbox"] {
   vertical-align: baseline; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003128}}
 .ie6 input {
   vertical-align: text-bottom; }
 
 /* hand cursor on clickable input elements */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003131}}
 label, input[type=button], input[type=submit], button {
   cursor: pointer; }
 
 /* webkit browsers add a 2px margin outside the chrome of form elements */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003134}}
 button, input, select, textarea {
   margin: 0; }
 
 /* colors for form validity */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003138}}
 input:invalid, textarea:invalid {
   border-radius: 1px;
   -moz-box-shadow: 0px 0px 5px red;
   -webkit-box-shadow: 0px 0px 5px red;
   box-shadow: 0px 0px 5px red; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003145}}
 .no-boxshadow input:invalid,
 .no-boxshadow textarea:invalid {
   background-color: #f0dddd; }
@@ -244,33 +204,28 @@ input:invalid, textarea:invalid {
 /* These selection declarations have to be separate.
    No text-shadow: twitter.com/miketaylr/status/12228805301 
    Also: hot pink. */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003151}}
 ::-moz-selection {
   background: #3399ff;
   color: #fff;
   text-shadow: none; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003152}}
 ::selection {
   background: #3399ff;
   color: #fff;
   text-shadow: none; }
 
 /*  j.mp/webkit-tap-highlight-color */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003155}}
 a:link {
   -webkit-tap-highlight-color: #FF5E99; }
 
 /* make buttons play nice in IE:    
    www.viget.com/inspire/styling-the-button-element-in-internet-explorer/ */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003159}}
 button {
   width: auto;
   overflow: visible; }
 
 /* bicubic resizing for non-native sized IMG: 
    code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/ */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003163}}
 .ie7 img {
   -ms-interpolation-mode: bicubic; }
 
@@ -278,7 +233,6 @@ button {
  * Non-semantic helper classes 
  */
 /* for image replacement */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003172}}
 .ir {
   display: block;
   text-indent: -999em;
@@ -289,7 +243,6 @@ button {
 
 /* Hide for both screenreaders and browsers
    css-discuss.incutio.com/wiki/Screenreader_Visibility */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003176}}
 .hidden {
   display: none;
   visibility: hidden; }
@@ -297,7 +250,6 @@ button {
 /* Hide only visually, but have it available for screenreaders 
    www.webaim.org/techniques/css/invisiblecontent/ 
    Solution from: j.mp/visuallyhidden - Thanks Jonathan Neal! */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003181}}
 .visuallyhidden {
   position: absolute !important;
   clip: rect(1px 1px 1px 1px);
@@ -305,12 +257,10 @@ button {
   clip: rect(1px, 1px, 1px, 1px); }
 
 /* Hide visually and from screenreaders, but maintain layout */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003186}}
 .invisible {
   visibility: hidden; }
 
 /* >> The Magnificent CLEARFIX << j.mp/phayesclearfix */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003189}}
 .clearfix:after {
   content: "\0020";
   display: block;
@@ -319,7 +269,6 @@ button {
   visibility: hidden; }
 
 /* Fix clearfix: blueprintcss.lighthouseapp.com/projects/15318/tickets/5-extra-margin-padding-bottom-of-page */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003191}}
 .clearfix {
   zoom: 1; }
 
@@ -331,53 +280,43 @@ button {
  * inlined to avoid required HTTP connection www.phpied.com/delay-loading-your-print-css/ 
  */
 @media print {
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003217}}
   * {
     background: transparent !important;
     color: #444 !important;
     text-shadow: none !important; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003219}}
   a, a:visited {
     color: #444 !important;
     text-decoration: underline; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003221}}
   a:after {
     content: " (" attr(href) ")"; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003223}}
   abbr:after {
     content: " (" attr(title) ")"; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003225}}
   .ir a:after {
     content: ""; }
 
   /* Don't show links for images */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003227}}
   pre, blockquote {
     border: 1px solid #999;
     page-break-inside: avoid; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003229}}
   thead {
     display: table-header-group; }
 
   /* css-discuss.incutio.com/wiki/Printing_Tables */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003231}}
   tr, img {
     page-break-inside: avoid; }
 
   @page {
     margin: 0.5cm; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003235}}
   p, h2, h3 {
     orphans: 3;
     widows: 3; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_boilerplate\.scss}line{font-family:\00003237}}
   h2, h3 {
     page-break-after: avoid; } }
 
@@ -397,123 +336,207 @@ button {
      j.mp/textsizeadjust 
   html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; } */ }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\000034}}
 header, footer, aside, nav, article, div {
   display: block; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\000038}}
 ul {
   list-style-type: none; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000311}}
-* {
+html * {
   margin: 0;
   padding: 0;
   font-size: 9pt;
   font-family: Tahoma, Arial, sans-serif; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000318}}
-body {
-  background-color: #2f2f2f;
-  padding: 0 2% 0 1%; }
+html, body {
+  padding: 0.2% 2% 0 2%;
+  height: 100%; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/style\.scss}line{font-family:\0000323}}
+body {
+  background-image: url("../../images/default/bg.png"); }
+
 #main_container {
   background-color: white;
+  min-width: 936px;
+  min-height: 100%;
+  height: auto !important;
+  /* min-height hack for ie6 */
+  height: 100%;
+  /* min-height hack for ie6 */
+  margin-top: 5px; }
+
+.top-right {
+  min-width: 350px;
+  position: fixed;
+  right: 15px;
+  top: 15px;
+  width: 4%;
+  z-index: 100; }
+
+.jGrowl-notification, .jGrowl-closer {
+  background-color: #333;
+  border: 1px solid #888;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  border: 1px solid #333333;
-  min-width: 700px; }
+  -moz-box-shadow: 3px 3px 4px 0px #333333;
+  -webkit-box-shadow: 3px 3px 4px 0px #333333;
+  box-shadow: 3px 3px 4px 0px #333333;
+  color: #fff;
+  display: none;
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+  padding: 4px 8px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\000036}}
+.jGrowl-notification.warning {
+  color: #e8ac14; }
+
+.jGrowl-close, .jGrowl-closer {
+  float: right;
+  font-weight: bold;
+  cursor: pointer; }
+
 header {
   font-size: 10pt;
   font-weight: 500;
-  height: 120px; }
-
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000312}}
-#top_bar {
-  height: 20px;
-  line-height: 20px;
+  height: 130px;
   position: relative; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000317}}
+#top_left_corner,
+#top_right_corner {
+  background-repeat: no-repeat;
+  height: 9px;
+  position: absolute;
+  top: -5px;
+  width: 5px;
+  z-index: 2; }
+
+#top_left_corner {
+  background-image: url("../../images/default/top1.png");
+  left: 0; }
+
+#top_right_corner {
+  background-image: url("../../images/default/top3.png");
+  right: 0; }
+
+#top_bar {
+  background-image: url("../../images/default/top2.png");
+  background-repeat: repeat-x;
+  height: 20px;
+  line-height: 20px;
+  padding: 2px 6px;
+  position: relative;
+  top: -5px; }
+
+#top_bar_lang img {
+  cursor: pointer;
+  margin-right: 5px; }
+
 #top_bar_logged {
   position: absolute;
   right: 3px;
   top: 1px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000319}}
   #top_bar_logged a {
     display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000321}}
     #top_bar_logged a.logged_in {
       display: inline; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000327}}
 #header_main {
-  background-color: #333333;
   height: 100px;
-  float: left;
-  position: relative;
-  width: 100%; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000334}}
-  #header_main h1 {
-    color: #ec853a;
-    font-size: 38pt;
-    font-weight: 700;
-    line-height: 100px;
-    margin-left: 50px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000341}}
-  #header_main .tourney {
-    color: #dadada;
-    font-size: 22pt;
-    font-weight: 500; }
+  margin: 2px 6px;
+  position: relative; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000349}}
+#head_logo,
+#head_bg_continuation,
+#head_bg_end {
+  height: 104px; }
+
+#head_logo {
+  background-image: url("../../images/default/logo.png");
+  background-repeat: no-repeat;
+  float: left;
+  width: 559px; }
+
+#head_bg_continuation {
+  background-image: url("../../images/default/head.png");
+  margin-right: 13px; }
+
+#head_bg_end {
+  background-image: url("../../images/default/headend.png");
+  background-repeat: no-repeat;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 13px; }
+
 #header_userbox {
   position: absolute;
-  right: 40px;
+  right: 20px;
   top: 15px;
   color: white;
   width: 260px;
   z-index: 2; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000354}}
   #header_userbox span.error {
     position: absolute;
     right: 30px;
     top: -12px;
     display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000358}}
   #header_userbox form {
     color: white;
     text-align: right;
     width: 260px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000362}}
     #header_userbox form input {
-      background-color: #353535;
+      border-width: 1px;
+      border-style: solid;
+      border-color: #787878;
+      border-left-color: #070707;
+      border-top-color: #070707;
+      background-color: #1c1c1c;
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#1c1c1c), to(#393939));
+      background: -moz-linear-gradient(#1c1c1c, #393939);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$from, endColorstr=$to);
       color: white;
-      margin: 5px 30px 0 4px;
-      width: 120px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000368}}
+      height: 18px;
+      margin: 5px 0 0;
+      width: 140px; }
     #header_userbox form input[type="submit"],
     #header_userbox form input[type="button"] {
       background-color: #686868;
+      border-width: 0px;
+      border-style: solid;
+      border-color: #afafaf;
+      border-left-width: 1px;
+      border-top-width: 1px;
+      font-weight: 600;
+      background-color: #7e7e7e;
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7e7e7e), to(#545454));
+      background: -moz-linear-gradient(#7e7e7e, #545454);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$from, endColorstr=$to);
+      height: 21px;
+      line-height: 21px;
+      margin-left: 10px;
+      min-width: 50px;
+      outline: 1px solid black;
+      padding: 0 10px 4px;
       width: auto; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000372}}
+      #header_userbox form input[type="submit"]:hover,
+      #header_userbox form input[type="button"]:hover {
+        background-color: #545454;
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#545454), to(#7e7e7e));
+        background: -moz-linear-gradient(#545454, #7e7e7e);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$from, endColorstr=$to); }
+      #header_userbox form input[type="submit"]:active,
+      #header_userbox form input[type="button"]:active {
+        color: #e76510; }
   #header_userbox.logged_in {
     border: 1px solid black; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000375}}
   #header_userbox.logged_in form {
     display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000378}}
   #header_userbox .content {
     display: none;
     height: 70px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000382}}
   #header_userbox.logged_in .content {
     display: block; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\0000385}}
   #header_userbox a {
     border-color: #919191;
     border-style: solid;
@@ -526,15 +549,12 @@ header {
     line-height: 35px;
     text-align: center;
     width: 103px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\00003100}}
     #header_userbox a:hover {
       color: #ae5317;
       cursor: pointer; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\00003103}}
     #header_userbox a span {
       margin: auto; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\00003106}}
 #userbox_avatar {
   border-right-color: black;
   border-right-width: 1px;
@@ -546,78 +566,90 @@ header {
   height: 100%;
   width: 50px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_header\.scss}line{font-family:\00003121}}
 #userbox_profile {
   width: 208px !important; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_navi\.scss}line{font-family:\000031}}
 nav {
-  background-color: #d84d0a;
-  border-color: #8b170f;
-  border-style: solid;
-  border-width: 1px;
-  border-top-color: #fbc16d;
-  border-top-style: solid;
-  border-top-width: 1px;
+  background-image: url("../../images/default/navi1.png");
   height: 30px;
+  margin: 0 6px;
   position: relative; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_navi\.scss}line{font-family:\0000314}}
+  nav ul {
+    background-image: url("../../images/default/navi-end.png");
+    background-position: right;
+    background-repeat: no-repeat;
+    height: 30px; }
   nav li {
-    border-style: solid;
-    border-width: 0px;
-    border-left-color: #fbc16d;
-    border-left-width: 1px;
-    border-right-color: #333333;
-    border-right-width: 1px;
+    background-image: url("../../images/default/navi2.png");
+    background-repeat: no-repeat;
     display: block;
-    float: left; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_navi\.scss}line{font-family:\0000326}}
-    nav li:hover {
-      background-color: #c44b0f;
-      border-left-color: #d48e2e; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_navi\.scss}line{font-family:\0000329}}
+    float: left;
+    height: 30px;
+    min-width: 40px; }
     nav li a {
       color: #fff;
       display: block;
       font-weight: bold;
-      height: 30px;
-      line-height: 30px;
-      padding: 0;
+      height: 28px;
+      line-height: 28px;
+      margin: 2px 0 0 2px;
+      min-width: 50px;
+      padding: 0 15px;
       text-align: center;
-      text-decoration: none;
-      width: 100px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_navi\.scss}line{font-family:\0000340}}
-      nav li a:visited {
+      text-decoration: none; }
+      nav li a.current {
+        background-color: #e55c0a;
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e55c0a), to(#d0450a));
+        background: -moz-linear-gradient(#e55c0a, #d0450a);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$from, endColorstr=$to); }
+      nav li a:visited, nav li a:hover, nav li a:active {
         color: #fff; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_navi\.scss}line{font-family:\0000343}}
+      nav li a:hover {
+        background-color: #d0450a;
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#d0450a), to(#e55c0a));
+        background: -moz-linear-gradient(#d0450a, #e55c0a);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=$from, endColorstr=$to); }
       nav li a:active {
-        height: 29px;
-        padding: 1px 0 0 2px;
-        width: 98px; }
+        height: 27px;
+        padding-top: 1px;
+        padding-left: 16px;
+        margin-right: -1px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_content\.scss}line{font-family:\000031}}
+#nav_shadow {
+  background-image: url("../../images/default/navishadow.png");
+  background-repeat: repeat-x;
+  height: 5px;
+  margin: 0 6px 10px; }
+
 #body {
-  border-top: 1px solid grey;
-  display: table;
-  margin: 0.25%;
-  padding: 0.25%;
-  width: 99%; }
+  border-top: 1px solid #c6c6c6;
+  height: auto !important;
+  /* min-height hack for ie6 */
+  height: 100%;
+  /* min-height hack for ie6 */
+  margin: 6px;
+  min-height: 100%;
+  padding: 10px 222px 0 10px;
+  /* right padding = aside.sponsors(width+offsetRight+border+10px) */
+  position: relative; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_content\.scss}line{font-family:\000039}}
 #content {
-  display: table-cell;
-  margin: 0;
-  padding: 0; }
+  min-height: 300px;
+  min-width: 700px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_content\.scss}line{font-family:\0000315}}
+#breadcrumb {
+  height: 14px;
+  margin-bottom: 4px;
+  text-transform: capitalize; }
+
 aside.sponsors {
   background-color: #eeeeee;
   border: 1px solid #aaaaaa;
-  display: table-cell;
-  margin: 0;
   padding: 0;
+  position: absolute;
+  right: 10px;
+  top: 10px;
   width: 200px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_content\.scss}line{font-family:\0000322}}
   aside.sponsors > span {
     background-color: #555555;
     color: white;
@@ -626,16 +658,13 @@ aside.sponsors {
     line-height: 18px;
     padding-left: 10px;
     position: relative; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_content\.scss}line{font-family:\0000331}}
   aside.sponsors ul li {
     margin: 8px;
     text-align: center; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_quicklist\.scss}line{font-family:\000031}}
 #quicklist {
   margin: 3px auto;
   width: 100%; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_quicklist\.scss}line{font-family:\000034}}
   #quicklist li {
     border: 1px solid #333;
     background-color: #dde;
@@ -643,11 +672,9 @@ aside.sponsors {
     float: left;
     margin: 0 4px 10px 4px;
     width: 49%; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_quicklist\.scss}line{font-family:\0000311}}
     #quicklist li table {
       border-collapse: collapse;
       width: 100%; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_quicklist\.scss}line{font-family:\0000314}}
       #quicklist li table thead tr th {
         background-color: #555;
         border-left: 4px solid #c84b1d;
@@ -655,53 +682,56 @@ aside.sponsors {
         font-size: 11pt;
         padding-left: 2px;
         text-align: left; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_quicklist\.scss}line{font-family:\0000322}}
       #quicklist li table tbody tr:nth-child(even) {
         background-color: #c1c1cd; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\000031}}
 form label {
   line-height: 20px;
   margin-right: 4px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\000034}}
   form label:after {
     content: ": "; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\000037}}
 input, submit {
   padding: 0 2px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000310}}
 input.error {
   box-shadow: 0 0 5px #F00; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000313}}
 span.error {
   color: #d52f18;
   font-weight: bold; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000317}}
 input.error select.error checkbox.error textfield.error {
   outline: 1px solid red; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000321}}
 form.default li {
   clear: both; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000323}}
   form.default li span {
     display: block; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000327}}
   form.default li label,
   form.default li input,
   form.default li div {
     float: left; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000330}}
 label.required {
   font-weight: 600; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/cloud9\/devel\/e-Tourney\/public\/css\/default\/_form\.scss}line{font-family:\0000333}}
 div.input_loading {
   border: 1px solid green;
   display: none;
   float: right; }
+
+/* sticky footer. see http://ryanfait.com/resources/footer-stick-to-bottom-of-page/ */
+#main_container {
+  margin-bottom: -71px; }
+
+footer, #push_footer {
+  height: 71px; }
+
+footer {
+  background-image: url("../../images/default/footer.png");
+  background-repeat: repeat-x; }
+  footer div {
+    margin: auto;
+    padding-top: 10px;
+    text-align: center; }

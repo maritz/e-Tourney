@@ -1,0 +1,20 @@
+$footer_height: 71;
+
+/* sticky footer. see http://ryanfait.com/resources/footer-stick-to-bottom-of-page/ */
+#main_container {
+  margin-bottom: -#{$footer_height}px;
+}
+
+footer, #push_footer {
+  height: #{$footer_height}px;
+}
+
+footer {
+  background: {
+    image: url('../../images/default/footer.png');
+    repeat: repeat-x; }
+  div {
+    margin: auto;
+    padding-top: 10px;
+    text-align: center; }
+}
