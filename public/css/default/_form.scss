@@ -7,31 +7,73 @@ form label {
 input, submit {
   padding: 0 2px; }
 
-input.error {
-  box-shadow: 0 0 5px #F00; }
+input.error, input:invalid, textarea:invalid {
+  @include box-shadow(0, 0, 4px, #F00); }
 
 span.error {
   color: #d52f18;
   font-weight: bold; }
 
-input.error select.error checkbox.error textfield.error {
-  outline: 1px solid red; }
+$fieldset_margin_left: 30;
 
-form.default  {
+form.default {
+  div.fieldset_wrapper {
+    float: left;
+    position: relative;
+    input[type="submit"] {
+      border: auto;
+      position: absolute;
+      right: #{$fieldset_margin_left + 20}px;
+    }
+    input {
+      border: 1px solid black;
+    }
+  }
+  fieldset {
+    border: 1px solid #CCC;
+    @include border-radius(5px);
+    margin: 10px 30px 10px 30px;
+    padding: 0 #{$fieldset_margin_left}px 10px 10px;
+    legend {
+      margin: 0 4px;
+      padding: 0 4px;
+      font: {
+        size: 15px;
+        weight: 700;
+      }
+    }
+  }
   li {
     clear: both;
+    margin: 4px 0;
+    &.headline {
+      font: {
+        size: 13px;
+        weight: 700;
+      }
+    }
     span {
-      display: block; }
-    label,
-    input,
-    div {
-      float: left; } } }
+      display: block; } } 
+  input[type="submit"] {
+    display: block;
+    clear: both; } }
+
+form.register {
+  input[name="login"] {
+    display: none;
+    left: 20px;
+    position: absolute;
+  }
+  span.login_failed {
+    bottom: -34px;
+    display: none;
+    left: 20px;
+    position: absolute; } }
 
 label.required {
   font-weight: 600;}
 
 div.input_loading {
   border: 1px solid green;
-  display: none;
-  float: right;}
-
+  display: inline-block;
+  width: 40px; }

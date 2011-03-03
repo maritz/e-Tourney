@@ -14,6 +14,8 @@ var uid = function uid () {
   return ((Date.now() & 0x7fff).toString(32) + (0x100000000 * Math.random()).toString(32));
 }
 
+var password_minlength = 6;
+
 var userModel = module.exports = nohm.Model.extend({
   constructor: function () {
     this.modelName = 'User';
@@ -30,15 +32,15 @@ var userModel = module.exports = nohm.Model.extend({
         type: 'string',
         unique: true,
         validations: [
-          'notEmpty',
-          'email'
+          ['email', true]
         ]
       },
       password: {
         load_pure: true, // this ensures that there is no typecasting when loading from the db.
         type: function (value, key, old) {
           var pwd, salt;
-          if (value) {
+          if (value && typeof(value.length) !== 'undefined' 
+              && value.length >= password_minlength) {
             pwd = hasher(value, this.p('salt'));
             if (pwd !== old) {
               // if the password was changed, we change the salt as well, just to be sure.
@@ -48,11 +50,12 @@ var userModel = module.exports = nohm.Model.extend({
             }
             return pwd;
           } else {
-            return null;
+            return value;
           }
         },
         validations: [
-          'notEmpty'
+          'notEmpty',
+          ['minLength', password_minlength]
         ]
       },
       salt: {
@@ -95,7 +98,7 @@ var userModel = module.exports = nohm.Model.extend({
       } else {
         info.id = self.id;
         info.name = self.p('name');
-        // and then we also get the privilege level and teamlist.
+        // TODO: get the privilege level and teamlist.
         callback(info);
       }
     };
@@ -108,38 +111,44 @@ var userModel = module.exports = nohm.Model.extend({
     }
   },
   
-  fill: function (data, fields, callback) {
+  fill: function (data, fields, fieldCheck, callback) {
     var props = {}
     , passwordInField
     , passwordChanged = false
-    , self = this;
-    callback = typeof(fields) === 'function' ? fields : callback;
+    , self = this
+    , doFieldCheck = typeof(callback) === 'function' && typeof(fieldCheck) === 'function';
     fields = Array.isArray(fields) ? fields : Object.keys(data);
-    passwordInField = fields.indexOf('password') !== -1;
+    callback = typeof(callback) === 'function' ? callback : fieldCheck;
     
     fields.forEach(function (i) {
-      if (i === 'salt' ||// make sure the salt isn't overriden
+      if (i === 'salt' || // make sure the salt isn't overriden
           ! self.properties.hasOwnProperty(i))
         return;
         
-      if (i === 'password' && 
-            (data[i] !== '' || self.p('password') === ''))
-        passwordChanged = true;
-      else if (i === 'password')
+      if ( doFieldCheck && ! fieldCheck(i, data[i]))
         return;
       
       props[i] = data[i];
     });
-    
-    if (passwordChanged) {
-      if (props.password.length < 6) {
-        this.errors.password = ['minLength'];
-      } else if (props.password != data.password_repeat) {
-        this.errors.password_repeat = ['passwords_dont_match'];
-      }
-    }
-    
+   
     this.p(props);
-    this.valid(false, false, callback);
+    callback(props);
+  },
+  
+  create: function (data, callback) {
+    var self = this;
+    
+    this.fill(data, true, function (props) {
+      self.save(callback);
+    });
+  },
+  
+  checkProperties: function (data, fields, callback) {
+    var self = this;    
+    callback = typeof(fields) === 'function' ? fields : callback;
+    
+    this.fill(data, fields, function (props) {
+      self.valid(false, false, callback);
+    });
   }
 });

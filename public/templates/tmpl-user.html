@@ -1,0 +1,46 @@
+<script type="text/x-doT-tmpl" name="register">
+  %form#register_form.default.register{ method: 'post' }
+    .fieldset_wrapper
+      %fieldset
+        %legend=$.t('user.register.legend_mandatory')
+        %ul
+          %li
+            %span.error
+            %label=$.t('user.labels.name')
+            %input{ name: 'name', validate: 'validate', required: 'required' }
+            .input_loading Checking
+          %li
+            %span.error
+            %label=$.t('user.labels.password')
+            %input{ type: 'password', name: 'password', validate: 'validate', required: 'required' }
+            .input_loading Checking
+      %input{ type: 'button', name: 'login', value: $.t('general.userbox.login')}
+      %input{ type: 'submit', name: 'register', value: $.t('user.labels.register')}
+      .input_loading Checking
+      %span.error.login_failed Login failed
+      
+    .fieldset_wrapper  
+      %fieldset
+        %legend=$.t('user.register.legend_optional')
+        %span.optional_description=$.t('user.register.legend_optional_desc')
+        %ul
+          %li
+            %span.error
+            %label=$.t('user.labels.email')
+            %input{ name: 'email', validate: 'validate' }
+            .input_loading Checking
+        %ul.gacc
+          %li.headline=$.t('user.register.legend_gacc')
+          %li
+            %span.error
+            %label=$.t('user.labels.game')
+            %select{ name: 'game'}
+              %option Counter-Strike
+              %option Starcraft II
+            %br
+            %label=$.t('user.labels.gacc')
+            %input{ name: 'gacc'}
+            .input_loading Checking
+          %li
+            %input.add_gacc{type: "button", value: $.t('user.labels.gacc_add')}
+</script>

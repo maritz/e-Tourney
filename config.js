@@ -12,4 +12,4 @@ Ni.config('redis_nohm_db', 3);
 
 // cookies
 Ni.config('cookie_key', 'etourney-dev');
-Ni.config('cookie_secret', 'ASHUAüoantü3uiTNÜ)§tn28');
+Ni.config('cookie_secret', 'ASHUAoant3uiTNtn28');

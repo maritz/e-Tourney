@@ -5,7 +5,7 @@ Ni.addRoute(/^\/User\/(loginJson|checkFieldJson).*$/i, '/error/method_not_allowe
 var editForm = function (req, res, next, user) {
   if (typeof(req.body) !== 'undefined') {
     res.rlocals.values = req.body;
-    user.fill(req.body,  function (valid) {
+    user.checkProperties(req.body,  function (valid) {
       if (valid) {
         user.save(function (err) {
           if (err) {
@@ -88,34 +88,42 @@ var userController = module.exports = {
     res.redirect('/');
   },
   
-  register: function (req, res, next) {
-    if (req.session.logged_in) {
-      res.redirect('/');
-    } else if (typeof(req.body) !== 'undefined') {
-      var user = new Ni.models.User();
-      res.rlocals.values = req.body;
-      user.fill(req.body, ['name', 'email', 'password'],  function (valid) {
-        if (user.__inDB && false) { ///                                                  ATTENTION !!!!!!!!!!!!!!!!!!!!!!!!!!!   IMPLEMENT SAVE AGAIN!
-          user.getBoxInfo(user.id, function (info) {
-            var oldUrl = req.session.lastPage || '/';
-            req.session.regenerate(function () {
-              req.session.user = info;
-              req.session.logged_in = true;
-              res.redirect(oldUrl);
+  registerJson: function (req, res, next) {
+    var response = {
+      errors: {},
+      user: null,
+      request: req.body
+    };
+    if (typeof(req.body) !== 'undefined') {
+      var user = new Ni.models.User()
+      , len = req.body.length
+      , propSetter = function () {
+        user.create(req.body, function (valid) {
+          if (user.__inDB) {
+            user.getBoxInfo(user.id, function (info) {
+              req.session.regenerate(function () {
+                req.session.user = info;
+                req.session.logged_in = true;
+                response.user = info;
+                res.send(response);
+              });
             });
-          });
-        } else {
-          res.rlocals.errors = user.errors;
-          next();
-        }
-      });
-    } else {
-      res.rlocals.values = {
-        name: '',
-        email: ''
+          } else {
+            response.errors = user.errors;
+            res.send(response);                                    
+          }
+        });
       };
-      res.rlocals.errors = 'none';
-      next();
+      if (req.session.logged_in && false) { // this needs to be changed to a check whether the user has user editing rights. if so, he may create new users like this
+        user.load(req.session.user.id, function (err) {
+          propSetter();
+        });
+      } else {
+        propSetter();
+      }
+    } else {
+      response.errors['general'] = 'Request did not contain proper fields to check.';
+      res.send(response);
     }
   },
   
@@ -159,21 +167,12 @@ var userController = module.exports = {
       errors: {},
       request: req.body
     };
-    if (typeof(req.body) !== 'undefined' && Array.isArray(req.body)) {
-	    var user = new Ni.models.User()
+    if (typeof(req.body) !== 'undefined') {
+      var user = new Ni.models.User()
 	    , len = req.body.length
       , propSetter = function () {
-        req.body.forEach(function (field) {
-          user.p(field.key, field.val);
-        });
-        user.valid(false, false, function (valid) {
-          if ( ! valid) {
-            user.errors.forEach(function (error, field) {
-              if (error.length > 0 && field !== 'salt')
-                response.errors[field] = req.tr('user:errors:'+field+'_'+
-                                                     error[0]);
-            });
-          }
+        user.checkProperties(req.body, function (valid) {
+          response.errors = user.errors;
           res.send(response);                                    
         });
       };
@@ -185,10 +184,10 @@ var userController = module.exports = {
         propSetter();
       }
     } else {
-      response.errors.push('Request did not contain proper fields to check.');
+      response.errors['general'] = 'Request did not contain proper fields to check.';
       res.send(response);
     }
-  },
+  }
 }
 
 

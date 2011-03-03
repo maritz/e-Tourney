@@ -20,23 +20,30 @@ _r(function () {
       }
     },
 
-    login: function (data) {
+    login: function (data, cb) {
       if (this.logged_in)
         return true;
       var self = this;
+      console.dir(data);
       $.post('/User/loginJson', data, function (response) {
         if (response.result) {
           self.set({
             logged_in: true
           });
           self.set(response.user);
-        } else {
+          if (typeof(cb) === 'function') {
+            cb(true);
+          }
+        } else if (typeof(cb) !== 'function') {
           self.trigger('login_fail');
+        } else {
+          cb(false);
         }
       });
     }
   });
   
   window.app.models.user = userModel;
+  window.app.views.user = {};
 
 });

@@ -4,6 +4,7 @@ var _r = function (fn, unshift) {
       $.each(_r.fns, function (id, fnn) {
         fnn();
       });
+      _r.done = true;
     });
     return true;
   }
@@ -18,7 +19,7 @@ var _r = function (fn, unshift) {
   } else {
     _r.fns.push(fn);
   }
-}
+};
 
 var PageController = Backbone.Controller.extend({
   
@@ -46,8 +47,11 @@ var PageController = Backbone.Controller.extend({
     , refresh = false
     , timeout = false
     , now = +new Date()
-    , pageDiv
+    , $pageDiv
     , self = this;
+    
+    this.currentRoute = route; // for reloading
+    
     if (route !== '') {
       route = route.split('/');
       controller = route[0].toLowerCase();
@@ -59,27 +63,30 @@ var PageController = Backbone.Controller.extend({
       }
     }
     
-    pageDiv = $('#page_'+controller+'_'+action);
-    if (pageDiv.length === 0) {
-      pageDiv = $('<div/>', {
+    $pageDiv = $('#page_'+controller+'_'+action);
+    if ($pageDiv.length === 0) {
+      $pageDiv = $('<div/>', {
         id: 'page_'+controller+'_'+action,
         'data-lastLoad': now
       }).appendTo(this.config.$content);
     } else {
       refresh = true;
-      timeout = pageDiv.data('lastLoad')+this.config.pageTimeout < now;
+      timeout = $pageDiv.data('lastLoad')+this.config.pageTimeout < now;
       if (timeout)
-        pageDiv.data('lastLoad', now);
+        $pageDiv.data('lastLoad', now);
     }
     
     try {
-      this.controllers[controller][action].call(this, parameters, pageDiv, refresh, timeout, function () {
-        self.loading--;
+      this.controllers[controller][action].call(this, parameters, $pageDiv, refresh, timeout, function (html, no_handle) {
+        self.loading--; // this ensures that if you started loading a new page while already loading a page, the loading animation isn't stopped on the first page that finishes but on the last one.
         if (self.loading < 1) {
           self.loading = 0; // just to be sure ;D
           self.trigger('page_loading_done');
         }
-        self.breadcrumb(controller, action, parameters);
+        if ( ! no_handle) {
+          self.breadcrumb(controller, action, parameters);
+          self.replacePage($pageDiv, html, controller, action);
+        }
       });
       this.loading++;
       self.trigger('page_loading_start');
@@ -87,6 +94,27 @@ var PageController = Backbone.Controller.extend({
       $.jGrowl('Sorry, there was an error while trying to process your action');
       console.log(e);
     }
+  },
+  
+  reload: function () {
+    this.router(this.currentRoute);
+  },
+  
+  replacePage: function ($div, html, controller, action) {
+    var self = this;
+    if (html && html !== '' && html !== true) {
+      $div.html(html);
+    } else if (html === true) {
+      this.template('user', 'register', {}, function (html) {
+        $div.html(html);
+        if (typeof(self.views[controller]) !== 'undefined' 
+          && typeof(self.views[controller][action]) !== 'undefined') {
+          new self.views[controller][action]();
+        }
+      });
+    }
+    this.config.$breadcrumb.siblings().hide();
+    $div.show();
   },
   
   breadcrumb: function (controller, action, parameters) {
@@ -114,7 +142,7 @@ var PageController = Backbone.Controller.extend({
       callback(this._templates[module][name](locals));
     } else {
       tmpl_module = $('<div id="tmpl_'+module+'"></div>').appendTo('#templates');
-      $.get('/tmpl-'+module+'.html', function (data) {
+      $.get('/templates/tmpl-'+module+'.html', function (data) {
         var found = false;
         if (!data)
           return callback(false);

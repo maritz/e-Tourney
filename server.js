@@ -79,14 +79,7 @@ var start = exports.start = function () {
 		    store: redisSessionStore}));
 		  
 		  // some session stuff
-		  app.use(function (req, res, next) {
-		    if ( ! req.xhr
-		      && req.url.indexOf('User/login') < 0
-		      && req.url.indexOf('User/register') < 0 
-		      && req.session.lastPage !== req.url) {
-		      req.session.lastPage = req.url;
-		    }
-		    
+		  app.use(function (req, res, next) {		    
 		    if (typeof(req.session.lang) === 'undefined') {
 		      req.session.lang = 'en_US';
 		    }

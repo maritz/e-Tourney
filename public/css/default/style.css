@@ -694,32 +694,65 @@ form label {
 input, submit {
   padding: 0 2px; }
 
-input.error {
-  box-shadow: 0 0 5px #F00; }
+input.error, input:invalid, textarea:invalid {
+  -moz-box-shadow: 0 0 4px 0px red;
+  -webkit-box-shadow: 0 0 4px 0px red;
+  box-shadow: 0 0 4px 0px red; }
 
 span.error {
   color: #d52f18;
   font-weight: bold; }
 
-input.error select.error checkbox.error textfield.error {
-  outline: 1px solid red; }
-
+form.default div.fieldset_wrapper {
+  float: left;
+  position: relative; }
+  form.default div.fieldset_wrapper input[type="submit"] {
+    border: auto;
+    position: absolute;
+    right: 50px; }
+  form.default div.fieldset_wrapper input {
+    border: 1px solid black; }
+form.default fieldset {
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  margin: 10px 30px 10px 30px;
+  padding: 0 30px 10px 10px; }
+  form.default fieldset legend {
+    margin: 0 4px;
+    padding: 0 4px;
+    font-size: 15px;
+    font-weight: 700; }
 form.default li {
-  clear: both; }
+  clear: both;
+  margin: 4px 0; }
+  form.default li.headline {
+    font-size: 13px;
+    font-weight: 700; }
   form.default li span {
     display: block; }
-  form.default li label,
-  form.default li input,
-  form.default li div {
-    float: left; }
+form.default input[type="submit"] {
+  display: block;
+  clear: both; }
+
+form.register input[name="login"] {
+  display: none;
+  left: 20px;
+  position: absolute; }
+form.register span.login_failed {
+  bottom: -34px;
+  display: none;
+  left: 20px;
+  position: absolute; }
 
 label.required {
   font-weight: 600; }
 
 div.input_loading {
   border: 1px solid green;
-  display: none;
-  float: right; }
+  display: inline-block;
+  width: 40px; }
 
 /* sticky footer. see http://ryanfait.com/resources/footer-stick-to-bottom-of-page/ */
 #main_container {
