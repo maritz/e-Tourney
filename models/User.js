@@ -121,12 +121,21 @@ var userModel = module.exports = nohm.Model.extend({
     callback = typeof(callback) === 'function' ? callback : fieldCheck;
     
     fields.forEach(function (i) {
+      var fieldCheckResult;
+      
       if (i === 'salt' || // make sure the salt isn't overriden
           ! self.properties.hasOwnProperty(i))
         return;
         
-      if ( doFieldCheck && ! fieldCheck(i, data[i]))
+      if (doFieldCheck)
+        fieldCheckResult = fieldCheck(i, data[i]);
+        
+      if (doFieldCheck && fieldCheckResult === false)
         return;
+      else if (doFieldCheck && typeof (fieldCheckResult) !== 'undefined' &&
+              fieldCheckResult !== true)
+        return props[i] = fieldCheckResult;
+        
       
       props[i] = data[i];
     });

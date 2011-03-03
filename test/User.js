@@ -158,8 +158,129 @@ module.exports = {
         done();
       });
     });
+  },fill: function (done, data, fields, fieldCheck, callback) {
+    done();
+    return false;
+    var props = {}
+    , passwordInField
+    , passwordChanged = false
+    , self = this
+    , doFieldCheck = typeof(callback) === 'function' && typeof(fieldCheck) === 'function';
+    fields = Array.isArray(fields) ? fields : Object.keys(data);
+    callback = typeof(callback) === 'function' ? callback : fieldCheck;
+    
+    fields.forEach(function (i) {
+      if (i === 'salt' || // make sure the salt isn't overriden
+          ! self.properties.hasOwnProperty(i))
+        return;
+        
+      if ( doFieldCheck && ! fieldCheck(i, data[i]))
+        return;
+      
+      props[i] = data[i];
+    });
+   
+    this.p(props);
+    callback(props);
+  },
+  'filling a user returns the correct properties': function (done) {
+    var user = new User()
+    , props = {
+      name: 'fill',
+      email: 'test@test.de',
+      password: 'asdasd'
+    };
+    user.fill(props, null, function (filled_props) {
+      assert.eql(props, filled_props);
+      done();
+    });
+  },
+  'filling a user with invalid data returns the correct properties': function (done) {
+    var user = new User()
+    , props = {
+      name: '',
+      email: 'test',
+      password: 'asd'
+    };
+    user.fill(props, null, function (filled_props) {
+      assert.eql(props, filled_props);
+      done();
+    });
+  },
+  'filling a user with invalid fields does not return those': function (done) {
+    var user = new User()
+    , props = {
+      name: '',
+      email: 'test',
+      password: 'asd',
+      salt: 'ASD',
+      nonExistant: 'haha!'
+    }
+    , controlProps = {
+      name: '',
+      email: 'test',
+      password: 'asd'
+    };
+    user.fill(props, null, function (filled_props) {
+      assert.eql(controlProps, filled_props);
+      done();
+    });
+  },
+  'filling a user with more data than defined fields does not return the extra data': function (done) {
+    var user = new User()
+    , props = {
+      name: 'asd',
+      email: 'test',
+      password: 'asd'
+    }
+    , controlProps = {
+      name: 'asd',
+      password: 'asd'
+    };
+    user.fill(props, ['name', 'password'], function (filled_props) {
+      assert.eql(controlProps, filled_props);
+      done();
+    });
+  },
+  'filling a user returns the same data that is put into the model': function (done) {
+    var user = new User(),
+    controlProps = {}
+    , props = {
+      name: 'asd',
+      email: 'test',
+      password: 'asd'
+    };
+    user.fill(props, null, function (filled_props) {
+      user.propertyDiff().forEach(function (val) {
+        controlProps[val.key] = val.after;
+      });
+      assert.eql(controlProps, filled_props);
+      done();
+    });
+  },
+  'filling a user with a fieldcheck': function (done) {
+    var user = new User(),
+    controlProps = {
+      name: 'asd',
+      password: 'hurg'
+    }
+    , props = {
+      name: 'asd',
+      email: 'test',
+      password: 'asd'
+    };
+    user.fill(props, null, function (key, value) {
+      if (key === 'email' && value === 'test')
+        return false;
+      if (key === 'password')
+        return 'hurg';
+    }, function (filled_props) {
+      assert.eql(controlProps, filled_props);
+      done();
+    });
   },
   'end db connection': function (done) {
+    nohmclient.flushdb();
     nohmclient.quit();
     done();
   }
