@@ -1,5 +1,3 @@
-"use strict";
-
 require.paths.unshift(__dirname + '/../ni/lib');
 var fs = require('fs'),
 Ni = require('ni'),
@@ -19,25 +17,18 @@ process.on('uncaughtException', function(excp) {
 });
 
 // sass watch hack :(
-var sassfiles = fs.readdirSync(__dirname + '/public/css/default');
+var sassfiles = fs.readdirSync(__dirname + '/public/css/default')
+, touchSassFile = function () {
+  child_process.spawn('touch', [__dirname + '/public/css/default/style.scss']);
+};
 for (var i = 0, len = sassfiles.length; i < len; i = i + 1) {
   if (sassfiles[i].match(/\.scss$/i)) {
-    fs.watchFile(__dirname + '/public/css/default/' + sassfiles[i], function () {
-      child_process.spawn('touch', [__dirname + '/public/css/default/style.scss']);
-    });
+    fs.watchFile(__dirname + '/public/css/default/' + sassfiles[i], touchSassFile);
   }
 }
 
-// cloud9 sends SIGTERM but for some reason that doesn't propagate to the child processes.
-process.on('SIGTERM', function () {
-  console.log('Got SIGTERM, closing sass and redis.');
-  sass.kill();
-  redis_server.kill();
-});
-
 // sass does not communicate well at all, so we just ignore sass output here -.-
 var sass = child_process.spawn('/var/lib/gems/1.8/bin/sass', [/*'--debug-info',*/ '--watch', __dirname + '/public/css/default/style.scss']);
-
 
 // real application starts now!
 
@@ -74,4 +65,17 @@ testClient.on('connect', function () {
   testClient.quit();
   testClient.removeAllListeners('error');
   server.start();
+});
+
+
+// cloud9 sends SIGTERM but for some reason that doesn't propagate to the child processes.
+process.on('SIGTERM', function () {
+  console.log('Got SIGTERM, closing sass and redis.');
+  sass.kill();
+  testClient.end();
+  Ni.config('nohmclient').end();
+  if (redis_server) {
+    redis_server.kill();
+  }
+  process.exit();
 });
