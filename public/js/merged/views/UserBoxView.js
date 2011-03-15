@@ -18,11 +18,7 @@ _r(function () {
 
     render: function () {
       // this is called when the self usermodel changes. this means on login and on profile changes.
-      
-      if (window.location.pathname.indexOf('/register') > -1)
-        window.location.href = '/'; // if we're on the registration page and the change event comes we've logged in and need to go somewhere else.
-        
-      $(this.el).addClass('logged_in');
+      this.el.addClass('logged_in');
       $('#top_bar_logged a').last().addClass('logged_in');
       this.$('#userbox_profile').attr('href', '/User/details/' + this.model.get('id'));
       this.$('#userbox_profile span').text(this.model.get('name'));
@@ -30,6 +26,7 @@ _r(function () {
     },
     
     showFail: function () {
+      console.dir(this.$('span.error'));
       this.$('input[type="submit"]').attr('disabled', false);
       this.$('span.error').show();
     },
@@ -44,7 +41,8 @@ _r(function () {
   
   app.views.userBox = userBoxView;
   
-  app.userSelf = new app.models.user({self: true});
+  app.userSelf = new app.models.user();
+  app.userSelf.self = true;
   
   var userBoxView = new userBoxView({ model: app.userSelf });
 

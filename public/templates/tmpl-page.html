@@ -1,5 +1,5 @@
-<script type="text/x-doT-tmpl" name="breadcrumb">
-  %a{href:"##{controller}"}= controller
+<script type="text/x-haml-tmpl" name="breadcrumb">
+%a{href:"##{controller}"}= controller
 
 :if (action && action !== 'index')
   &nbsp;&gt;&nbsp;
@@ -7,6 +7,6 @@
   :if parameters
     &nbsp;&gt;&nbsp;
     %a{href:"##{controller}/#{action}/#{parameters}"}= parameters
-  
+
 %a#reload_page Reload
 </script>

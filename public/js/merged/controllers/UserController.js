@@ -1,11 +1,17 @@
 _r(function () {
-  var self = {}; // models/views
   window.app.controllers['user'] = {
-    index: function (parameters, $div, refresh, timeout, show) {
-      show()
+    index: function (req, res) {
+      res.show()
     },
-    register: function (parameters, $div, refresh, timeout, show) {
-      show(true);
+    register: function (req, res) {
+      res.show(true);
+    },
+    profile: function (req, res) {
+      if (app.userSelf.loggedIn) {
+        res.show(true);
+      } else {
+        window.location.hash = '#User/register';
+      }
     }
   };
 });

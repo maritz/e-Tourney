@@ -1,36 +1,30 @@
 _r(function () {
   var userModel = window.app.models.base.extend({
 
-    logged_in: false,
-    login_failed: false,
+    loggedIn: false,
     id: 0,
     fieldCheckUrl: '/User/checkFieldJson',
+    self: false,
 
     initialize: function (options) {
-      this.conf = {
-        self: false
-      }
       _.extend(this.conf, options);
       
     },
     
     getSelf: function () {
-      if (this.conf.self && $(this.view.el).hasClass('logged_in') && userSelf) {
+      if (this.self && $(this.view.el).hasClass('logged_in') && userSelf) {
         this.set(userSelf);
+        this.loggedIn = true;
       }
     },
 
     login: function (data, cb) {
-      if (this.logged_in)
+      if (this.loggedIn)
         return true;
       var self = this;
-      console.dir(data);
       $.post('/User/loginJson', data, function (response) {
         if (response.result) {
-          self.set({
-            logged_in: true
-          });
-          self.set(response.user);
+          self.setLoggedIn(response.user);
           if (typeof(cb) === 'function') {
             cb(true);
           }
@@ -40,6 +34,11 @@ _r(function () {
           cb(false);
         }
       });
+    },
+    
+    setLoggedIn: function (userdata) {
+      this.loggedIn = true;
+      this.set(userdata);
     }
   });
   

@@ -51,11 +51,11 @@
                 script( type: 'text/javascript')
                   | var userSelf = {name:"#{this.session.user.name}",id:#{userid}};
               #userbox_avatar ?
-              a#userbox_profile( href: '/User/details/'+userid )
+              a#userbox_profile( href: '#User/details/'+userid )
                 span
                   - if (this.session.hasOwnProperty('user'))
                     = this.session.user.name
-              a#userbox_user( href: '/User/profile' )
+              a#userbox_user( href: '#User/profile' )
                 img( src: '', alt: '>' )
                 span Edit profile
               a#userbox_team.clearfix
@@ -107,7 +107,13 @@
     script( src: '//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js' )
     :javascript
       !window.jQuery && document.write(unescape('%3Cscript src="/js/jquery-1.4.4.min.js"%3E%3C/script%3E'))
-    script( src: '/js/' + staticVersions.js + '/merged.js' )
+    script( src: '/socket.io/socket.io.js' )
+
+    - if (typeof(js_files) !== 'undefined')
+      - each file in js_files
+        script( src: '/js/merged/'+file )
+    - else
+      script( src: '/js/' + staticVersions.js + '/merged.js' )
     
 
     !='<!--[if lt IE 7 ]>'

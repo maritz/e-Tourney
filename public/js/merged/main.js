@@ -12,4 +12,16 @@ _r(function () {
   $('#header_userbox input[type="button"]').click(function () {
     window.location = '#User/register';
   });
+  
+  window.socket = new io.Socket();
+  socket.connect();
+  socket.on('connect', function(){
+    console.log('connected');
+  });
+  socket.on('message', function(){
+    console.dir(arguments);
+  });
+  socket.on('disconnect', function(){
+    console.log('disconnect');
+  })
 });

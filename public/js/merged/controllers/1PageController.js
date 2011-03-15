@@ -21,6 +21,14 @@ var _r = function (fn, unshift) {
   }
 };
 
+if (typeof(console) === 'undefined') {
+  var noop = function () {}
+  window.console = {
+    log: noop,
+    dir: noop
+  }
+}
+
 var PageController = Backbone.Controller.extend({
   
   initialize: function (spec) {
@@ -77,17 +85,26 @@ var PageController = Backbone.Controller.extend({
     }
     
     try {
-      this.controllers[controller][action].call(this, parameters, $pageDiv, refresh, timeout, function (html, no_handle) {
-        self.loading--; // this ensures that if you started loading a new page while already loading a page, the loading animation isn't stopped on the first page that finishes but on the last one.
-        if (self.loading < 1) {
-          self.loading = 0; // just to be sure ;D
-          self.trigger('page_loading_done');
+      var req = {
+        params: parameters,
+        $context: $pageDiv,
+        refresh: refresh,
+        timeout: timeout
+      }
+      , res = {
+        show: function (html, no_handle) {
+          self.loading--; // this ensures that if you started loading a new page while already loading a page, the loading animation isn't stopped on the first page that finishes but on the last one.
+          if (self.loading < 1) {
+            self.loading = 0; // just to be sure ;D
+            self.trigger('page_loading_done');
+          }
+          if ( ! no_handle) {
+            self.breadcrumb(controller, action, parameters);
+            self.replacePage($pageDiv, html, controller, action);
+          }
         }
-        if ( ! no_handle) {
-          self.breadcrumb(controller, action, parameters);
-          self.replacePage($pageDiv, html, controller, action);
-        }
-      });
+      }
+      this.controllers[controller][action].call(this, req, res);
       this.loading++;
       self.trigger('page_loading_start');
     } catch(e) {
@@ -101,11 +118,13 @@ var PageController = Backbone.Controller.extend({
   },
   
   replacePage: function ($div, html, controller, action) {
-    var self = this;
+    var self = this
+    , siblings = this.config.$breadcrumb.siblings();
+    $div.hide();
     if (html && html !== '' && html !== true) {
       $div.html(html);
     } else if (html === true) {
-      this.template('user', 'register', {}, function (html) {
+      this.template(controller, action, {}, function (html) {
         $div.html(html);
         if (typeof(self.views[controller]) !== 'undefined' 
           && typeof(self.views[controller][action]) !== 'undefined') {
@@ -113,8 +132,12 @@ var PageController = Backbone.Controller.extend({
         }
       });
     }
-    this.config.$breadcrumb.siblings().hide();
-    $div.show();
+    if (siblings.length === 0) {
+     $div.show();
+    } else {
+      siblings.hide();
+      $div.fadeIn(300);
+    }
   },
   
   breadcrumb: function (controller, action, parameters) {
@@ -131,16 +154,30 @@ var PageController = Backbone.Controller.extend({
   
   _templates: {},
   template: function (module, name, locals, callback) {
-    if (typeof(callback) !== 'function') {
-      throw new Error('Can\'t call _template without a callback');
-    }
     var self = this,
     tmpl_module;
     
+    locals = locals || {};
+    
+    _.extend(locals, {
+      partial: function (name, locals_) {
+        locals_ = _.extend(locals, locals_);
+        return self.template(module, name, locals_);
+      }
+    });
+    
     // TODO: cache templates in localStorage
     if (self._templates.hasOwnProperty(module) && self._templates[module].hasOwnProperty(name)) {
-      callback(this._templates[module][name](locals));
+      var html = this._templates[module][name](locals)
+      if (typeof(callback) === 'function') {
+        callback(html);
+      } else {
+        return html;
+      }
     } else {
+      if (typeof(callback) !== 'function') {
+        throw new Error('Can\'t call _template without a callback if the template module was not loaded yet!');
+      }
       tmpl_module = $('<div id="tmpl_'+module+'"></div>').appendTo('#templates');
       $.get('/templates/tmpl-'+module+'.html', function (data) {
         var found = false;

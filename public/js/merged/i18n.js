@@ -20,10 +20,11 @@
     } catch(e) {
       console.log('failed parsing data from localStorage');
       console.dir(key);
+      localStorage.removeItem(key);
       if (rethrow) {
         throw e;
       }
-      // TODO: automatically delete the data
+      return null;
     }
   };
   

@@ -98,8 +98,11 @@ header {
   width: #{$userbox_width}px;
   z-index: 2;
   span.error {
-    @include absolute(right, top, 30px, -12px);
+    @include absolute(right, top, 30px, -10px);
     display: none;
+    float: auto;
+    @include opacity(1);
+    width: auto;
   }
   form {
     color: white;

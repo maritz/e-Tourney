@@ -19,7 +19,7 @@ html * {
     family: Tahoma, Arial, sans-serif; }; }
 
 html, body {
-  padding: 0.2% 2% 0 2%;
+  padding: 3px 2% 0 2%;
   height: 100%;}
 
 body {
@@ -55,6 +55,14 @@ body {
   padding: 4px 8px;
 }
 
+.success .jGrowl-message, .success .jGrowl-header {
+  color: #3f3;
+}
+
+.jGrowl-header {
+  font-weight: 700;
+}
+
 .jGrowl-notification.warning {
   color: #e8ac14;
 }
@@ -64,6 +72,20 @@ body {
   font-weight: bold;
 	cursor: pointer;
 }
+
+.tip {
+  border: 1px solid #444444; /*1px solid #FFD5AA;*/
+  @include border-radius(5px);
+  background: #000;
+  color: #fff;
+  display: none;
+  max-width: 300px;
+  padding: 5px;
+  position: absolute;
+  @include opacity(0.9);
+  z-index: 100000;
+}
+
 
 
 @import "_header.scss";

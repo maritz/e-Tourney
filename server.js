@@ -8,7 +8,8 @@ assetHandlers = require('connect-assetmanager-handlers'),
 i18n = require(__dirname + '/helpers/translations.js'),
 vsprintf = require('sprintf').vsprintf,
 nohm = require('nohm'),
-viewHelpers = require(__dirname + '/helpers/view');
+viewHelpers = require(__dirname + '/helpers/view'),
+io = require('socket.io');
 
 var start = exports.start = function () {
   Ni.boot(function() {
@@ -119,6 +120,9 @@ var start = exports.start = function () {
 		      rlocals.workerStart = workerstart;
 		      rlocals.staticVersions = assetsManagerMiddleware.cacheTimestamps || 0;
           rlocals.i18n_hash = i18n.getHash(req.session.lang);
+          if (app.set('env') === 'development') {
+            rlocals.js_files = files;
+          }
 		      if (typeof(options) === 'undefined') {
 		        options = {
               cache: true,
@@ -140,30 +144,34 @@ var start = exports.start = function () {
 		  app.use(Ni.renderView(function(req, res, next, filename) {
 		    res.render(filename, {layout: __dirname + '/views/layout.jade'});
 		  }));
-		
+      
 		  app.use(function (req, res, next) {
-		    res.render(__dirname + '/views/404', {layout: __dirname + '/views/layout.jade'});
+        if ( ! req.no404 ) { // socket.io request
+		      res.render(__dirname + '/views/404', {layout: __dirname + '/views/layout.jade'});
+        } else {
+          next();
+        }
 		  });
 		
 		  if (app.set('env') !== 'production') {
+        // TODO: this will not work with the socket.io workaround!
 		    app.use(express.errorHandler({showStack: true, dumpExceptions: true}));
 		  }
-		
-		  if (app.set('env') === 'production') {
-		    // TODO: evaluate how this works with the new app.js/server.js structure
-		    fugue.start(app, 80, null, 2, {
-		      started: function () {
-		        console.log('listening on 80');
-		      },
-		      log_file: __dirname + '/log/workers.log',
-		      //master_log_file: __dirname + '/log/master.log',
-		      master_pid_path: '/tmp/fugue-master-etourney-devel.pid',
-		      verbose: false
-		    });
-		  } else {
-		    app.listen(3002);
-		    console.log('listening on 3002');
-		  }
+      
+      // start the app!
+	    app.listen(3002);
+	    console.log('listening on 3002');
+      
+      //socket.io stuff
+      var socket = io.listen(app); 
+      socket.on('connection', function(client){ 
+        client.on('message', function () {
+          client.request.no404 = true;
+          app.handle(client.request, client.response, function(err){
+            client.send('HUHU!');
+          });
+        });
+      }) 
 		});
   });
 }
