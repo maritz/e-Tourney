@@ -16,14 +16,9 @@ redisListener.on("message", function (channel, message) {
   listener.emit(channel, message);
 });
 
-var subscribe = function (channel, fn) {
-  listener.on(channel, function () {
-    console.dir(arguments);
-    fn();
-  });
-  console.log('subscribed to '+channel);
-  redisListener.subscribe(channel);
-}
+listener.on('newListener', function (event, listener) {
+  redisListener.subscribe(event);
+});
 
 var sessionHandler = function (client) {
   express.cookieParser()(client.request, null, function () {
@@ -33,13 +28,16 @@ var sessionHandler = function (client) {
         if (err) {
           console.dir(err);
         } else {
-          client.session = session;
-          client.sessionId = sessionId;
-          var channel = 'pubsub.sess.'+sessionId;
-          subscribe(channel, function () {
+          client.appSession = session;
+          client.appSessionId = sessionId;
+          listener.on('pubsub.sess.'+sessionId, function (newId) {
             client.send({
-              type: 'session_regenerated',
-              message: 'blub'
+              type: 'set_cookie',
+              message: {
+                name: Ni.config('cookie_key'),
+                value: newId,
+                options: Ni.config('cookie_config')
+              }
             });
           });
         }

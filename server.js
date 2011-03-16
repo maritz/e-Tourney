@@ -63,6 +63,7 @@ var start = exports.start = function () {
 		redisSessionStore.client.select(Ni.config('redis_session_db'), function () {
 		  
 		  app.use(express.session({
+        cookie: Ni.config('cookie_config'),
         key: Ni.config('cookie_key'),
 		    secret: Ni.config('cookie_secret'),
 		    store: redisSessionStore}));

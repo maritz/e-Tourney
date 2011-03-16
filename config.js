@@ -15,3 +15,7 @@ Ni.config('redis_pubsub_db', 3);
 // cookies
 Ni.config('cookie_key', 'etourney-dev');
 Ni.config('cookie_secret', 'ASHUAoant3uiTNtn28');
+Ni.config('cookie_config', {
+  httpOnly: false,
+  maxAge: 14400000
+});
