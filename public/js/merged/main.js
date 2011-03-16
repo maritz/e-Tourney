@@ -18,8 +18,9 @@ _r(function () {
   socket.on('connect', function(){
     console.log('connected');
   });
-  socket.on('message', function(){
-    console.dir(arguments);
+  socket.on('message', function(msg){
+    console.dir(msg);
+    $.jGrowl(msg);
   });
   socket.on('disconnect', function(){
     console.log('disconnect');

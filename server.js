@@ -1,15 +1,14 @@
 var express = require('express'),
-RedisStore = require('connect-redis'),
-Ni = require('ni'),
-fugue = require('fugue'),
-helpers = require(__dirname + '/helpers/general'),
-assetManager = require('connect-assetmanager'),
-assetHandlers = require('connect-assetmanager-handlers'),
-i18n = require(__dirname + '/helpers/translations.js'),
-vsprintf = require('sprintf').vsprintf,
-nohm = require('nohm'),
-viewHelpers = require(__dirname + '/helpers/view'),
-io = require('socket.io');
+    RedisStore = require('connect-redis'),
+    Ni = require('ni'),
+    helpers = require(__dirname + '/helpers/general'),
+    assetManager = require('connect-assetmanager'),
+    assetHandlers = require('connect-assetmanager-handlers'),
+    i18n = require(__dirname + '/helpers/translations.js'),
+    vsprintf = require('sprintf').vsprintf,
+    nohm = require('nohm'),
+    io = require('socket.io'),
+    socketHandler = require(__dirname + '/sockets');
 
 var start = exports.start = function () {
   Ni.boot(function() {
@@ -21,157 +20,126 @@ var start = exports.start = function () {
 		  }
 		  Ni.config('nohmclient', nohmclient);
 		});
-		
-		var workerstart = new Date().toLocaleTimeString();
-		
-		Ni.addRoute('/', '/News/index');
-		Ni.addRoute(/^\/register/i, '/User/register');
-		Ni.addRoute(/^\/logout/i, '/User/logout');
-		Ni.addRoute(/^\/login/i, '/User/login');
-		
+    
 		// initialize the main app
 		var app = express.createServer();
 		app.set('view engine', 'jade');
 		
-		if (app.set('env') !== 'production') {
-		  app.use(express.lint(app));
-		} else {
-		  app.use(express.logger());
-		}
-		
 		// static stuff
-		app.use(express.conditionalGet());
 		app.use(express.favicon(__dirname + '/public/images/icons/favicon.png'));
 		
-    //app.use(express.gzip());
-		
 		// connect assetmanager to pack js. (css already handled by sass)
-		var files = require(__dirname + '/helpers/collect-client-js');
-		var assetsManagerMiddleware = assetManager({
-		    'js': {
-		        'route': /\/js\/[0-9]+\/merged\.js/
-		        , 'path': __dirname + '/public/js/merged/'
-		        , 'dataType': 'javascript'
-		        , 'files': files
-		        , 'preManipulate': {
-		            'MSIE': []
-		            , '^': app.set('env') === 'production' ? [
-		                assetHandlers.uglifyJsOptimize
-		            ] : [] // only minify if in production mode
-		        }
-		        , 'debug': app.set('env') !== 'production' // minification only in production mode
+		var files = require(__dirname + '/helpers/collect-client-js'),
+		    assetsManagerMiddleware = assetManager({
+        'js': {
+          'route': /\/js\/[0-9]+\/merged\.js/,
+          'path': __dirname + '/public/js/merged/',
+          'dataType': 'javascript',
+          'files': files,
+          'preManipulate': {
+              'MSIE': [],
+              '^': app.set('env') === 'production' ? [
+                  assetHandlers.uglifyJsOptimize
+              ] : [] // only minify if in production mode
+          },
+          'debug': app.set('env') !== 'production' // minification only in production mode
 		    }
 		});
 		app.use(assetsManagerMiddleware);
 		
 		
-		app.use(express.staticProvider(__dirname + '/public'));
+		app.use(express['static'](__dirname + '/public')); // static is a reserved keyword ffs
 		
 		// start main app pre-routing stuff
 		
-		app.use(express.bodyDecoder());
-		app.use(express.cookieDecoder());
+		app.use(express.bodyParser());
+		app.use(express.cookieParser());
 		
-		var redisSessionStore = new RedisStore({magAge: 60000 * 60 * 24 /* one day */, port: Ni.config('redis_port')});
+    socketHandler.proxyRedisStore();
+		var redisSessionStore = new RedisStore({
+      magAge: 1000*60*60*24 /* one day */, 
+      port: Ni.config('redis_port')
+    });
 		redisSessionStore.client.select(Ni.config('redis_session_db'), function () {
 		  
-		  app.use(express.session({key: Ni.config('cookie_key'),
+		  app.use(express.session({
+        key: Ni.config('cookie_key'),
 		    secret: Ni.config('cookie_secret'),
 		    store: redisSessionStore}));
+        
+      var trByLang = function (lang) {
+        if (typeof(this.langs) === 'undefined' || typeof(this.langs[lang]) !== 'function') {
+          trByLang.langs = [];
+          trByLang.langs[lang] = function tr (key) { // TODO: maybe cache this on a per-language base
+            var args = Array.prototype.slice.call(arguments),
+                str = i18n.getTranslation(lang, key);
+            args.shift();
+            return vsprintf(str, args);
+          };
+        }
+        return trByLang.langs[lang];
+      };
 		  
-		  // some session stuff
-		  app.use(function (req, res, next) {		    
-		    if (typeof(req.session.lang) === 'undefined') {
-		      req.session.lang = 'en_US';
-		    }
-		    next();
-		  });
-		  
-		  // set language stuff
-		  app.get('*', function (req, res, next) {
+		  app.get('/', function (req, res, next) {
+        if (req.accepts('json')) {
+          next();
+        }
+        
 		    var lang = req.param('lang');
 		    if (typeof(lang) !== 'undefined' && i18n.langs.indexOf(lang) >= 0) {
-		      req.session.lang = req.param('lang');
+		      req.session.lang = lang;
+		    } else if (typeof(req.session.lang) === 'undefined') {
+          lang = req.session.lang = 'en_US';
+		    } else {
+          lang = req.session.lang;
 		    }
-		    next();
-		  });
-		  
-		  app.use(function (req, res, next) {
-		    lang = req.session.lang;
-		    req.tr = function tr (key) { // TODO: maybe cache this on a per-language base
-		      var args = Array.prototype.slice.call(arguments);
-		      args.shift();
-		      var str = i18n.getTranslation(lang, key);
-		      return vsprintf(str, args);
-		    }
-		    next();
-		  })
-		
-		  // render stuff
-		  app.use(function (req, res, next) {
-		    res.original_render = res.render;
-		    res.rlocals = {};
-		    res.render = function (file, options) {
-		      var rlocals = res.rlocals;
-		      rlocals.tr = req.tr;
-		      rlocals.loggedClass = req.session.logged_in ? 'logged_in' : '';
-		      rlocals.currentUrl = req.url;
-		      rlocals.workerId = fugue.workerId();
-		      rlocals.workerStart = workerstart;
-		      rlocals.staticVersions = assetsManagerMiddleware.cacheTimestamps || 0;
-          rlocals.i18n_hash = i18n.getHash(req.session.lang);
-          if (app.set('env') === 'development') {
-            rlocals.js_files = files;
+        
+        res.render(__dirname+'/views/index', {
+          layout: __dirname+'/views/layout',
+          locals: {
+            cache: true,
+            tr: trByLang(lang),
+            loggedClass: req.session.logged_in ? 'logged_in' : '',
+    	      currentUrl: req.url,
+  		      staticVersions: assetsManagerMiddleware.cacheTimestamps || 0,
+            i18n_hash: i18n.getHash(req.session.lang),
+            session: req.session,
+            js_files: app.set('env') === 'development' ? files : false
           }
-		      if (typeof(options) === 'undefined') {
-		        options = {
-              cache: true,
-              filename: file
-            };
-		      }
-		      options.locals = helpers.merge(options.locals, rlocals, viewHelpers);
-		      try {
-		        res.original_render(file, options);
-		      } catch (e) {
-		        console.dir(e);
-		      }
-		    };
-		    next();
+        });
 		  });
 		
-		  app.use(Ni.router);
-		
-		  app.use(Ni.renderView(function(req, res, next, filename) {
-		    res.render(filename, {layout: __dirname + '/views/layout.jade'});
-		  }));
-      
 		  app.use(function (req, res, next) {
-        if ( ! req.no404 ) { // socket.io request
-		      res.render(__dirname + '/views/404', {layout: __dirname + '/views/layout.jade'});
+        if (req.accepts('json')) {
+          Ni.router.apply(null, arguments);
         } else {
           next();
         }
+      });
+      
+		  app.use(function (req, res, next) {        
+	      res.render(__dirname + '/views/404', {
+          layout: __dirname+'/views/layout.jade',
+          locals: {
+            cache: true,
+            tr: trByLang('en_US'),
+  		      staticVersions: assetsManagerMiddleware.cacheTimestamps || 0,
+            js_files: []
+          }
+        });
 		  });
 		
 		  if (app.set('env') !== 'production') {
-        // TODO: this will not work with the socket.io workaround!
 		    app.use(express.errorHandler({showStack: true, dumpExceptions: true}));
 		  }
       
       // start the app!
-	    app.listen(3002);
-	    console.log('listening on 3002');
+	    app.listen(Ni.config('app port'));
+	    console.log('listening on '+Ni.config('app port'));
       
-      //socket.io stuff
-      var socket = io.listen(app); 
-      socket.on('connection', function(client){ 
-        client.on('message', function () {
-          client.request.no404 = true;
-          app.handle(client.request, client.response, function(err){
-            client.send('HUHU!');
-          });
-        });
-      }) 
+      socketHandler.setSessionStore(redisSessionStore);
+      socketHandler.listen(app);
+      Ni.config('socket', socketHandler.getSocket());
 		});
   });
 }
