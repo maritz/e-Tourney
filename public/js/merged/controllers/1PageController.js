@@ -22,11 +22,11 @@ var _r = function (fn, unshift) {
 };
 
 if (typeof(console) === 'undefined') {
-  var noop = function () {}
+  var noop = function () {};
   window.console = {
     log: noop,
     dir: noop
-  }
+  };
 }
 
 var PageController = Backbone.Controller.extend({
@@ -49,14 +49,14 @@ var PageController = Backbone.Controller.extend({
   },
   
   router: function(route){
-    var controller = 'news'
-    , action = 'index'
-    , parameters = []
-    , refresh = false
-    , timeout = false
-    , now = +new Date()
-    , $pageDiv
-    , self = this;
+    var controller = 'news',
+        action = 'index',
+        parameters = [],
+        refresh = false,
+        timeout = false,
+        now = +new Date(),
+        $pageDiv,
+        self = this;
     
     this.currentRoute = route; // for reloading
     
@@ -90,8 +90,8 @@ var PageController = Backbone.Controller.extend({
         $context: $pageDiv,
         refresh: refresh,
         timeout: timeout
-      }
-      , res = {
+      }, 
+      res = {
         show: function (html, no_handle) {
           self.loading--; // this ensures that if you started loading a new page while already loading a page, the loading animation isn't stopped on the first page that finishes but on the last one.
           if (self.loading < 1) {
@@ -103,7 +103,7 @@ var PageController = Backbone.Controller.extend({
             self.replacePage($pageDiv, html, controller, action);
           }
         }
-      }
+      };
       this.controllers[controller][action].call(this, req, res);
       this.loading++;
       self.trigger('page_loading_start');
@@ -118,17 +118,18 @@ var PageController = Backbone.Controller.extend({
   },
   
   replacePage: function ($div, html, controller, action) {
-    var self = this
-    , siblings = this.config.$breadcrumb.siblings();
+    var self = this,
+        siblings = this.config.$breadcrumb.siblings();
     $div.hide();
     if (html && html !== '' && html !== true) {
       $div.html(html);
     } else if (html === true) {
       this.template(controller, action, {}, function (html) {
         $div.html(html);
-        if (typeof(self.views[controller]) !== 'undefined' 
-          && typeof(self.views[controller][action]) !== 'undefined') {
-          new self.views[controller][action]();
+        if (typeof(self.views[controller]) !== 'undefined' &&
+            typeof(self.views[controller][action]) !== 'undefined') {
+          new self.views[controller][action]($div);
+          // TODO: change this to call the views render() function and let that handle the templating
         }
       });
     }
@@ -167,8 +168,8 @@ var PageController = Backbone.Controller.extend({
     });
     
     // TODO: cache templates in localStorage
-    if (self._templates.hasOwnProperty(module) && self._templates[module].hasOwnProperty(name)) {
-      var html = this._templates[module][name](locals)
+    if (this._templates.hasOwnProperty(module) && this._templates[module].hasOwnProperty(name)) {
+      var html = this._templates[module][name](locals);
       if (typeof(callback) === 'function') {
         callback(html);
       } else {
@@ -176,6 +177,8 @@ var PageController = Backbone.Controller.extend({
       }
     } else {
       if (typeof(callback) !== 'function') {
+        console.dir(this._templates);
+        console.dir(arguments);
         throw new Error('Can\'t call _template without a callback if the template module was not loaded yet!');
       }
       tmpl_module = $('<div id="tmpl_'+module+'"></div>').appendTo('#templates');
@@ -186,16 +189,18 @@ var PageController = Backbone.Controller.extend({
         self._templates[module] = {};
         
         tmpl_module.append(data).children('script').each(function (i, val) {
-          var tmpl = Haml(val.innerHTML)
-          , loaded_name = val.getAttribute('name');
+          var tmpl = Haml(val.innerHTML),
+              loaded_name = val.getAttribute('name');
           self._templates[module][loaded_name] = tmpl;
           if (loaded_name === name) {
-            found = true;
-            callback(tmpl(locals));
+            found = tmpl;
           }
         }).end().remove();
-        if (!found)
+        if (!found) {
           callback(false);
+        } else {
+          callback(found(locals));
+        }
       }, 'html');
     }
   }

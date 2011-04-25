@@ -1,5 +1,5 @@
 _r(function () {
-  window.app.controllers['user'] = {
+  window.app.controllers.user = {
     index: function (req, res) {
       res.show()
     },

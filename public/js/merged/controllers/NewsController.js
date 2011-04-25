@@ -1,5 +1,5 @@
 _r(function () {
-  window.app.controllers['news'] = {
+  window.app.controllers.news = {
     index: function (req, res) {
       if (req.refresh && req.timeout)
         $.jGrowl('now the news should be reloaded');

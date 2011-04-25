@@ -5,11 +5,6 @@ _r(function () {
     id: 0,
     fieldCheckUrl: '/User/checkFieldJson',
     self: false,
-
-    initialize: function (options) {
-      _.extend(this.conf, options);
-      
-    },
     
     getSelf: function () {
       if (this.self && $(this.view.el).hasClass('logged_in') && userSelf) {

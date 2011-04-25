@@ -1,0 +1,71 @@
+$main_height: 300;
+$input_height: 18;
+$rest: $main_height - $input_height;
+
+div.chat.main {
+  border: 1px solid black;
+  @include border-radius(3px);
+  height: #{$main_height}px;
+  width: 98%;
+  
+  > div {
+    height: #{$rest}px;
+  }
+  
+  > .messages {
+    position: relative;
+    float: left;
+    height: #{$rest}px;
+    overflow: auto;
+    width: 87%;
+
+    table {
+      word-wrap: break-word;
+      tbody {
+      }
+      td {
+        padding: 4px;
+      }
+
+      td.time {
+        color: grey;
+        padding-right: 0;
+      }
+
+      td.nick {
+        font-weight: bold;
+      }
+    }
+  }
+
+  > .userlist {
+    border-left: 2px solid grey;
+    float: left;
+    height: #{$rest}px;
+    margin-left: -2px;
+    overflow: auto;
+    width: 13%;
+    li.no-user {
+      font-weight: bold;
+    }
+  }
+
+  > .input {
+    border-top: 2px solid grey;
+    clear: both;
+    height: #{$input_height}px;
+    
+    input {
+      border: 0;
+      padding: 0;
+    }
+
+    input[type="text"] {
+      width: 85%;
+    }
+    
+    input[type="submit"] {
+      width: 15%;
+    }
+  }
+}

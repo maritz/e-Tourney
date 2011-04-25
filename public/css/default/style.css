@@ -813,3 +813,48 @@ footer {
     margin: auto;
     padding-top: 10px;
     text-align: center; }
+
+div.chat.main {
+  border: 1px solid black;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  height: 300px;
+  width: 98%; }
+  div.chat.main > div {
+    height: 282px; }
+  div.chat.main > .messages {
+    position: relative;
+    float: left;
+    height: 282px;
+    overflow: auto;
+    width: 87%; }
+    div.chat.main > .messages table {
+      word-wrap: break-word; }
+      div.chat.main > .messages table td {
+        padding: 4px; }
+      div.chat.main > .messages table td.time {
+        color: grey;
+        padding-right: 0; }
+      div.chat.main > .messages table td.nick {
+        font-weight: bold; }
+  div.chat.main > .userlist {
+    border-left: 2px solid grey;
+    float: left;
+    height: 282px;
+    margin-left: -2px;
+    overflow: auto;
+    width: 13%; }
+    div.chat.main > .userlist li.no-user {
+      font-weight: bold; }
+  div.chat.main > .input {
+    border-top: 2px solid grey;
+    clear: both;
+    height: 18px; }
+    div.chat.main > .input input {
+      border: 0;
+      padding: 0; }
+    div.chat.main > .input input[type="text"] {
+      width: 85%; }
+    div.chat.main > .input input[type="submit"] {
+      width: 15%; }

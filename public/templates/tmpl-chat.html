@@ -1,0 +1,33 @@
+<script type="text/x-haml-tmpl" name="index">
+.chat.main
+  =partial('messages')
+  =partial('userlist')
+  =partial('input')
+</script>
+
+<script type="text/x-haml-tmpl" name="messages">
+.messages
+  %table
+    =partial('message', { time: +new Date(), nick: 'System', text: $.t('chat.meta.welcome') })
+</script>
+
+<script type="text/x-haml-tmpl" name="message">
+%tr
+  %td.time&=new Date(time).getHours()+':'+new Date(time).getMinutes()+':'+new Date(time).getSeconds()
+  %td.nick&=nick+':'
+  %td.text&=text
+</script>
+
+
+<script type="text/x-haml-tmpl" name="userlist">
+.userlist
+  %ul
+    %li.no-user=$.t('chat.meta.users')
+</script>
+
+<script type="text/x-haml-tmpl" name="input">
+.input
+  %form{ action: null }
+    %input{ type: 'text', name: 'new_message' }
+    %input{ type: 'submit', value: $.t('chat.labels.send') }
+</script>
