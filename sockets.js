@@ -15,49 +15,57 @@ var io = require('socket.io'),
 redisPublisher.select(Ni.config('redis_pubsub_db'));
 redisListener.select(Ni.config('redis_pubsub_db'));
 
-console.log('redis pubsub is on '+Ni.config('redis_host')+':'+Ni.config('redis_port')+' db: '+Ni.config('redis_pubsub_db'));
-
 var guestCounter = 0;
+
 var sessionHandler = function (client) {
+  
+  var setNewSession = function (session) {
+    client.appSession = session;
+    
+    if ( ! session.logged_in) {
+      client.name = 'Guest '+ (++guestCounter);
+    } else {
+      client.name = session.user.name;
+    }
+    
+    client.send({
+      type: 'set_meta',
+      message: {
+        name: 'selfName',
+        value: client.name
+      }
+    });
+  };
   
   express.cookieParser()(client.request, null, function () {
     var sessionId = client.request.cookies[Ni.config('cookie_key')];
     
-    sessionStore.get(sessionId,
-      function (err, session) {
-        if (err) {
-          console.dir(err);
-        } else {
-          client.appSession = session;
-          client.appSessionId = sessionId;
-          
-          if ( ! session.logged_in) {
-            client.name = 'Guest '+ (++guestCounter);
-          } else {
-            client.name = session.user.name;
-          }
-          
+    sessionStore.get(sessionId, function (err, session) {
+      if (err) {
+        console.dir(err);
+      } else {
+        setNewSession(session);
+        
+        // on session changes
+        client.redis.on('pubsub.sess.'+sessionId, function (newId) {
+          // set the new sid cookie
           client.send({
-            type: 'set_meta',
+            type: 'set_cookie',
             message: {
-              name: 'selfName',
-              value: client.name
+              name: Ni.config('cookie_key'),
+              value: newId,
+              options: Ni.config('cookie_config'),
+              overwrite: 'different'
             }
           });
           
-          client.redis.on('pubsub.sess.'+sessionId, function (newId) {
-            client.send({
-              type: 'set_cookie',
-              message: {
-                name: Ni.config('cookie_key'),
-                value: newId,
-                options: Ni.config('cookie_config'),
-                overwrite: 'different'
-              }
-            });
+          // get the new user name
+          sessionStore.get(newId, function (err, session) {
+            setNewSession(session);
           });
-        }
-      });
+        });
+      }
+    });
   });
 };
 
@@ -85,7 +93,7 @@ var messageHandler = {
     
     this.subscriptions++;
     this.redis.on(msg.channel, function (newMsg) {
-      console.log('sending '+newMsg+' from '+msg.channel);
+      console.log('sending '+newMsg+' from '+msg.channel+' to '+self.name);
       self.send({
         type: 'published',
         message: {
@@ -106,11 +114,11 @@ var messageHandler = {
       return false;
     }
     
-    console.log('publishing '+msg.value+' to '+msg.channel);
     var obj = {
       value: msg.value,
       publisher: this.name
     };
+    console.log('publishing '+JSON.stringify(obj)+' to '+msg.channel);
     redisPublisher.publish(msg.channel, JSON.stringify(obj));
   }
 };
@@ -126,14 +134,17 @@ exports.listen = function (app) {
     client.redis = new Emitter();
     var clientRedisEvents = [];
     redisListener.on('message', function (channel, message) {
+      console.log('client redis emitting on channel: '+channel+' to '+client.name);
       client.redis.emit(channel, message);
     });
+    
     client.redis.on('newListener', function (event, listener) {
-      console.log('adding client listener for '+event);
+      console.log('listening to '+event);
       if ( ! redisListenerCounter.hasOwnProperty(event)) {
-        redisListener.subscribe(event);
         redisListenerCounter[event] = 0;
         clientRedisEvents.push(event);
+        console.dir('subscribing redis to '+event);
+        redisListener.subscribe(event);
       }
       redisListenerCounter[event]++;
     });
@@ -148,12 +159,13 @@ exports.listen = function (app) {
     
     client.on('disconnect', function () {
       clientRedisEvents.forEach(function (event) {
-        console.log('removing all client redis listeners for '+event);
+        console.log('unsubscribing client redis from '+event);
         client.redis.removeAllListeners(event);
         redisListenerCounter[event]--;
         if (redisListenerCounter[event] <= 0) {
-          console.log('remvoing global redis listener for '+event);
+          console.log('unsubscribing redis from '+event);
           redisListener.unsubscribe(event);
+          delete redisListenerCounter[event];
         }
       });
     });
@@ -170,15 +182,15 @@ exports.getSocket = function () {
 exports.proxyRedisStore = function () {  
   var regen = RedisStore.prototype.regenerate;
   RedisStore.prototype.regenerate = function (req, fn) {
-    var self = this,
-        oldID = req.sessionID;
+    var oldID = req.sessionID;
     regen.call(this, req, function (err) {
       if (err) {
         console.log('An error occured while regenerating the session: (maybe sockets.js proxyRedisStore() is responsible)');
         console.dir(err);
         return fn(err);
       }
-      self.client.publish('pubsub.sess.'+oldID, req.sessionID, fn);
+      redisPublisher.publish('pubsub.sess.'+oldID, req.sessionID);
+      fn();
     });
   };
 };
