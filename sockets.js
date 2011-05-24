@@ -15,6 +15,8 @@ var io = require('socket.io'),
 redisPublisher.select(Ni.config('redis_pubsub_db'));
 redisListener.select(Ni.config('redis_pubsub_db'));
 
+console.log('redis pubsub is on '+Ni.config('redis_host')+':'+Ni.config('redis_port')+' db: '+Ni.config('redis_pubsub_db'));
+
 var guestCounter = 0;
 var sessionHandler = function (client) {
   
@@ -43,7 +45,7 @@ var sessionHandler = function (client) {
             }
           });
           
-          client.redis.on('pubsub.sess.'+sessionId, function (channel, newId) {
+          client.redis.on('pubsub.sess.'+sessionId, function (newId) {
             client.send({
               type: 'set_cookie',
               message: {
@@ -82,7 +84,7 @@ var messageHandler = {
     }
     
     this.subscriptions++;
-    this.redis.on(msg.channel, function (channel, newMsg) {
+    this.redis.on(msg.channel, function (newMsg) {
       console.log('sending '+newMsg+' from '+msg.channel);
       self.send({
         type: 'published',
@@ -113,7 +115,6 @@ var messageHandler = {
   }
 };
 
-
 /**
  * Create the socket server
  */
@@ -124,13 +125,13 @@ exports.listen = function (app) {
     
     client.redis = new Emitter();
     var clientRedisEvents = [];
+    redisListener.on('message', function (channel, message) {
+      client.redis.emit(channel, message);
+    });
     client.redis.on('newListener', function (event, listener) {
       console.log('adding client listener for '+event);
-      redisListener.subscribe(event, function () {
-        console.dir(arguments);
-        });
-      redisListener.subscribe(event, listener);
       if ( ! redisListenerCounter.hasOwnProperty(event)) {
+        redisListener.subscribe(event);
         redisListenerCounter[event] = 0;
         clientRedisEvents.push(event);
       }
