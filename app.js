@@ -17,8 +17,8 @@ process.on('uncaughtException', function(excp) {
 });
 
 // sass watch hack :(
-var sassfiles = fs.readdirSync(__dirname + '/public/css/default')
-, touchSassFile = function () {
+var sassfiles = fs.readdirSync(__dirname + '/public/css/default');
+var touchSassFile = function () {
   child_process.spawn('touch', [__dirname + '/public/css/default/style.scss']);
 };
 for (var i = 0, len = sassfiles.length; i < len; i = i + 1) {
@@ -73,7 +73,10 @@ process.on('SIGTERM', function () {
   console.log('Got SIGTERM, closing sass and redis.');
   sass.kill();
   testClient.end();
-  Ni.config('nohmclient').end();
+  var nohmclient = Ni.config('nohmclient');
+  if (nohmclient) {
+    nohmclient.end();
+  }
   if (redis_server) {
     redis_server.kill();
   }

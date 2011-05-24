@@ -6,19 +6,19 @@ var express = require('express'),
     assetHandlers = require('connect-assetmanager-handlers'),
     i18n = require(__dirname + '/helpers/translations.js'),
     vsprintf = require('sprintf').vsprintf,
-    nohm = require('nohm'),
+    nohm = require('nohm').Nohm,
     io = require('socket.io'),
     socketHandler = require(__dirname + '/sockets');
 
 var start = exports.start = function () {
   Ni.boot(function() {
-    nohm.connect(Ni.config('redis_port'), Ni.config('redis_host'));
-		var nohmclient = nohm.getClient();
-		nohmclient.select(Ni.config('redis_nohm_db'), function (err) {
+    var redis = require('redis').createClient(Ni.config('redis_port'), Ni.config('redis_host'));
+		redis.select(Ni.config('redis_nohm_db'), function (err) {
 		  if (err) {
 		    console.dir(err);
 		  }
-		  Ni.config('nohmclient', nohmclient);
+      nohm.setClient(redis);
+		  Ni.config('nohmclient', redis);
 		});
     
 		// initialize the main app
