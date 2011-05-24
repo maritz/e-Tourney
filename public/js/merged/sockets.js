@@ -5,7 +5,7 @@ _r(function () {
   window.socketHandlers = {
     set_cookie: function (msg) {
       var options = msg.options,
-          oldCookie = $(msg.message.name);
+          oldCookie = $.cookie(msg.name);
       if (options.overwrite === 'different' && oldCookie && oldCookie === msg.value ) {
         return null;
       }
