@@ -27,7 +27,7 @@
           span#top_bar_time 2010-03-20 13:45:10 UTC
           - if (typeof(session) !== 'undefined')
             span#top_bar_logged= tr('header:search')
-              a( href: '/User/logout', class: loggedClass )= tr('header:logout')
+              a( href: '#user/logout', class: loggedClass )= tr('header:logout')
         #top_right_corner
         #header_main
           a#head_logo
@@ -50,11 +50,11 @@
                   script( type: 'text/javascript')
                     var userSelf = {name:"#{locals.session.user.name}",id:#{userid}};
                 #userbox_avatar ?
-                a#userbox_profile( href: '#User/details/'+userid )
+                a#userbox_profile( href: '#user/details/'+userid )
                   span
                     - if (locals.session.hasOwnProperty('user'))
                       = locals.session.user.name
-                a#userbox_user( href: '#User/profile' )
+                a#userbox_user( href: '#user/profile' )
                   img( src: '', alt: '>' )
                   span Edit profile
                 a#userbox_team.clearfix
@@ -108,12 +108,17 @@
 
     script( src: '//ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.js' )
     script
-      !window.jQuery && document.write(unescape('%3Cscript src="/js/jquery-1.4.4.min.js"%3E%3C/script%3E'))
+      !window.jQuery && document.write(unescape('%3Cscript src="/js/jquery-1.4.4.min.js"%3E%3C/script%3E'));
+
+    - if (typeof(form_fieldcheck_timeout) !== 'undefined')
+      script
+        var form_fieldcheck_timeout = #{form_fieldcheck_timeout}
     script( src: '/socket.io/socket.io.js' )
 
     - if (Array.isArray(js_files))
       - each file in js_files
         script( src: '/js/merged/'+file )
+      script( src: '/js/live.js' )
     - else
       script( src: '/js/' + staticVersions.js + '/merged.js' )
     
