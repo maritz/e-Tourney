@@ -15,7 +15,6 @@
       "connect-assetmanager-handlers": ">=0.0.13",
       "connect-redis": ">=0.2.0",
       "redis": ">=0.3.7",
-      "fugue": ">=0.0.37",
       "iniparser": ">=1.0.0",
       "nohm": ">=0.2.0",
       "sprintf": ">=0.1.0",
