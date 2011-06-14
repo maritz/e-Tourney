@@ -12,8 +12,12 @@ var io = require('socket.io'),
     Emitter = require('events').EventEmitter,
     redisListenerCounter = {};
     
-redisPublisher.select(Ni.config('redis_pubsub_db'));
-redisListener.select(Ni.config('redis_pubsub_db'));
+redisListener.select(Ni.config('redis_pubsub_db'), function (err) {
+  console.dir(err)
+  });
+redisPublisher.select(Ni.config('redis_pubsub_db'), function (err) {
+  console.dir(err)
+  });
 
 var guestCounter = 0;
 
@@ -47,7 +51,7 @@ var sessionHandler = function (client) {
         setNewSession(session);
         
         // on session changes
-        client.redis.on('pubsub.sess.'+sessionId, function (newId) {
+        subscribeRedis('pubsub.sess.'+sessionId, client.sessionId, function (newId) {
           // set the new sid cookie
           client.send({
             type: 'set_cookie',
@@ -67,6 +71,34 @@ var sessionHandler = function (client) {
       }
     });
   });
+};
+
+
+var subscriptions = {};
+
+var subscribeRedis = function (channel, id) {
+  if ( ! subscriptions.hasOwnProperty(channel)) {
+    subscriptions[channel] = [];
+    redisListener.subscribe(channel);
+  }
+  if (subscriptions[channel].indexOf(id) === -1) {
+    subscriptions[channel].push(id);
+    socket.clients[id].subscriptions.push(channel);
+  }
+};
+
+var unsubscribeRedis = function (channel, id) {
+  if (subscriptions.hasOwnProperty(channel)) {
+    var idIndex = subscriptions[channel].indexOf(id);
+    if (idIndex !== -1) {
+      subscriptions[channel].splice(idIndex, 1);
+    }
+    var channelIndex = socket.clients[id].subscriptions.indexOf(channel);
+    if (channelIndex !== -1) {
+      socket.clients[id].subscriptions.splice(channelIndex, 1);
+    }
+    redisListener.unsubscribe(channel);
+  }
 };
 
 
@@ -91,8 +123,7 @@ var messageHandler = {
       return false;
     }
     
-    this.subscriptions++;
-    this.redis.on(msg.channel, function (newMsg) {
+    subscribeRedis(msg.channel, this.sessionId, function (newMsg) {
       console.log('sending '+newMsg+' from '+msg.channel+' to '+self.name);
       self.send({
         type: 'published',
@@ -127,27 +158,19 @@ var messageHandler = {
  * Create the socket server
  */
 exports.listen = function (app) {
+  redisListener.on('message', function (channel, message) {
+    console.log('test');
+    if ( ! subscriptions.hasOwnProperty(channel)) {
+      console.log('redis received a message on channel '+channel+' BUT DOES NOT HAVE ANY SUBSCRIBERS');
+    } else {
+      console.log('redis received message on channel '+channel+'\nSending to '+require('util').inspect(subscriptions[channel]));
+    }
+  });
+  
   socket = io.listen(app);
+  Ni.config('socket', socket);
   socket.on('connection', function(client) {
-    client.subscriptions = 0;
-    
-    client.redis = new Emitter();
-    var clientRedisEvents = [];
-    redisListener.on('message', function (channel, message) {
-      console.log('client redis emitting on channel: '+channel+' to '+client.name);
-      client.redis.emit(channel, message);
-    });
-    
-    client.redis.on('newListener', function (event, listener) {
-      console.log('listening to '+event);
-      if ( ! redisListenerCounter.hasOwnProperty(event)) {
-        redisListenerCounter[event] = 0;
-        clientRedisEvents.push(event);
-        console.dir('subscribing redis to '+event);
-        redisListener.subscribe(event);
-      }
-      redisListenerCounter[event]++;
-    });
+    client.subscriptions = [];
     
     sessionHandler(client);
     
@@ -158,15 +181,8 @@ exports.listen = function (app) {
     });
     
     client.on('disconnect', function () {
-      clientRedisEvents.forEach(function (event) {
-        console.log('unsubscribing client redis from '+event);
-        client.redis.removeAllListeners(event);
-        redisListenerCounter[event]--;
-        if (redisListenerCounter[event] <= 0) {
-          console.log('unsubscribing redis from '+event);
-          redisListener.unsubscribe(event);
-          delete redisListenerCounter[event];
-        }
+      client.subscriptions.forEach(function (channel) {
+        unsubscribeRedis(channel, client.sessionId);
       });
     });
   });

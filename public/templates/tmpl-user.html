@@ -1,7 +1,7 @@
 <script type="text/x-haml-tmpl" name="username">
 %span.error
 %label=$.t('user.labels.name')
-%input{ name: 'name', validate: 'validate', required: 'required' }
+%input{ name: 'name', validate: 'validate', required: true }
 .input_loading Checking
 </script>
 
@@ -34,7 +34,7 @@
 
 <script type="text/x-haml-tmpl" name="register">
 %h1=$.t('user.register.headline')
-%form#register_form.two_columns.default.register{ method: 'post' }
+%form#register_form.two_columns.default.register{ method: 'post', novalidate: true }
   .fieldset_wrapper
     %fieldset
       %legend=$.t('user.headline.legend_mandatory')

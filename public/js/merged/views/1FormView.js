@@ -51,7 +51,16 @@ _r(function () {
     
     // end abstract methods
     
-    
+    /**
+     * Fill the form with the corresponding model data.
+     */
+    fill: function (model) {
+      var self = this;
+      _.each(model.toJSON(), function (val, key) {
+        self.$('input[name="'+key+'"]').first().val(val);
+        self.previous[key] = val;
+      });
+    },
     
     /**
      * Calculates the maximum label width inside a fieldset > ul and sets all other labels to that
@@ -130,8 +139,8 @@ _r(function () {
         return false;
       }
       
-      if ( ! this.checkFieldChanged(target)
-        || ! this.model.fieldCheckUrl){
+      if ( ! this.checkFieldChanged(target) || 
+            ! this.model.fieldCheckUrl){
         return false;
       }
       
@@ -158,7 +167,7 @@ _r(function () {
 	          debugger;
 	        }
 	      });
-	    }, 1500);
+	    }, window.registry.form_fieldcheck_timeout);
     },
     
     

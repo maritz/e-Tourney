@@ -3,6 +3,7 @@ var Ni = require('ni');
 Ni.addRoute(/^\/User\/(loginJson|checkFieldJson).*$/i, '/error/method_not_allowed', 'GET');
 
 var editForm = function (req, res, next, user) {
+  console.log('using User/editForm function');
   if (typeof(req.body) !== 'undefined') {
     res.rlocals.values = req.body;
     user.checkProperties(req.body,  function (valid) {
@@ -28,27 +29,22 @@ var editForm = function (req, res, next, user) {
     res.rlocals.errors = 'none';
     next();
   }
-}
+};
 
 
 var userController = module.exports = {
   __init: function (cb, req, res, next) {
-    if ( ! req.session.logged_in 
-      && (   res.Ni.action.indexOf('list') === 0
-          || res.Ni.action.indexOf('edit') === 0
-          || res.Ni.action.indexOf('profile') === 0) ) {
-      res.Ni.action = 'login';
-      Ni.controllers.User.login(req, res, next);
+    if ( ! req.session.logged_in && 
+          ( res.Ni.action.indexOf('list') === 0
+          ) 
+        ) {
+      res.send({error: 'login required'});
     } else {
       cb();
     }
   },
   
   index: function (req, res, next) {
-    next();
-  },
-  
-  login: function (req, res, next) {
     next();
   },
   
@@ -84,8 +80,9 @@ var userController = module.exports = {
   },
   
   logout: function (req, res, next) {
-    req.session.destroy();
-    res.redirect('/');
+    req.session.destroy(function () {
+      res.send('/');
+    });
   },
   
   registerJson: function (req, res, next) {
@@ -95,9 +92,9 @@ var userController = module.exports = {
       request: req.body
     };
     if (typeof(req.body) !== 'undefined') {
-      var user = new Ni.models.User()
-      , len = req.body.length
-      , propSetter = function () {
+      var user = new Ni.models.User();
+      var len = req.body.length;
+      var propSetter = function () {
         user.create(req.body, function (valid) {
           if (user.__inDB) {
             user.getBoxInfo(user.id, function (info) {
@@ -122,14 +119,14 @@ var userController = module.exports = {
         propSetter();
       }
     } else {
-      response.errors['general'] = 'Request did not contain proper fields to check.';
+      response.errors.general = 'Request did not contain proper fields to check.';
       res.send(response);
     }
   },
   
   profile: function (req, res, next) {
-    var user = new Ni.models.User()
-    , id = req.session.user.id;
+    var user = new Ni.models.User();
+    var id = req.session.user.id;
     res.rlocals.user_not_found = false;
       
     user.load(id, function (err) {
@@ -144,21 +141,23 @@ var userController = module.exports = {
   
   details: function (req, res, next, id) {
     var user = new Ni.models.User();
-    res.rlocals.user_not_found = false;
-    res.rlocals.profile_edited = req.flash('profile_edited');
+    console.log('in details');
     
     if (isNaN(id)) {
-      res.rlocals.user_not_found = id;
-      return next();
+      return res.send({error: 'invalid id'});
     }
-      
+    
     user.load(id, function (err) {
-      if (!user.p('name')) {
-        res.rlocals.user_not_found = id;
+      if (err) {
+        return res.send({error: err});
       } else {
-        res.rlocals.user = user.allProperties();
+        return res.send({
+          error: false,
+          data: {
+            user: user.getAllowedProperties(req.session.user)
+          }
+        });
       }
-      next();
     });
   },
   
@@ -168,9 +167,9 @@ var userController = module.exports = {
       request: req.body
     };
     if (typeof(req.body) !== 'undefined') {
-      var user = new Ni.models.User()
-	    , len = req.body.length
-      , propSetter = function () {
+      var user = new Ni.models.User();
+      var len = req.body.length;
+      var propSetter = function () {
         user.checkProperties(req.body, function (valid) {
           response.errors = user.errors;
           res.send(response);                                    

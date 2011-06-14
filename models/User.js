@@ -85,6 +85,18 @@ var userModel = module.exports = nohm.model('User', {
       });
     },
     
+    getAllowedProperties: function (sessionUser) {
+      var selfValid = sessionUser && ! isNaN(sessionUser.id) && sessionUser.id > 0;
+      var props = this.allProperties();
+      if ( ! selfValid || sessionUser.id !== this.id) {
+        // TODO: evaluate what should be public and what shouldn't be.
+        delete props.email;
+      }
+      delete props.password;
+      delete props.salt;
+      return props;
+    },
+    
     getBoxInfo: function (id, callback) {
       var info = {},
       self = this,

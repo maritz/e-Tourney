@@ -13,16 +13,23 @@ _r(function () {
       this.model.bind('change', this.render);
       this.model.view = this; // stick this view to that model!
       
-      this.model.getSelf(); // get login data
+      this.model.getSelfFromDocument(); // get login data
     },
 
     render: function () {
-      // this is called when the self usermodel changes. this means on login and on profile changes.
-      this.el.addClass('logged_in');
-      $('#top_bar_logged a').last().addClass('logged_in');
-      this.$('#userbox_profile').attr('href', '/User/details/' + this.model.get('id'));
-      this.$('#userbox_profile span').text(this.model.get('name'));
-      return this;
+      // this is called when the self usermodel changes. this means on login/logout and on profile changes.
+      if (this.model.loggedIn) {
+        this.el.addClass('logged_in');
+        $('#top_bar_logged a').last().addClass('logged_in');
+        this.$('#userbox_profile').attr('href', '#user/details/' + this.model.get('id'));
+        this.$('#userbox_profile span').text(this.model.get('name'));
+      } else {
+        this.el.removeClass('logged_in');
+        $('#top_bar_logged a').last().removeClass('logged_in');
+        this.$('#userbox_profile').attr('href', '');
+        this.$('#userbox_profile span').text('');
+      }
+      return true;
     },
     
     showFail: function () {
@@ -36,6 +43,7 @@ _r(function () {
       this.$('span.error').hide();
       this.$('input[type="submit"]').attr('disabled', true);
       this.model.login(this.$('form').serializeArray());
+      this.$('input[type="password"]').val('');
     }
   });
   

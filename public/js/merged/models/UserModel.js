@@ -6,11 +6,15 @@ _r(function () {
     fieldCheckUrl: '/User/checkFieldJson',
     self: false,
     
-    getSelf: function () {
+    getSelfFromDocument: function () {
       if (this.self && $(this.view.el).hasClass('logged_in') && userSelf) {
-        this.set(userSelf);
         this.loggedIn = true;
+        this.set(userSelf);
       }
+    },
+    
+    url: function () {
+      return '/User/details/'+this.id;
     },
 
     login: function (data, cb) {
@@ -34,6 +38,20 @@ _r(function () {
     setLoggedIn: function (userdata) {
       this.loggedIn = true;
       this.set(userdata);
+    },
+    
+    logout: function (cb) {
+      var self = this;
+      if (this.loggedIn) {
+        $.post('/User/logout', {}, function () {
+          self.loggedIn = false;
+          self.set({name: '', id: 0});
+          window.registry.selfName = 'Guest'+(+new Date());
+          cb(true);
+        });
+      } else {
+        cb(false);
+      }
     }
   });
   

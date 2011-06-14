@@ -24,6 +24,11 @@ _r(function () {
       app.userSelf.login(data, function (success) {
         if ( ! success) {
           self.loginError.show().delay(2500).fadeOut(2000);
+        } else {
+          window.location.hash = "#User/profile";
+          $.jGrowl($.t('user.login.done'), {
+            theme: 'success'
+          });
         }
       });
     },
@@ -56,7 +61,16 @@ _r(function () {
     subInitialize: function () {
       this.el = $('#profile_form');
       this.model = app.userSelf;
-      this.fill(this.model.toJSON());
+      
+      var self = this;
+      this.model.fetch({
+        success: function (model) {
+          self.fill.call(self, model);
+        },
+        error: function () { // TODO: write global error handler
+          console.log('ERROR');
+        }
+      });
     },
     
     submitResult: function (errors, response) {

@@ -2,7 +2,6 @@ _r(function () {
   window.app.models.base = Backbone.Model.extend({
     
     parse: function (res) {
-      console.log('BaseModel.parse used');
       if (!res.attr && !res.errors) {
         this.errors = {
           general: 'Server error'

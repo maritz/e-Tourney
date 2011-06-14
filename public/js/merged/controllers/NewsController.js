@@ -8,6 +8,7 @@ _r(function () {
       else if (!req.refresh)
         $.jGrowl('creating the news');
       res.show('some news');
+      console.dir(req);
     },
     details: function (req, res) {
       res.show();

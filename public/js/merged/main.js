@@ -10,11 +10,18 @@ _r(function () {
   });
   
   $('#header_userbox input[type="button"]').click(function () {
-    window.location = '#User/register';
+    window.location = '#user/register';
+  });
+  
+  // we don't really want the link to change the address bar here.
+  $('#top_bar_logged a[href="#user/logout"]').click(function (e) {
+    e.preventDefault();
+    app.controllers.user.logout();
   });
   
 });
 
 window.registry = {
-  selfName: 'Guest'+(+new Date())
+  selfName: 'Guest'+(+new Date()),
+  form_fieldcheck_timeout: window.form_fieldcheck_timeout
 };

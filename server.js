@@ -8,7 +8,34 @@ var express = require('express'),
     vsprintf = require('sprintf').vsprintf,
     nohm = require('nohm').Nohm,
     io = require('socket.io'),
-    socketHandler = require(__dirname + '/sockets');
+    socketHandler = require(__dirname + '/sockets'),
+    os = require('os');
+    
+    
+var form_fieldcheck_timeout = 100;
+var last_load = os.loadavg();
+var socket;
+var loadCheck = setInterval(function () {
+  var load = os.loadavg();
+  if (load[0] > last_load[0]*1.5 || load[1] > last_load[1]*1.25 || load[2] > last_load[2]*1.1) {
+    console.log('load increase detected:');
+    console.dir(load);
+  }
+  last_load = load;
+  form_fieldcheck_timeout = Math.floor(load[0]*10)*200+100;
+  if (!socket) {
+    socket = Ni.config('socket');
+  }
+  if (socket) {
+    socket.broadcast({
+      type: 'set_meta',
+      message: {
+        name: 'form_fieldcheck_timeout',
+        value: form_fieldcheck_timeout
+      }
+    });
+  }
+}, 1000*6);
 
 var start = exports.start = function () {
   Ni.boot(function() {
@@ -51,7 +78,6 @@ var start = exports.start = function () {
 		app.use(express['static'](__dirname + '/public')); // static is a reserved keyword ffs
 		
 		// start main app pre-routing stuff
-		
 		app.use(express.bodyParser());
 		app.use(express.cookieParser());
 		
@@ -80,7 +106,7 @@ var start = exports.start = function () {
         }
         return trByLang.langs[lang];
       };
-		  
+    
 		  app.get('/', function (req, res, next) {
         if (req.accepts('json')) {
           next();
@@ -101,17 +127,18 @@ var start = exports.start = function () {
             cache: true,
             tr: trByLang(lang),
             loggedClass: req.session.logged_in ? 'logged_in' : '',
-    	      currentUrl: req.url,
-  		      staticVersions: assetsManagerMiddleware.cacheTimestamps || 0,
+            currentUrl: req.url,
+            staticVersions: assetsManagerMiddleware.cacheTimestamps || 0,
             i18n_hash: i18n.getHash(req.session.lang),
             session: req.session,
+            form_fieldcheck_timeout: form_fieldcheck_timeout,
             js_files: app.set('env') === 'development' ? files : false
           }
         });
 		  });
 		
 		  app.use(function (req, res, next) {
-        if (req.accepts('json')) {
+        if (req.accepts('json') || app.set('env') === 'development' ) {
           Ni.router.apply(null, arguments);
         } else {
           next();
@@ -124,7 +151,7 @@ var start = exports.start = function () {
           locals: {
             cache: true,
             tr: trByLang('en_US'),
-  		      staticVersions: assetsManagerMiddleware.cacheTimestamps || 0,
+            staticVersions: assetsManagerMiddleware.cacheTimestamps || 0,
             js_files: []
           }
         });
@@ -133,6 +160,11 @@ var start = exports.start = function () {
 		  if (app.set('env') !== 'production') {
 		    app.use(express.errorHandler({showStack: true, dumpExceptions: true}));
 		  }
+      
+      app.error(function (error, req, res, next) {
+        console.dir(arguments);
+        res.send('an error occured', 500);
+      });
       
       // start the app!
 	    app.listen(Ni.config('app port'));

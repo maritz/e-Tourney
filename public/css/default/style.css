@@ -373,6 +373,13 @@ body {
   width: 4%;
   z-index: 100; }
 
+span.fake_link {
+  color: #607890;
+  text-decoration: underline; }
+  span.fake_link:hover {
+    color: #036;
+    cursor: pointer; }
+
 .jGrowl-notification, .jGrowl-closer {
   background-color: #333;
   border: 1px solid #888;

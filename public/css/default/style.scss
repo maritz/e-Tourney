@@ -7,7 +7,6 @@ $orange: #e76510;
 header, footer, aside, nav, article, div {
   display: block; }  
 
-
 ul {
   list-style-type: none; }
 
@@ -42,6 +41,15 @@ body {
   top: 15px;
   width: 4%;
   z-index: 100;
+}
+
+span.fake_link {
+  color: #607890;
+  text-decoration: underline;
+  &:hover {
+    color: #036;
+    cursor: pointer;
+  }
 }
 
 .jGrowl-notification, .jGrowl-closer {
